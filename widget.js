@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  const CDN = 'https://YOUR-USERNAME.github.io/script-converter/fonts/';
+  const CDN = 'https://script-converter.pages.dev/fonts/';
 
   // Character Maps
   const T2D = {
