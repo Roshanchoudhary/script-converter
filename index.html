@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="mai" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>तिरहुता ↔ देवनागरी | मिथिला लिपि परिवर्तक</title>
+  <meta name="description" content="मैथिली भाषाक तिरहुता आ देवनागरी लिपि परिवर्तक">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Mithilauni';
+      src: url('./fonts/mithilauni.ttf') format('truetype');
+      font-display: swap;
+    }
+    :root {
+      --primary: #8B1A1A;
+      --secondary: #D4A017;
+      --bg: #FDF6E3;
+      --surface: #FFFFFF;
+      --text: #2C1810;
+      --border: #C8A96E;
+      --shadow: 0 4px 20px rgba(139,26,26,0.15);
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans Devanagari', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .header { background: linear-gradient(135deg, var(--primary), #5C0F0F); color: white; padding: 20px 24px; text-align: center; box-shadow: var(--shadow); }
+    .header h1 { font-size: 1.8rem; margin-bottom: 6px; }
+    .header p { opacity: 0.85; font-size: 0.95rem; }
+    .header a { color: var(--secondary); text-decoration: none; font-size: 0.85rem; display: inline-block; margin-top: 8px; border: 1px solid var(--secondary); padding: 4px 12px; border-radius: 20px; }
+    .header a:hover { background: var(--secondary); color: var(--text); }
+    .container { max-width: 960px; margin: 30px auto; padding: 0 16px; }
+    .control-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; box-shadow: var(--shadow); }
+    .control-group { display: flex; flex-direction: column; gap: 4px; }
+    .control-group label { font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
+    select { appearance: none; background: var(--bg); border: 2px solid var(--border); border-radius: 8px; padding: 8px 36px 8px 12px; font-size: 0.9rem; color: var(--text); cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B1A1A' stroke-width='2' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; transition: border-color 0.2s; min-width: 190px; font-family: 'Noto Sans Devanagari', Arial, sans-serif; }
+    select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,26,26,0.15); }
+    .btn-swap { background: var(--secondary); border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem; cursor: pointer; transition: transform 0.4s, background 0.2s; display: flex; align-items: center; justify-content: center; margin-bottom: 0; }
+    .btn-swap:hover { background: #B8860B; transform: rotate(180deg); }
+    .editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    @media (max-width: 620px) { .editor-grid { grid-template-columns: 1fr; } .control-bar { flex-direction: column; } }
+    .editor-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .panel-header { background: linear-gradient(90deg, var(--primary), #A52020); color: white; padding: 10px 16px; font-size: 0.85rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+    .char-count { font-size: 0.72rem; opacity: 0.8; }
+    textarea { width: 100%; height: 200px; border: none; padding: 14px; font-size: 1.1rem; line-height: 1.9; resize: vertical; background: var(--surface); color: var(--text); font-family: 'Noto Sans Devanagari', Arial, sans-serif; }
+    textarea:focus { outline: none; }
+    textarea::placeholder { color: #B0A090; }
+    .font-mithilauni { font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif !important; }
+    .font-noto { font-family: 'Noto Sans Tirhuta', serif !important; }
+    .action-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .btn { padding: 10px 18px; border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-family: 'Noto Sans Devanagari', Arial, sans-serif; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: #6B1010; transform: translateY(-1px); }
+    .btn-secondary { background: var(--secondary); color: var(--text); }
+    .btn-secondary:hover { background: #B8860B; }
+    .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+    .section-card h3 { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; font-weight: 700; }
+    .phonetic-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+    .phonetic-box p { font-size: 0.82rem; color: #5C3A1E; margin-bottom: 8px; line-height: 1.5; }
+    .phonetic-box code { background: #2C1810; color: var(--secondary); padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .dl-btn { display: flex; flex-direction: column; align-items: center; padding: 14px 10px; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: center; font-family: 'Noto Sans Devanagari', Arial, sans-serif; }
+    .dl-btn:hover { border-color: var(--primary); background: rgba(139,26,26,0.05); transform: translateY(-2px); }
+    .dl-icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .dl-label { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .dl-desc { font-size: 0.7rem; color: #8B7355; margin-top: 2px; }
+    .img-settings { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .setting-row { display: flex; flex-direction: column; gap: 4px; }
+    .setting-row label { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
+    .setting-row input[type=color] { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; padding: 2px; }
+    .setting-row select { min-width: unset; width: 100%; }
+    .font-preview-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .font-sample { flex: 1; min-width: 160px; padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+    .font-sample:hover, .font-sample.active { border-color: var(--primary); background: rgba(139,26,26,0.05); }
+    .font-sample .sname { font-size: 0.72rem; color: var(--primary); font-weight: 700; margin-bottom: 6px; }
+    .font-sample .stext { font-size: 1.3rem; line-height: 1.6; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: #2D6A4F; color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .footer { text-align: center; padding: 20px; color: #8B7355; font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>𝒨 मिथिला लिपि परिवर्तक</h1>
+  <p>तिरहुता ↔ देवनागरी | मैथिली भाषा</p>
+  <a href="help.html" target="_blank">⌨️ Phonetic Keyboard Guide</a>
+</div>
+
+<div class="container">
+
+  <!-- Control Bar -->
+  <div class="control-bar">
+    <div class="control-group">
+      <label>परिवर्तन दिशा</label>
+      <select id="directionSelect" onchange="updateLabels()">
+        <option value="dev-to-tir">देवनागरी → तिरहुता</option>
+        <option value="tir-to-dev">तिरहुता → देवनागरी</option>
+      </select>
+    </div>
+    <button class="btn-swap" onclick="swapDirection()" title="दिशा बदलें">&#8644;</button>
+    <div class="control-group">
+      <label>तिरहुता फ़ॉन्ट</label>
+      <select id="fontSelect" onchange="applyFont()">
+        <option value="mithilauni">Mithilauni (आपका फ़ॉन्ट)</option>
+        <option value="noto">Noto Sans Tirhuta (Google)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Phonetic Typing</label>
+      <select id="phoneticMode">
+        <option value="off">बंद (Direct Input)</option>
+        <option value="on">चालू (English → तिरहुता)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>स्वचालित</label>
+      <select id="autoConvert">
+        <option value="yes">हाँ - टाइप करते ही</option>
+        <option value="no">नहीं - बटन दबाएं</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Phonetic Info Box -->
+  <div class="phonetic-box" id="phoneticInfo" style="display:none">
+    <p>⌨️ <strong>Phonetic Mode चालू है:</strong> English में type करें, तिरहुता में output मिलेगा।<br>
+    उदाहरण: <code>ka</code>=𑒑 &nbsp; <code>ma</code>=𑒩 &nbsp; <code>aa</code>=𑒂 &nbsp; <code>ii</code>=𑒄 &nbsp; <code>M</code>=𑓁 &nbsp; <code>H</code>=𑓂 &nbsp; <code>.</code>=𑓀<br>
+    पूरी list के लिए: <a href="help.html" target="_blank">Keyboard Guide देखें</a></p>
+  </div>
+
+  <!-- Editor -->
+  <div class="editor-grid">
+    <div class="editor-panel">
+      <div class="panel-header">
+        <span id="inputLabel">देवनागरी (इनपुट)</span>
+        <span class="char-count" id="inputCount">0 अक्षर</span>
+      </div>
+      <textarea id="inputText" placeholder="यहाँ मैथिली पाठ लिखें..." oninput="handleInput()"></textarea>
+    </div>
+    <div class="editor-panel">
+      <div class="panel-header">
+        <span id="outputLabel">तिरहुता (आउटपुट)</span>
+        <span class="char-count" id="outputCount">0 अक्षर</span>
+      </div>
+      <textarea id="outputText" placeholder="परिवर्तित पाठ यहाँ दिखेगा..." readonly></textarea>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="convertText()">🔄 परिवर्तित करें</button>
+    <button class="btn btn-secondary" onclick="copyOutput()">📋 कॉपी करें</button>
+    <button class="btn btn-outline" onclick="clearAll()">🗑️ साफ़ करें</button>
+    <button class="btn btn-outline" onclick="shareLink()">🔗 शेयर करें</button>
+  </div>
+
+  <!-- Font Preview -->
+  <div class="section-card">
+    <h3>फ़ॉन्ट पूर्वावलोकन</h3>
+    <div class="font-preview-row">
+      <div class="font-sample active" id="sample-mithilauni" onclick="selectFont('mithilauni')">
+        <div class="sname">Mithilauni Font</div>
+        <div class="stext font-mithilauni">𑒧𑒳𑒟𑒳𑒬𑒰</div>
+      </div>
+      <div class="font-sample" id="sample-noto" onclick="selectFont('noto')">
+        <div class="sname">Noto Sans Tirhuta (Google)</div>
+        <div class="stext font-noto">𑒧𑒳𑒟𑒳𑒬𑒰</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Section -->
+  <div class="section-card">
+    <h3>📥 डाउनलोड विकल्प</h3>
+    <div class="download-grid">
+      <button class="dl-btn" onclick="downloadTXT()">
+        <span class="dl-icon">📄</span>
+        <span class="dl-label">Text (.txt)</span>
+        <span class="dl-desc">Plain text</span>
+      </button>
+      <button class="dl-btn" onclick="downloadImage()">
+        <span class="dl-icon">🖼️</span>
+        <span class="dl-label">Image (.png)</span>
+        <span class="dl-desc">High quality</span>
+      </button>
+      <button class="dl-btn" onclick="downloadSVG()">
+        <span class="dl-icon">✏️</span>
+        <span class="dl-label">SVG (vector)</span>
+        <span class="dl-desc">Scalable</span>
+      </button>
+      <button class="dl-btn" onclick="downloadPDF()">
+        <span class="dl-icon">📕</span>
+        <span class="dl-label">PDF (.pdf)</span>
+        <span class="dl-desc">Print ready</span>
+      </button>
+    </div>
+    <div class="img-settings">
+      <div class="setting-row">
+        <label>पृष्ठभूमि रंग</label>
+        <input type="color" id="bgColor" value="#FDF6E3">
+      </div>
+      <div class="setting-row">
+        <label>पाठ रंग</label>
+        <input type="color" id="textColor" value="#2C1810">
+      </div>
+      <div class="setting-row">
+        <label>फ़ॉन्ट आकार</label>
+        <select id="imgFontSize">
+          <option value="24">छोटा (24px)</option>
+          <option value="36" selected>मध्यम (36px)</option>
+          <option value="48">बड़ा (48px)</option>
+          <option value="72">बहुत बड़ा (72px)</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label>चौड़ाई</label>
+        <select id="imgWidth">
+          <option value="800">800px</option>
+          <option value="1200" selected>1200px (HD)</option>
+          <option value="1920">1920px (Full HD)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="footer">
+  मैथिली भाषा सेवा | Mithilahost Group | तिरहुता लिपि संरक्षण
+</div>
+
+<script>
+// ============================================================
+// CHARACTER MAPPING TABLES
+// ============================================================
+const T2D = {
+  '\u11481':'\u0905','\u11482':'\u0906','\u11483':'\u0907',
+  '\u11484':'\u0908','\u11485':'\u0909','\u11486':'\u090A',
+  '\u11487':'\u090B','\u11488':'\u090C','\u1148B':'\u090F',
+  '\u1148C':'\u0910','\u1148F':'\u0913','\u11490':'\u0914',
+  '\u11491':'\u0915','\u11492':'\u0916','\u11493':'\u0917',
+  '\u11494':'\u0918','\u11495':'\u0919','\u11496':'\u091A',
+  '\u11497':'\u091B','\u11498':'\u091C','\u11499':'\u091D',
+  '\u1149A':'\u091E','\u1149B':'\u091F','\u1149C':'\u0920',
+  '\u1149D':'\u0921','\u1149E':'\u0922','\u1149F':'\u0923',
+  '\u114A0':'\u0924','\u114A1':'\u0925','\u114A2':'\u0926',
+  '\u114A3':'\u0927','\u114A4':'\u0928','\u114A5':'\u092A',
+  '\u114A6':'\u092B','\u114A7':'\u092C','\u114A8':'\u092D',
+  '\u114A9':'\u092E','\u114AA':'\u092F','\u114AB':'\u0930',
+  '\u114AC':'\u0932','\u114AD':'\u0935','\u114AE':'\u0936',
+  '\u114AF':'\u0937','\u114B0':'\u0938','\u114B1':'\u0939',
+  '\u114B2':'\u093E','\u114B3':'\u093F','\u114B4':'\u0940',
+  '\u114B5':'\u0941','\u114B6':'\u0942','\u114B7':'\u0943',
+  '\u114BA':'\u0947','\u114BB':'\u0948','\u114BE':'\u094B',
+  '\u114BF':'\u094C','\u114C0':'\u094D','\u114C1':'\u0902',
+  '\u114C2':'\u0903',
+  '\u114D0':'\u0966','\u114D1':'\u0967','\u114D2':'\u0968',
+  '\u114D3':'\u0969','\u114D4':'\u096A','\u114D5':'\u096B',
+  '\u114D6':'\u096C','\u114D7':'\u096D','\u114D8':'\u096E','\u114D9':'\u096F',
+};
+const D2T = Object.fromEntries(Object.entries(T2D).map(([k,v])=>[v,k]));
+
+// ============================================================
+// PHONETIC MAP: English -> Tirhuta
+// ============================================================
+const PHONETIC = [
+  // Longest matches first (order matters!)
+  ['kha','\u11492\u114C0'],['gha','\u11494\u114C0'],['nga','\u11495\u114C0'],
+  ['cha','\u11497\u114C0'],['jha','\u11499\u114C0'],['nya','\u1149A\u114C0'],
+  ['Tha','\u1149C\u114C0'],['Dha','\u1149E\u114C0'],['tha','\u114A1\u114C0'],
+  ['dha','\u114A3\u114C0'],['pha','\u114A6\u114C0'],['bha','\u114A8\u114C0'],
+  ['sha','\u114AE\u114C0'],['Sha','\u114AF\u114C0'],
+  ['aa','\u11482'],['ii','\u11484'],['uu','\u11486'],['ai','\u1148C'],
+  ['au','\u11490'],['ri','\u11487'],
+  ['ka','\u11491\u114C0'],['ga','\u11493\u114C0'],['ca','\u11496\u114C0'],
+  ['ja','\u11498\u114C0'],['Ta','\u1149B\u114C0'],['Da','\u1149D\u114C0'],
+  ['Na','\u1149F\u114C0'],['ta','\u114A0\u114C0'],['da','\u114A2\u114C0'],
+  ['na','\u114A4\u114C0'],['pa','\u114A5\u114C0'],['ba','\u114A7\u114C0'],
+  ['ma','\u114A9\u114C0'],['ya','\u114AA\u114C0'],['ra','\u114AB\u114C0'],
+  ['la','\u114AC\u114C0'],['va','\u114AD\u114C0'],['wa','\u114AD\u114C0'],
+  ['sa','\u114B0\u114C0'],['ha','\u114B1\u114C0'],
+  ['A','\u11482'],['I','\u11484'],['U','\u11486'],
+  ['M','\u114C1'],['H','\u114C2'],
+  ['a','\u11481'],['i','\u11483'],['u','\u11485'],
+  ['e','\u1148B'],['o','\u1148F'],
+  ['.','\u114C0'],
+  ['0','\u114D0'],['1','\u114D1'],['2','\u114D2'],['3','\u114D3'],
+  ['4','\u114D4'],['5','\u114D5'],['6','\u114D6'],['7','\u114D7'],
+  ['8','\u114D8'],['9','\u114D9'],
+];
+
+// Vowel standalone -> matra form
+const VOWEL_MATRA = {
+  '\u11481': '',         // a -> inherent (remove halant)
+  '\u11482': '\u114B2', // aa -> aa-matra
+  '\u11483': '\u114B3', // i -> i-matra
+  '\u11484': '\u114B4', // ii -> ii-matra
+  '\u11485': '\u114B5', // u -> u-matra
+  '\u11486': '\u114B6', // uu -> uu-matra
+  '\u11487': '\u114B7', // ri -> ri-matra
+  '\u1148B': '\u114BA', // e -> e-matra
+  '\u1148C': '\u114BB', // ai -> ai-matra
+  '\u1148F': '\u114BE', // o -> o-matra
+  '\u11490': '\u114BF', // au -> au-matra
+};
+
+const HALANT = '\u114C0';
+const CONSONANTS = new Set([
+  '\u11491','\u11492','\u11493','\u11494','\u11495','\u11496','\u11497',
+  '\u11498','\u11499','\u1149A','\u1149B','\u1149C','\u1149D','\u1149E',
+  '\u1149F','\u114A0','\u114A1','\u114A2','\u114A3','\u114A4','\u114A5',
+  '\u114A6','\u114A7','\u114A8','\u114A9','\u114AA','\u114AB','\u114AC',
+  '\u114AD','\u114AE','\u114AF','\u114B0','\u114B1',
+]);
+
+// ============================================================
+// PHONETIC ENGINE
+// ============================================================
+function phoneticToTirhuta(input) {
+  let result = '';
+  let i = 0;
+  while (i < input.length) {
+    if (input[i] === ' ') { result += ' '; i++; continue; }
+    if (input[i] === '\n') { result += '\n'; i++; continue; }
+    let matched = false;
+    for (const [eng, tir] of PHONETIC) {
+      if (input.startsWith(eng, i)) {
+        // Smart matra logic
+        const tirChars = [...tir];
+        const firstTirChar = tirChars[0];
+        const isVowel = firstTirChar in VOWEL_MATRA;
+        const resChars = [...result];
+        const lastChar = resChars[resChars.length - 1];
+        const secondLast = resChars[resChars.length - 2];
+        if (isVowel && lastChar === HALANT && secondLast && CONSONANTS.has(secondLast)) {
+          result = result.slice(0, -1); // remove halant
+          const matra = VOWEL_MATRA[firstTirChar];
+          if (matra) result += matra;
+          // if matra is '' (for 'a'), inherent vowel - just remove halant
+        } else {
+          result += tir;
+        }
+        i += eng.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) { result += input[i]; i++; }
+  }
+  return result;
+}
+
+// ============================================================
+// CONVERSION
+// ============================================================
+function tirhutaToDevanagari(text) {
+  return [...text].map(c => T2D[c] || c).join('');
+}
+function devanagariToTirhuta(text) {
+  return [...text].map(c => D2T[c] || c).join('');
+}
+
+function convertText() {
+  const input = document.getElementById('inputText').value;
+  const direction = document.getElementById('directionSelect').value;
+  const phoneticOn = document.getElementById('phoneticMode').value === 'on';
+  let result = '';
+  if (phoneticOn && direction === 'dev-to-tir') {
+    result = phoneticToTirhuta(input);
+  } else if (direction === 'dev-to-tir') {
+    result = devanagariToTirhuta(input);
+  } else {
+    result = tirhutaToDevanagari(input);
+  }
+  document.getElementById('outputText').value = result;
+  updateCounts();
+  applyFont();
+}
+
+function handleInput() {
+  updateCounts();
+  if (document.getElementById('autoConvert').value === 'yes') convertText();
+}
+
+function updateCounts() {
+  const inp = document.getElementById('inputText').value;
+  const out = document.getElementById('outputText').value;
+  document.getElementById('inputCount').textContent = [...inp].length + ' अक्षर';
+  document.getElementById('outputCount').textContent = [...out].length + ' अक्षर';
+}
+
+function updateLabels() {
+  const dir = document.getElementById('directionSelect').value;
+  const phoneticOn = document.getElementById('phoneticMode').value === 'on';
+  if (dir === 'dev-to-tir') {
+    document.getElementById('inputLabel').textContent = phoneticOn ? 'English (Phonetic Input)' : 'देवनागरी (इनपुट)';
+    document.getElementById('outputLabel').textContent = 'तिरहुता (आउटपुट)';
+    document.getElementById('inputText').placeholder = phoneticOn ? 'Type in English... (ka, ma, ra...)' : 'यहाँ देवनागरी मैथिली लिखें...';
+  } else {
+    document.getElementById('inputLabel').textContent = 'तिरहुता (इनपुट)';
+    document.getElementById('outputLabel').textContent = 'देवनागरी (आउटपुट)';
+    document.getElementById('inputText').placeholder = 'यहाँ तिरहुता पाठ लिखें...';
+  }
+  document.getElementById('phoneticInfo').style.display = (phoneticOn && dir === 'dev-to-tir') ? 'block' : 'none';
+}
+
+function swapDirection() {
+  const sel = document.getElementById('directionSelect');
+  const inp = document.getElementById('inputText');
+  const out = document.getElementById('outputText');
+  const tmp = inp.value; inp.value = out.value; out.value = tmp;
+  sel.value = sel.value === 'dev-to-tir' ? 'tir-to-dev' : 'dev-to-tir';
+  updateLabels(); updateCounts();
+}
+
+function applyFont() {
+  const font = document.getElementById('fontSelect').value;
+  const dir = document.getElementById('directionSelect').value;
+  const outEl = document.getElementById('outputText');
+  const inEl = document.getElementById('inputText');
+  outEl.className = ''; inEl.className = '';
+  const tirhutaEl = dir === 'dev-to-tir' ? outEl : inEl;
+  tirhutaEl.classList.add(font === 'mithilauni' ? 'font-mithilauni' : 'font-noto');
+}
+
+function selectFont(name) {
+  document.getElementById('fontSelect').value = name;
+  document.querySelectorAll('.font-sample').forEach(el => el.classList.remove('active'));
+  document.getElementById('sample-' + name).classList.add('active');
+  applyFont();
+}
+
+// ============================================================
+// UTILITY
+// ============================================================
+function copyOutput() {
+  const text = document.getElementById('outputText').value;
+  if (!text) { showToast('\u26a0\ufe0f पहले परिवर्तित करें!'); return; }
+  navigator.clipboard.writeText(text).then(() => showToast('\u2705 कॉपी हो गया!'));
+}
+
+function clearAll() {
+  document.getElementById('inputText').value = '';
+  document.getElementById('outputText').value = '';
+  updateCounts();
+}
+
+function shareLink() {
+  const text = document.getElementById('inputText').value;
+  const dir = document.getElementById('directionSelect').value;
+  const url = new URL(window.location.href);
+  url.searchParams.set('t', encodeURIComponent(text));
+  url.searchParams.set('d', dir);
+  navigator.clipboard.writeText(url.toString()).then(() => showToast('\ud83d\udd17 लिंक कॉपी हो गया!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// DOWNLOAD FUNCTIONS
+// ============================================================
+function downloadTXT() {
+  const text = document.getElementById('outputText').value;
+  if (!text) { showToast('\u26a0\ufe0f पहले परिवर्तित करें!'); return; }
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  triggerDownload(blob, 'tirhuta.txt');
+  showToast('\ud83d\udcc4 Text डाउनलोड!');
+}
+
+function wrapText(ctx, text, maxW) {
+  const lines = [];
+  text.split('\n').forEach(para => {
+    const words = para.split(' ');
+    let line = '';
+    words.forEach(w => {
+      const test = line ? line + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+      else line = test;
+    });
+    if (line) lines.push(line);
+  });
+  return lines;
+}
+
+function buildCanvas() {
+  const text = document.getElementById('outputText').value;
+  if (!text) { showToast('\u26a0\ufe0f पहले परिवर्तित करें!'); return null; }
+  const bg = document.getElementById('bgColor').value;
+  const fg = document.getElementById('textColor').value;
+  const fs = parseInt(document.getElementById('imgFontSize').value);
+  const w  = parseInt(document.getElementById('imgWidth').value);
+  const fontChoice = document.getElementById('fontSelect').value;
+  const ff = fontChoice === 'mithilauni' ? "Mithilauni, 'Noto Sans Tirhuta', serif" : "'Noto Sans Tirhuta', serif";
+  const pad = 60, lh = fs * 1.9;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = fs + 'px ' + ff;
+  const lines = wrapText(ctx, text, w - pad * 2);
+  canvas.width = w;
+  canvas.height = lines.length * lh + pad * 2 + 80;
+  // Background
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Border
+  ctx.strokeStyle = '#C8A96E'; ctx.lineWidth = 3;
+  ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+  // Header
+  ctx.fillStyle = '#8B1A1A'; ctx.fillRect(8, 8, canvas.width - 16, 52);
+  ctx.fillStyle = '#FFFFFF'; ctx.font = 'bold 20px Arial'; ctx.textAlign = 'center';
+  ctx.fillText('\ud835\udca8 मिथिला लिपि | Mithilahost Group', canvas.width / 2, 42);
+  // Text
+  ctx.fillStyle = fg; ctx.font = fs + 'px ' + ff; ctx.textAlign = 'left';
+  lines.forEach((ln, i) => ctx.fillText(ln, pad, 80 + pad + i * lh));
+  // Footer
+  ctx.fillStyle = '#8B7355'; ctx.font = '14px Arial'; ctx.textAlign = 'center';
+  ctx.fillText('mithilahost-group.gitlab.io/script-converter', canvas.width / 2, canvas.height - 16);
+  return canvas;
+}
+
+function downloadImage() {
+  const canvas = buildCanvas();
+  if (!canvas) return;
+  canvas.toBlob(blob => { triggerDownload(blob, 'tirhuta-' + Date.now() + '.png'); showToast('\ud83d\uddbc\ufe0f Image डाउनलोड!'); }, 'image/png');
+}
+
+function downloadSVG() {
+  const text = document.getElementById('outputText').value;
+  if (!text) { showToast('\u26a0\ufe0f पहले परिवर्तित करें!'); return; }
+  const bg = document.getElementById('bgColor').value;
+  const fg = document.getElementById('textColor').value;
+  const fs = parseInt(document.getElementById('imgFontSize').value);
+  const w  = parseInt(document.getElementById('imgWidth').value);
+  const fontChoice = document.getElementById('fontSelect').value;
+  const ff = fontChoice === 'mithilauni' ? 'Mithilauni' : 'Noto Sans Tirhuta';
+  const lines = text.split('\n');
+  const lh = fs * 1.9, pad = 60;
+  const h = lines.length * lh + pad * 2 + 80;
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const tlines = lines.map((l,i) => `<text x="${pad}" y="${80+pad+i*lh}" font-family="${ff}, serif" font-size="${fs}" fill="${fg}">${esc(l)}</text>`).join('\n');
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
+  <defs><style>@font-face{font-family:'Mithilauni';src:url('https://mithilahost-group.gitlab.io/script-converter/fonts/mithilauni.ttf');}@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta');</style></defs>
+  <rect width="${w}" height="${h}" fill="${bg}"/>
+  <rect x="8" y="8" width="${w-16}" height="${h-16}" fill="none" stroke="#C8A96E" stroke-width="3"/>
+  <rect x="8" y="8" width="${w-16}" height="52" fill="#8B1A1A"/>
+  <text x="${w/2}" y="42" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="white">\ud835\udca8 मिथिला लिपि | Mithilahost Group</text>
+  ${tlines}
+  <text x="${w/2}" y="${h-16}" text-anchor="middle" font-family="Arial" font-size="14" fill="#8B7355">mithilahost-group.gitlab.io/script-converter</text>
+</svg>`;
+  const blob = new Blob([svg], {type:'image/svg+xml;charset=utf-8'});
+  triggerDownload(blob, 'tirhuta-' + Date.now() + '.svg');
+  showToast('\u270f\ufe0f SVG डाउनलोड!');
+}
+
+function downloadPDF() {
+  if (typeof window.jspdf === 'undefined') {
+    showToast('\u23f3 PDF library load हो रही है...');
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = () => generatePDF();
+    document.head.appendChild(s);
+    return;
+  }
+  generatePDF();
+}
+
+function generatePDF() {
+  const canvas = buildCanvas();
+  if (!canvas) return;
+  const {jsPDF} = window.jspdf;
+  const pdf = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  const imgData = canvas.toDataURL('image/jpeg', 0.95);
+  pdf.addImage(imgData, 'JPEG', 0, 0, 210, Math.min(297, (canvas.height / canvas.width) * 210));
+  pdf.save('tirhuta-' + Date.now() + '.pdf');
+  showToast('\ud83d\udcd5 PDF डाउनलोड!');
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('phoneticMode').addEventListener('change', updateLabels);
+document.getElementById('directionSelect').addEventListener('change', updateLabels);
+
+window.onload = function() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('t')) document.getElementById('inputText').value = decodeURIComponent(p.get('t'));
+  if (p.get('d')) document.getElementById('directionSelect').value = p.get('d');
+  updateLabels(); updateCounts();
+};
+</script>
+</body>
+</html>
