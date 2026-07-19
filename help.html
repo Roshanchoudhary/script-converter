@@ -4,73 +4,533 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>⌨️ तिरहुता Phonetic Keyboard Guide</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family:'Mithilauni'; src:url('./fonts/mithilauni.ttf') format('truetype'); }
-    :root { --primary:#8B1A1A; --secondary:#D4A017; --bg:#FDF6E3; --border:#C8A96E; }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Noto Sans Devanagari',Arial,sans-serif;background:var(--bg);color:#2C1810;padding:20px;}
-    h1{text-align:center;color:var(--primary);margin-bottom:6px;font-size:1.6rem;}
-    .subtitle{text-align:center;color:#8B7355;margin-bottom:20px;font-size:0.9rem;}
-    .back-btn{display:block;width:fit-content;margin:0 auto 20px;padding:8px 20px;background:var(--primary);color:white;text-decoration:none;border-radius:8px;font-size:0.88rem;font-weight:700;}
-    .back-btn:hover{background:#6B1010;}
-    .print-btn{display:block;width:fit-content;margin:0 auto 20px;padding:8px 20px;background:var(--secondary);color:#2C1810;border:none;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer;}
-    .search-box{max-width:400px;margin:0 auto 24px;position:relative;}
-    .search-box input{width:100%;padding:10px 16px 10px 40px;border:2px solid var(--border);border-radius:10px;font-size:1rem;background:white;font-family:'Noto Sans Devanagari',Arial,sans-serif;}
-    .search-box::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);}
-    .tips-box{background:white;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:10px;padding:16px 20px;max-width:900px;margin:0 auto 24px;}
-    .tips-box h3{color:var(--primary);margin-bottom:10px;font-size:0.95rem;}
-    .tips-box ul{padding-left:18px;}
-    .tips-box li{margin-bottom:6px;font-size:0.88rem;line-height:1.5;}
-    .tips-box code{background:#2C1810;color:var(--secondary);padding:1px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:0.85rem;}
-    .section{max-width:900px;margin:0 auto 30px;}
-    .section h2{color:var(--primary);font-size:1rem;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid var(--secondary);padding-bottom:6px;margin-bottom:14px;}
-    .key-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
-    .key-card{background:white;border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;transition:all 0.2s;cursor:default;}
-    .key-card:hover{border-color:var(--primary);box-shadow:0 2px 8px rgba(139,26,26,0.15);transform:translateY(-1px);}
-    .key-badge{background:#2C1810;color:var(--secondary);font-family:'Courier New',monospace;font-size:0.85rem;font-weight:700;padding:4px 8px;border-radius:6px;min-width:44px;text-align:center;border-bottom:3px solid #000;flex-shrink:0;}
-    .key-info{flex:1;}
-    .key-tirhuta{font-family:'Mithilauni','Noto Sans Tirhuta',serif;font-size:1.3rem;line-height:1;color:var(--primary);}
-    .key-devanagari{font-size:0.72rem;color:#8B7355;margin-top:2px;}
-    .keyboard-visual{background:#2C1810;border-radius:12px;padding:16px;max-width:700px;margin:0 auto 30px;}
-    .kb-row{display:flex;gap:5px;margin-bottom:5px;justify-content:center;flex-wrap:wrap;}
-    .kb-key{background:#4A2C1A;color:white;border-radius:6px;padding:6px 4px;min-width:52px;text-align:center;font-size:0.7rem;border-bottom:3px solid #1A0A00;cursor:default;transition:background 0.1s;}
-    .kb-key:hover{background:#8B1A1A;}
-    .kb-key .kb-eng{color:var(--secondary);font-weight:700;font-size:0.75rem;}
-    .kb-key .kb-tir{font-family:'Mithilauni','Noto Sans Tirhuta',serif;font-size:0.9rem;color:#FDF6E3;}
-    .kb-key.wide{min-width:100px;}
-    @media print{.back-btn,.print-btn,.search-box{display:none;}body{background:white;}}
+    /* ============================================================
+       COMPLETE CSS - Professional Help Page
+       ============================================================ */
+    
+    @font-face {
+      font-family: 'Mithilauni';
+      src: url('./fonts/mithilauni.ttf') format('truetype');
+      font-display: swap;
+    }
+
+    :root {
+      --primary: #8B1A1A;
+      --primary-dark: #5C0F0F;
+      --secondary: #D4A017;
+      --bg: #FDF6E3;
+      --surface: #FFFFFF;
+      --text: #2C1810;
+      --text-light: #8B7355;
+      --border: #C8A96E;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(139,26,26,0.12);
+      --shadow-hover: 0 8px 30px rgba(139,26,26,0.2);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px 16px;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+
+    .header h1 span {
+      color: var(--secondary);
+    }
+
+    .header .subtitle {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .header-actions a,
+    .header-actions button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+    }
+
+    .btn-back {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-back:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(139,26,26,0.3);
+    }
+
+    .btn-print {
+      background: var(--secondary);
+      color: var(--text);
+    }
+    .btn-print:hover {
+      background: #B8860B;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212,160,23,0.3);
+    }
+
+    /* ============================================================
+       SEARCH
+       ============================================================ */
+    .search-box {
+      max-width: 500px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px 12px 48px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: var(--surface);
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+      transition: var(--transition);
+      color: var(--text);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(139,26,26,0.1);
+    }
+
+    .search-box .icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      opacity: 0.6;
+    }
+
+    /* ============================================================
+       QUICK TIPS
+       ============================================================ */
+    .tips-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      max-width: 900px;
+      margin: 0 auto 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .tips-box h3 {
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tips-box ul {
+      padding-left: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 20px;
+    }
+
+    .tips-box li {
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .tips-box code {
+      background: var(--text);
+      color: var(--secondary);
+      padding: 1px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tips-box .highlight {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    @media (max-width: 600px) {
+      .tips-box ul {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================================
+       VISUAL KEYBOARD
+       ============================================================ */
+    .section {
+      max-width: 960px;
+      margin: 0 auto 32px;
+    }
+
+    .section h2 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-bottom: 3px solid var(--secondary);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .keyboard-visual {
+      background: linear-gradient(135deg, #1a0a00, #2C1810);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-hover);
+      overflow-x: auto;
+    }
+
+    .kb-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .kb-key {
+      background: #3d2415;
+      color: white;
+      border-radius: 6px;
+      padding: 6px 4px;
+      min-width: 44px;
+      text-align: center;
+      font-size: 0.65rem;
+      border-bottom: 3px solid #1a0a00;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .kb-key:hover {
+      background: var(--primary);
+    }
+
+    .kb-key .kb-eng {
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 0.7rem;
+    }
+
+    .kb-key .kb-tir {
+      font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;
+      font-size: 0.9rem;
+      color: #FDF6E3;
+    }
+
+    .kb-key.wide {
+      min-width: 100px;
+    }
+
+    /* ============================================================
+       KEY GRID
+       ============================================================ */
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .key-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+      cursor: default;
+      box-shadow: var(--shadow);
+    }
+
+    .key-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .key-badge {
+      background: var(--text);
+      color: var(--secondary);
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 50px;
+      text-align: center;
+      border-bottom: 3px solid #000;
+      flex-shrink: 0;
+    }
+
+    .key-info {
+      flex: 1;
+    }
+
+    .key-tirhuta {
+      font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;
+      font-size: 1.4rem;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+
+    .key-devanagari {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* ============================================================
+       EXAMPLES
+       ============================================================ */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .example-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .example-card:hover {
+      border-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .example-card .ex-phonetic {
+      font-family: 'Courier New', monospace;
+      background: var(--text);
+      color: var(--secondary);
+      padding: 2px 12px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .example-card .ex-tirhuta {
+      font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;
+      font-size: 1.6rem;
+      margin: 6px 0;
+      color: var(--primary);
+    }
+
+    .example-card .ex-devanagari {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 1.4rem;
+      }
+
+      .key-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 8px;
+      }
+
+      .key-card {
+        padding: 10px 12px;
+      }
+
+      .key-badge {
+        min-width: 40px;
+        font-size: 0.7rem;
+        padding: 3px 6px;
+      }
+
+      .key-tirhuta {
+        font-size: 1.2rem;
+      }
+
+      .examples-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .kb-key {
+        min-width: 36px;
+        padding: 4px 2px;
+        font-size: 0.55rem;
+      }
+
+      .kb-key .kb-eng {
+        font-size: 0.6rem;
+      }
+      .kb-key .kb-tir {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-actions a,
+      .header-actions button {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* ============================================================
+       PRINT STYLES
+       ============================================================ */
+    @media print {
+      .btn-back,
+      .btn-print,
+      .search-box {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+        padding: 20px;
+      }
+
+      .keyboard-visual {
+        background: #2C1810 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .kb-key {
+        background: #3d2415 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .key-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border-color: #ccc !important;
+      }
+
+      .section {
+        page-break-inside: avoid;
+      }
+
+      .tips-box {
+        border-left-color: var(--primary) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
   </style>
 </head>
 <body>
 
-<h1>⌨️ तिरहुता Phonetic Keyboard Guide</h1>
-<p class="subtitle">English keyboard से तिरहुता कैसे type करें | मैथिली भाषा</p>
+<!-- ============================================================
+HEADER
+============================================================ -->
+<header class="header">
+  <h1>⌨️ <span>तिरहुता</span> Phonetic Keyboard Guide</h1>
+  <p class="subtitle">English keyboard से तिरहुता (𑒞𑒱𑒩𑒯𑒳𑒞𑒰) कैसे type करें | मैथिली भाषा</p>
+  <div class="header-actions">
+    <a href="index.html" class="btn-back">← वापस जाएं</a>
+    <button class="btn-print" onclick="window.print()">🖨️ Print / PDF</button>
+  </div>
+</header>
 
-<a href="index.html" class="back-btn">← वापस जाएं</a>
-<button class="print-btn" onclick="window.print()">🖨️ Print / PDF Save</button>
-
+<!-- ============================================================
+SEARCH
+============================================================ -->
 <div class="search-box">
+  <span class="icon">🔍</span>
   <input type="text" id="searchInput" placeholder="खोजें... (जैसे: ka, क, 𑒑)" oninput="filterKeys()">
 </div>
 
+<!-- ============================================================
+QUICK TIPS
+============================================================ -->
 <div class="tips-box">
-  <h3>📌 महत्वपूर्ण नियम</h3>
+  <h3>📌 महत्वपूर्ण नियम (Rules)</h3>
   <ul>
-    <li>Capital = अलग अक्षर: <code>T</code>=ट &nbsp; <code>D</code>=ड &nbsp; <code>N</code>=ण &nbsp; <code>Sh</code>=ष &nbsp; <code>A</code>=आ &nbsp; <code>I</code>=ई &nbsp; <code>U</code>=ऊ</li>
-    <li>Double = दीर्घ: <code>aa</code>=आ &nbsp; <code>ii</code>=ई &nbsp; <code>uu</code>=ऊ</li>
-    <li>Halant: <code>.</code> (dot) → 𑓀</li>
-    <li>Anusvara (ं): <code>M</code> → 𑓁</li>
-    <li>Visarga (ः): <code>H</code> → 𑓂</li>
-    <li>उदाहरण: <code>maithilii</code> → 𑒧𑒱𑒟𑒱𑒪𑒱 (मैथिली)</li>
-    <li>उदाहरण: <code>mithilaa</code> → 𑒧𑒱𑒟𑒱𑒪𑒰 (मिथिला)</li>
+    <li><strong>Capital Letters</strong> = अलग अक्षर: <code>T</code>=ट, <code>D</code>=ड, <code>N</code>=ण, <code>Sh</code>=ष, <code>A</code>=आ, <code>I</code>=ई, <code>U</code>=ऊ</li>
+    <li><strong>Double Letters</strong> = दीर्घ: <code>aa</code>=आ, <code>ii</code>=ई, <code>uu</code>=ऊ</li>
+    <li><strong>Halant</strong>: <code>.</code> (dot) → 𑓀 (्)</li>
+    <li><strong>Anusvara</strong> (ं): <code>M</code> → 𑓁</li>
+    <li><strong>Visarga</strong> (ः): <code>H</code> → 𑓂</li>
+    <li><strong>Nukta</strong> (़): <code>.k</code>→क़, <code>.kh</code>→ख़, <code>.z</code>→ज़</li>
+    <li><strong>Example</strong>: <code>maithilii</code> → 𑒧𑒱𑒟𑒱𑒪𑒱 (मैथिली)</li>
+    <li><strong>Example</strong>: <code>mithilaa</code> → 𑒧𑒱𑒟𑒱𑒪𑒰 (मिथिला)</li>
   </ul>
 </div>
 
-<!-- Visual Keyboard -->
+<!-- ============================================================
+VISUAL KEYBOARD
+============================================================ -->
 <div class="section">
-  <h2>🎹 Visual Keyboard</h2>
+  <h2>🎹 Visual Keyboard (तिरहुता)</h2>
   <div class="keyboard-visual">
+    <!-- Row 1: Numbers -->
     <div class="kb-row">
       <div class="kb-key"><div class="kb-eng">1</div><div class="kb-tir">𑓑</div></div>
       <div class="kb-key"><div class="kb-eng">2</div><div class="kb-tir">𑓒</div></div>
@@ -83,129 +543,302 @@
       <div class="kb-key"><div class="kb-eng">9</div><div class="kb-tir">𑓙</div></div>
       <div class="kb-key"><div class="kb-eng">0</div><div class="kb-tir">𑓐</div></div>
     </div>
+
+    <!-- Row 2: Top Row -->
     <div class="kb-row">
-      <div class="kb-key"><div class="kb-eng">q/ka</div><div class="kb-tir">𑒑</div></div>
-      <div class="kb-key"><div class="kb-eng">w/wa</div><div class="kb-tir">𑒭</div></div>
-      <div class="kb-key"><div class="kb-eng">e</div><div class="kb-tir">𑒋</div></div>
-      <div class="kb-key"><div class="kb-eng">r/ra</div><div class="kb-tir">𑒫</div></div>
-      <div class="kb-key"><div class="kb-eng">t/ta</div><div class="kb-tir">𑒠</div></div>
-      <div class="kb-key"><div class="kb-eng">y/ya</div><div class="kb-tir">𑒪</div></div>
+      <div class="kb-key"><div class="kb-eng">q/ka</div><div class="kb-tir">𑒍</div></div>
+      <div class="kb-key"><div class="kb-eng">w/wa</div><div class="kb-tir">𑒩</div></div>
+      <div class="kb-key"><div class="kb-eng">e</div><div class="kb-tir">𑒉</div></div>
+      <div class="kb-key"><div class="kb-eng">r/ra</div><div class="kb-tir">𑒧</div></div>
+      <div class="kb-key"><div class="kb-eng">t/ta</div><div class="kb-tir">𑒜</div></div>
+      <div class="kb-key"><div class="kb-eng">y/ya</div><div class="kb-tir">𑒦</div></div>
       <div class="kb-key"><div class="kb-eng">u</div><div class="kb-tir">𑒅</div></div>
       <div class="kb-key"><div class="kb-eng">i</div><div class="kb-tir">𑒃</div></div>
-      <div class="kb-key"><div class="kb-eng">o</div><div class="kb-tir">𑒏</div></div>
-      <div class="kb-key"><div class="kb-eng">p/pa</div><div class="kb-tir">𑒥</div></div>
+      <div class="kb-key"><div class="kb-eng">o</div><div class="kb-tir">𑒋</div></div>
+      <div class="kb-key"><div class="kb-eng">p/pa</div><div class="kb-tir">𑒡</div></div>
     </div>
+
+    <!-- Row 3: Middle Row -->
     <div class="kb-row">
       <div class="kb-key"><div class="kb-eng">a</div><div class="kb-tir">𑒁</div></div>
-      <div class="kb-key"><div class="kb-eng">s/sa</div><div class="kb-tir">𑒰</div></div>
-      <div class="kb-key"><div class="kb-eng">d/da</div><div class="kb-tir">𑒢</div></div>
-      <div class="kb-key"><div class="kb-eng">f/pha</div><div class="kb-tir">𑒦</div></div>
-      <div class="kb-key"><div class="kb-eng">g/ga</div><div class="kb-tir">𑒓</div></div>
-      <div class="kb-key"><div class="kb-eng">h/ha</div><div class="kb-tir">𑒱</div></div>
-      <div class="kb-key"><div class="kb-eng">j/ja</div><div class="kb-tir">𑒘</div></div>
-      <div class="kb-key"><div class="kb-eng">k/ka</div><div class="kb-tir">𑒑</div></div>
-      <div class="kb-key"><div class="kb-eng">l/la</div><div class="kb-tir">𑒬</div></div>
+      <div class="kb-key"><div class="kb-eng">s/sa</div><div class="kb-tir">𑒬</div></div>
+      <div class="kb-key"><div class="kb-eng">d/da</div><div class="kb-tir">𑒞</div></div>
+      <div class="kb-key"><div class="kb-eng">f/pha</div><div class="kb-tir">𑒢</div></div>
+      <div class="kb-key"><div class="kb-eng">g/ga</div><div class="kb-tir">𑒏</div></div>
+      <div class="kb-key"><div class="kb-eng">h/ha</div><div class="kb-tir">𑒭</div></div>
+      <div class="kb-key"><div class="kb-eng">j/ja</div><div class="kb-tir">𑒔</div></div>
+      <div class="kb-key"><div class="kb-eng">k/ka</div><div class="kb-tir">𑒍</div></div>
+      <div class="kb-key"><div class="kb-eng">l/la</div><div class="kb-tir">𑒨</div></div>
     </div>
+
+    <!-- Row 4: Bottom Row -->
     <div class="kb-row">
-      <div class="kb-key"><div class="kb-eng">z/jha</div><div class="kb-tir">𑒙</div></div>
-      <div class="kb-key"><div class="kb-eng">x/sha</div><div class="kb-tir">𑒮</div></div>
-      <div class="kb-key"><div class="kb-eng">c/ca</div><div class="kb-tir">𑒖</div></div>
-      <div class="kb-key"><div class="kb-eng">v/va</div><div class="kb-tir">𑒭</div></div>
-      <div class="kb-key"><div class="kb-eng">b/ba</div><div class="kb-tir">𑒧</div></div>
-      <div class="kb-key"><div class="kb-eng">n/na</div><div class="kb-tir">𑒤</div></div>
-      <div class="kb-key"><div class="kb-eng">m/ma</div><div class="kb-tir">𑒩</div></div>
-      <div class="kb-key"><div class="kb-eng">M</div><div class="kb-tir">𑓁</div></div>
-      <div class="kb-key"><div class="kb-eng">H</div><div class="kb-tir">𑓂</div></div>
+      <div class="kb-key"><div class="kb-eng">z/jha</div><div class="kb-tir">𑒕</div></div>
+      <div class="kb-key"><div class="kb-eng">x/sha</div><div class="kb-tir">𑒪</div></div>
+      <div class="kb-key"><div class="kb-eng">c/ca</div><div class="kb-tir">𑒒</div></div>
+      <div class="kb-key"><div class="kb-eng">v/va</div><div class="kb-tir">𑒩</div></div>
+      <div class="kb-key"><div class="kb-eng">b/ba</div><div class="kb-tir">𑒣</div></div>
+      <div class="kb-key"><div class="kb-eng">n/na</div><div class="kb-tir">𑒠</div></div>
+      <div class="kb-key"><div class="kb-eng">m/ma</div><div class="kb-tir">𑒥</div></div>
+      <div class="kb-key"><div class="kb-eng">M</div><div class="kb-tir">𑒸</div></div>
+      <div class="kb-key"><div class="kb-eng">H</div><div class="kb-tir">𑒹</div></div>
       <div class="kb-key"><div class="kb-eng">.</div><div class="kb-tir">𑓀</div></div>
     </div>
+
+    <!-- Row 5: Space -->
     <div class="kb-row">
-      <div class="kb-key wide"><div class="kb-eng">SPACE = शब्द विभाजक</div></div>
+      <div class="kb-key wide"><div class="kb-eng">␣ SPACE = शब्द विभाजक</div></div>
     </div>
   </div>
 </div>
 
-<div class="section"><h2>🔤 स्वर (Vowels)</h2><div class="key-grid" id="vowelGrid"></div></div>
-<div class="section"><h2>🔤 व्यंजन (Consonants)</h2><div class="key-grid" id="consonantGrid"></div></div>
-<div class="section"><h2>✨ विशेष चिह्न</h2><div class="key-grid" id="specialGrid"></div></div>
-<div class="section"><h2>🔢 अंक (Digits)</h2><div class="key-grid" id="digitGrid"></div></div>
+<!-- ============================================================
+VOWELS
+============================================================ -->
+<div class="section">
+  <h2>🔤 स्वर (Vowels)</h2>
+  <div class="key-grid" id="vowelGrid"></div>
+</div>
 
+<!-- ============================================================
+CONSONANTS
+============================================================ -->
+<div class="section">
+  <h2>🔤 व्यंजन (Consonants)</h2>
+  <div class="key-grid" id="consonantGrid"></div>
+</div>
+
+<!-- ============================================================
+SPECIAL
+============================================================ -->
+<div class="section">
+  <h2>✨ विशेष चिह्न (Special Marks)</h2>
+  <div class="key-grid" id="specialGrid"></div>
+</div>
+
+<!-- ============================================================
+DIGITS
+============================================================ -->
+<div class="section">
+  <h2>🔢 अंक (Digits)</h2>
+  <div class="key-grid" id="digitGrid"></div>
+</div>
+
+<!-- ============================================================
+EXAMPLES
+============================================================ -->
 <div class="section">
   <h2>📝 उदाहरण (Examples)</h2>
-  <div class="key-grid">
-    <div class="key-card"><div class="key-badge">maithilii</div><div class="key-info"><div class="key-tirhuta">𑒧𑒱𑒟𑒱𑒪𑒱</div><div class="key-devanagari">मैथिली</div></div></div>
-    <div class="key-card"><div class="key-badge">mithilaa</div><div class="key-info"><div class="key-tirhuta">𑒧𑒱𑒟𑒱𑒪𑒰</div><div class="key-devanagari">मिथिला</div></div></div>
-    <div class="key-card"><div class="key-badge">namaskaara</div><div class="key-info"><div class="key-tirhuta">𑒤𑒧𑒰𑒑𑒰𑒫</div><div class="key-devanagari">नमस्कार</div></div></div>
-    <div class="key-card"><div class="key-badge">jaaya</div><div class="key-info"><div class="key-tirhuta">𑒘𑒰𑒪</div><div class="key-devanagari">जाय</div></div></div>
+  <div class="examples-grid">
+    <div class="example-card">
+      <div class="ex-phonetic">maithilii</div>
+      <div class="ex-tirhuta">𑒧𑒱𑒟𑒱𑒪𑒱</div>
+      <div class="ex-devanagari">मैथिली</div>
+    </div>
+    <div class="example-card">
+      <div class="ex-phonetic">mithilaa</div>
+      <div class="ex-tirhuta">𑒧𑒱𑒟𑒱𑒪𑒰</div>
+      <div class="ex-devanagari">मिथिला</div>
+    </div>
+    <div class="example-card">
+      <div class="ex-phonetic">namaskaara</div>
+      <div class="ex-tirhuta">𑒠𑒩𑒰𑒮𑒼𑒧</div>
+      <div class="ex-devanagari">नमस्कार</div>
+    </div>
+    <div class="example-card">
+      <div class="ex-phonetic">jaaya</div>
+      <div class="ex-tirhuta">𑒔𑒰𑒨</div>
+      <div class="ex-devanagari">जाय</div>
+    </div>
+    <div class="example-card">
+      <div class="ex-phonetic">kaam</div>
+      <div class="ex-tirhuta">𑒍𑒰𑒧</div>
+      <div class="ex-devanagari">काम</div>
+    </div>
+    <div class="example-card">
+      <div class="ex-phonetic">TiruTa</div>
+      <div class="ex-tirhuta">𑒗𑒱𑒧𑒘𑒰</div>
+      <div class="ex-devanagari">टिरुटा</div>
+    </div>
   </div>
 </div>
 
+<!-- ============================================================
+FOOTER
+============================================================ -->
+<div style="text-align:center;padding:20px 0;color:var(--text-light);font-size:0.82rem;border-top:1px solid var(--border);margin-top:20px;">
+  मैथिली भाषा सेवा | <a href="index.html" style="color:var(--primary);text-decoration:none;">मिथिला लिपि परिवर्तक</a> | तिरहुता लिपि संरक्षण
+</div>
+
+<!-- ============================================================
+JAVASCRIPT
+============================================================ -->
 <script>
+// ============================================================
+// DATA - Complete Phonetic Mapping (As per your rules)
+// ============================================================
+
 const DATA = {
-  vowels:[
-    {key:'a',tir:'𑒁',dev:'अ'},{key:'aa / A',tir:'𑒂',dev:'आ'},
-    {key:'i',tir:'𑒃',dev:'इ'},{key:'ii / I',tir:'𑒄',dev:'ई'},
-    {key:'u',tir:'𑒅',dev:'उ'},{key:'uu / U',tir:'𑒆',dev:'ऊ'},
-    {key:'ri',tir:'𑒇',dev:'ऋ'},{key:'e',tir:'𑒋',dev:'ए'},
-    {key:'ai',tir:'𑒌',dev:'ऐ'},{key:'o',tir:'𑒏',dev:'ओ'},
-    {key:'au',tir:'𑒐',dev:'औ'},
+  vowels: [
+    { key: 'a', tir: '𑒁', dev: 'अ' },
+    { key: 'aa / A', tir: '𑒂', dev: 'आ' },
+    { key: 'i', tir: '𑒃', dev: 'इ' },
+    { key: 'ii / I', tir: '𑒄', dev: 'ई' },
+    { key: 'u', tir: '𑒅', dev: 'उ' },
+    { key: 'uu / U', tir: '𑒆', dev: 'ऊ' },
+    { key: 'ri', tir: '𑒇', dev: 'ऋ' },
+    { key: 'e', tir: '𑒉', dev: 'ए' },
+    { key: 'ai', tir: '𑒊', dev: 'ऐ' },
+    { key: 'o', tir: '𑒋', dev: 'ओ' },
+    { key: 'au', tir: '𑒌', dev: 'औ' },
   ],
-  consonants:[
-    {key:'ka',tir:'𑒑',dev:'क'},{key:'kha',tir:'𑒒',dev:'ख'},
-    {key:'ga',tir:'𑒓',dev:'ग'},{key:'gha',tir:'𑒔',dev:'घ'},
-    {key:'nga',tir:'𑒕',dev:'ङ'},{key:'ca',tir:'𑒖',dev:'च'},
-    {key:'cha',tir:'𑒗',dev:'छ'},{key:'ja',tir:'𑒘',dev:'ज'},
-    {key:'jha',tir:'𑒙',dev:'झ'},{key:'nya',tir:'𑒚',dev:'ञ'},
-    {key:'Ta',tir:'𑒛',dev:'ट'},{key:'Tha',tir:'𑒜',dev:'ठ'},
-    {key:'Da',tir:'𑒝',dev:'ड'},{key:'Dha',tir:'𑒞',dev:'ढ'},
-    {key:'Na',tir:'𑒟',dev:'ण'},{key:'ta',tir:'𑒠',dev:'त'},
-    {key:'tha',tir:'𑒡',dev:'थ'},{key:'da',tir:'𑒢',dev:'द'},
-    {key:'dha',tir:'𑒣',dev:'ध'},{key:'na',tir:'𑒤',dev:'न'},
-    {key:'pa',tir:'𑒥',dev:'प'},{key:'pha',tir:'𑒦',dev:'फ'},
-    {key:'ba',tir:'𑒧',dev:'ब'},{key:'bha',tir:'𑒨',dev:'भ'},
-    {key:'ma',tir:'𑒩',dev:'म'},{key:'ya',tir:'𑒪',dev:'य'},
-    {key:'ra',tir:'𑒫',dev:'र'},{key:'la',tir:'𑒬',dev:'ल'},
-    {key:'va/wa',tir:'𑒭',dev:'व'},{key:'sha',tir:'𑒮',dev:'श'},
-    {key:'Sha',tir:'𑒯',dev:'ष'},{key:'sa',tir:'𑒰',dev:'स'},
-    {key:'ha',tir:'𑒱',dev:'ह'},
+
+  consonants: [
+    { key: 'k', tir: '𑒍', dev: 'क' },
+    { key: 'kh', tir: '𑒎', dev: 'ख' },
+    { key: 'g', tir: '𑒏', dev: 'ग' },
+    { key: 'gh', tir: '𑒐', dev: 'घ' },
+    { key: 'ng', tir: '𑒑', dev: 'ङ' },
+    { key: 'ch', tir: '𑒒', dev: 'च' },
+    { key: 'chh', tir: '𑒓', dev: 'छ' },
+    { key: 'j', tir: '𑒔', dev: 'ज' },
+    { key: 'jh', tir: '𑒕', dev: 'झ' },
+    { key: 'ny', tir: '𑒖', dev: 'ञ' },
+    { key: 'T', tir: '𑒗', dev: 'ट' },
+    { key: 'Th', tir: '𑒘', dev: 'ठ' },
+    { key: 'D', tir: '𑒙', dev: 'ड' },
+    { key: 'Dh', tir: '𑒚', dev: 'ढ' },
+    { key: 'N', tir: '𑒛', dev: 'ण' },
+    { key: 't', tir: '𑒜', dev: 'त' },
+    { key: 'th', tir: '𑒝', dev: 'थ' },
+    { key: 'd', tir: '𑒞', dev: 'द' },
+    { key: 'dh', tir: '𑒟', dev: 'ध' },
+    { key: 'n', tir: '𑒠', dev: 'न' },
+    { key: 'p', tir: '𑒡', dev: 'प' },
+    { key: 'ph', tir: '𑒢', dev: 'फ' },
+    { key: 'b', tir: '𑒣', dev: 'ब' },
+    { key: 'bh', tir: '𑒤', dev: 'भ' },
+    { key: 'm', tir: '𑒥', dev: 'म' },
+    { key: 'y', tir: '𑒦', dev: 'य' },
+    { key: 'r', tir: '𑒧', dev: 'र' },
+    { key: 'l', tir: '𑒨', dev: 'ल' },
+    { key: 'v / w', tir: '𑒩', dev: 'व' },
+    { key: 'sh / S', tir: '𑒪', dev: 'श' },
+    { key: 'Sh / sh', tir: '𑒫', dev: 'ष' },
+    { key: 's', tir: '𑒬', dev: 'स' },
+    { key: 'h', tir: '𑒭', dev: 'ह' },
   ],
-  special:[
-    {key:'M',tir:'𑓁',dev:'ं अनुस्वार'},
-    {key:'H',tir:'𑓂',dev:'ः विसर्ग'},
-    {key:'.',tir:'𑓀',dev:'् हलन्त'},
+
+  special: [
+    { key: 'M', tir: '𑒸', dev: 'ं (Anusvara)' },
+    { key: 'H', tir: '𑒹', dev: 'ः (Visarga)' },
+    { key: '.', tir: '𑓀', dev: '् (Halant)' },
+    { key: '~', tir: '𑓁', dev: 'ँ (Chandrabindu)' },
+    { key: '.k', tir: '𑒍𑓀', dev: 'क़ (Nukta)' },
+    { key: '.kh', tir: '𑒎𑓀', dev: 'ख़ (Nukta)' },
+    { key: '.z', tir: '𑒔𑓀', dev: 'ज़ (Nukta)' },
+    { key: '.f', tir: '𑒢𑓀', dev: 'फ़ (Nukta)' },
   ],
-  digits:[
-    {key:'0',tir:'𑓐',dev:'०'},{key:'1',tir:'𑓑',dev:'१'},
-    {key:'2',tir:'𑓒',dev:'२'},{key:'3',tir:'𑓓',dev:'३'},
-    {key:'4',tir:'𑓔',dev:'४'},{key:'5',tir:'𑓕',dev:'५'},
-    {key:'6',tir:'𑓖',dev:'६'},{key:'7',tir:'𑓗',dev:'७'},
-    {key:'8',tir:'𑓘',dev:'८'},{key:'9',tir:'𑓙',dev:'९'},
+
+  digits: [
+    { key: '0', tir: '𑓐', dev: '०' },
+    { key: '1', tir: '𑓑', dev: '१' },
+    { key: '2', tir: '𑓒', dev: '२' },
+    { key: '3', tir: '𑓓', dev: '३' },
+    { key: '4', tir: '𑓔', dev: '४' },
+    { key: '5', tir: '𑓕', dev: '५' },
+    { key: '6', tir: '𑓖', dev: '६' },
+    { key: '7', tir: '𑓗', dev: '७' },
+    { key: '8', tir: '𑓘', dev: '८' },
+    { key: '9', tir: '𑓙', dev: '९' },
   ]
 };
 
-function card(item) {
-  return `<div class="key-card" data-key="${item.key}" data-tir="${item.tir}" data-dev="${item.dev}">
-    <div class="key-badge">${item.key}</div>
-    <div class="key-info">
-      <div class="key-tirhuta">${item.tir}</div>
-      <div class="key-devanagari">${item.dev}</div>
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+
+function createKeyCard(item) {
+  return `
+    <div class="key-card" data-key="${item.key.toLowerCase()}" data-tir="${item.tir}" data-dev="${item.dev}">
+      <div class="key-badge">${item.key}</div>
+      <div class="key-info">
+        <div class="key-tirhuta">${item.tir}</div>
+        <div class="key-devanagari">${item.dev}</div>
+      </div>
     </div>
-  </div>`;
+  `;
 }
 
-document.getElementById('vowelGrid').innerHTML     = DATA.vowels.map(card).join('');
-document.getElementById('consonantGrid').innerHTML = DATA.consonants.map(card).join('');
-document.getElementById('specialGrid').innerHTML   = DATA.special.map(card).join('');
-document.getElementById('digitGrid').innerHTML     = DATA.digits.map(card).join('');
+// Render all grids
+document.getElementById('vowelGrid').innerHTML = DATA.vowels.map(createKeyCard).join('');
+document.getElementById('consonantGrid').innerHTML = DATA.consonants.map(createKeyCard).join('');
+document.getElementById('specialGrid').innerHTML = DATA.special.map(createKeyCard).join('');
+document.getElementById('digitGrid').innerHTML = DATA.digits.map(createKeyCard).join('');
+
+// ============================================================
+// SEARCH / FILTER
+// ============================================================
 
 function filterKeys() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  document.querySelectorAll('.key-card').forEach(el => {
-    const match = el.dataset.key.toLowerCase().includes(q) ||
-                  el.dataset.tir.includes(q) ||
-                  el.dataset.dev.includes(q);
-    el.style.display = match ? 'flex' : 'none';
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.key-card');
+
+  cards.forEach(card => {
+    const key = card.dataset.key || '';
+    const tir = card.dataset.tir || '';
+    const dev = card.dataset.dev || '';
+
+    const match = key.includes(query) || tir.includes(query) || dev.includes(query);
+    card.style.display = match ? 'flex' : 'none';
+  });
+
+  // Show/hide sections based on visible cards
+  document.querySelectorAll('.section').forEach(section => {
+    const visibleCards = section.querySelectorAll('.key-card[style*="display: flex"]');
+    const grid = section.querySelector('.key-grid');
+    if (grid && visibleCards.length === 0) {
+      grid.style.display = 'none';
+    } else if (grid) {
+      grid.style.display = 'grid';
+    }
   });
 }
+
+// Reset filter on empty search
+document.getElementById('searchInput').addEventListener('input', function() {
+  if (this.value === '') {
+    document.querySelectorAll('.key-card').forEach(c => c.style.display = 'flex');
+    document.querySelectorAll('.key-grid').forEach(g => g.style.display = 'grid');
+  }
+});
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+
+document.addEventListener('keydown', function(e) {
+  // Ctrl+F or Cmd+F - focus search
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+
+  // Escape - clear search
+  if (e.key === 'Escape') {
+    const search = document.getElementById('searchInput');
+    search.value = '';
+    search.blur();
+    document.querySelectorAll('.key-card').forEach(c => c.style.display = 'flex');
+    document.querySelectorAll('.key-grid').forEach(g => g.style.display = 'grid');
+  }
+});
+
+console.log('⌨️ तिरहुता Phonetic Keyboard Guide loaded!');
+console.log('📚 Total mappings:', 
+  DATA.vowels.length + DATA.consonants.length + DATA.special.length + DATA.digits.length
+);
 </script>
+
 </body>
 </html>
