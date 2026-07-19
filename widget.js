@@ -13,11 +13,15 @@
 
   const CONFIG = {
     // Mithilauni font - multiple CDN sources for reliability
-    fontCDN: [
-      'https://cdn.jsdelivr.net/npm/mithilauni-font@1.0.0/mithilauni.ttf',
-      'https://unpkg.com/mithilauni-font/mithilauni.ttf',
-      'https://raw.githubusercontent.com/yourusername/mithilauni-font/main/mithilauni.ttf'
-    ],
+    const CONFIG = {
+  fontCDN: [
+    // ✅ Cloudflare Pages URL (Primary)
+    'https://script-converter.pages.dev/fonts/Mithilauni.ttf',
+    
+    // ✅ GitHub Raw URL (Backup)
+    'https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf'
+  ]
+};
     // Google Font fallback
     googleFont: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap',
     // Font family names
