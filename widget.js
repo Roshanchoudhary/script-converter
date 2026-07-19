@@ -185,21 +185,40 @@ const PHONETIC_RULES = [
             if(text.substring(i,i+eng.length).toLowerCase()==eng.toLowerCase()){
 
                 const last=result[result.length-1] || "";
+const last = result[result.length - 1] || "";
+const isConsonant = /[क-ह]/.test(last);
 
-                const isConsonant=/[क-ह]/.test(last);
+// अगर vowel है
+if (VOWELS.has(dev)) {
 
-                if(isConsonant){
+    if (isConsonant) {
 
-                    if(dev=="अ"){
-                        // inherent vowel
-                    }
-                    else if(MATRA_MAP[dev]){
-                        result+=MATRA_MAP[dev];
-                    }
-                    else{
-                        result+="्"+dev;
-                    }
+        // अ = कुछ नहीं
+        if (dev === "अ") {
 
+        }
+        else {
+            result += MATRA_MAP[dev];
+        }
+
+    } else {
+
+        result += dev;
+
+    }
+
+}
+else {
+
+    // अगर consonant है
+    if (isConsonant) {
+        result += "्";
+    }
+
+    result += dev;
+
+}
+                
                 }else{
 
                     result+=dev;
