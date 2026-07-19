@@ -45,8 +45,13 @@
     '𑒻': 'ै',   // AI
     '𑒼': 'ो',   // O
     '𑒽': 'ॉ',   // Short O (यदि उपयोग करना चाहें)
-    ''𑒾': 'ौ',    // AU
+    '𑒾': 'ौ',    // AU
     
+'𑒿':'्',
+'𑓀':'ं',
+'𑓁':'ः',
+'𑓂':'ँ',
+  
     // Special
     
     // Numbers
@@ -86,6 +91,13 @@
     ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
     ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
     ['h', 'ह'], ['m', 'म'], ['n', 'न'],
+    ['ng','ङ'],
+['ny','ञ'],
+['rr','ऋ'],
+['ksh','क्ष'],
+['tr','त्र'],
+['gy','ज्ञ'],
+['shr','श्र'],
     
     // Special
     ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
@@ -203,7 +215,13 @@
     if (!text || text.trim() === '') return '';
     
     if (direction === 'dev-to-tir') {
-      const devText = phoneticToDevanagari(text);
+      let devText;
+
+if (/[a-z]/i.test(text)) {
+    devText = phoneticToDevanagari(text);
+} else {
+    devText = text;
+}
       return devanagariToTirhuta(devText);
     } else {
       return tirhutaToDevanagari(text);
