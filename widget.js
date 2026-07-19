@@ -145,20 +145,20 @@ const PHONETIC_RULES = [
 
   // Matra map (vowel → matra)
   const MATRA_MAP = {
-    'आ':'ा',
-'इ':'ि',
-'ई':'ी',
-'उ':'ु',
-'ऊ':'ू',
-'ऋ':'ृ',
-'ॠ':'ॄ',
-'ऌ':'ॢ',
-'ॡ':'ॣ',
-'ए':'े',
-'ऐ':'ै',
-'ओ':'ो',
-'औ':'ौ'
-  };
+  'आ':'ा',
+  'इ':'ि',
+  'ई':'ी',
+  'उ':'ु',
+  'ऊ':'ू',
+  'ऋ':'ृ',
+  'ॠ':'ॄ',
+  'ऌ':'ॢ',
+  'ॡ':'ॣ',
+  'ए':'े',
+  'ऐ':'ै',
+  'ओ':'ो',
+  'औ':'ौ'
+};
   const VOWELS = new Set([
 'अ','आ','इ','ई','उ','ऊ',
 'ऋ','ॠ','ऌ','ॡ',
@@ -171,50 +171,59 @@ const PHONETIC_RULES = [
 ]);
 
   // Phonetic → Devanagari
-  function phoneticToDevanagari(text) {
-    if (!text) return '';
-    
-    let result = '';
-    let i = 0;
-    const input = text;
-    
-    while (i < input.length) {
-      let matched = false;
-      
-      for (const [pattern, replacement] of SORTED_RULES) {
-        if (i + pattern.length <= input.length && 
-            input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
-          
-          const isVowel = VOWELS.has(replacement);
-          const lastChar = result[result.length - 1] || '';
-          const isConsonant = /[क-ह]/.test(lastChar) && !MATRAS.has(lastChar);
-          
-          if (isVowel && isConsonant) {
-            const matra = MATRA_MAP[replacement];
-            if (matra) {
-              result += matra;
-            } else {
-              result += replacement;
-            }
-          } else {
-            result += replacement;
-          }
-          
-          i += pattern.length;
-          matched = true;
-          break;
-        }
-      }
-      
-      if (!matched) {
-        result += input[i];
-        i++;
-      }
-    }
-    
-    return result;
-  }
+  function phoneticToDevanagari(text){
 
+    let result = "";
+    let i = 0;
+
+    while(i < text.length){
+
+        let matched = false;
+
+        for(const [eng,dev] of SORTED_RULES){
+
+            if(text.substring(i,i+eng.length).toLowerCase()==eng.toLowerCase()){
+
+                const last=result[result.length-1] || "";
+
+                const isConsonant=/[क-ह]/.test(last);
+
+                if(isConsonant){
+
+                    if(dev=="अ"){
+                        // inherent vowel
+                    }
+                    else if(MATRA_MAP[dev]){
+                        result+=MATRA_MAP[dev];
+                    }
+                    else{
+                        result+="्"+dev;
+                    }
+
+                }else{
+
+                    result+=dev;
+
+                }
+
+                i+=eng.length;
+                matched=true;
+                break;
+
+            }
+
+        }
+
+        if(!matched){
+            result+=text[i];
+            i++;
+        }
+
+    }
+
+    return result;
+
+}
   // Devanagari → Tirhuta
   function devanagariToTirhuta(text) {
     if (!text) return '';
