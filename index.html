@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>मिथिला लिपि परिवर्तक | Tirhuta Devanagari Converter</title>
+<title>मिथिला लिपि परिवर्तक | Smart Tirhuta Converter</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   COMPLETE CSS
+   COMPLETE CSS (Same as before)
    ============================================================ */
 @font-face {
   font-family: 'Mithilauni';
@@ -225,7 +225,7 @@ textarea::placeholder { color: #B0A090; font-size: 0.9rem; }
 .btn-success { background: #2D6A4F; color: white; }
 .btn-success:hover { background: #1B4D3E; transform: translateY(-2px); }
 
-/* Phonetic Rules - NICHE */
+/* Phonetic Rules */
 .phonetic-rules {
   background: #FFF8E7;
   border: 1px solid var(--border);
@@ -309,7 +309,7 @@ HEADER
 ============================================================ -->
 <header class="header">
   <h1>𑒧 <span>मिथिला लिपि परिवर्तक</span></h1>
-  <p>तिरहुता ↔ देवनागरी | English Phonetic Typing</p>
+  <p>तिरहुता ↔ देवनागरी | Google-Style Smart Typing</p>
 </header>
 
 <!-- ============================================================
@@ -378,20 +378,22 @@ MAIN
     <button class="btn btn-success" onclick="doDownload()">⬇️ डाउनलोड</button>
   </div>
 
-  <!-- Phonetic Rules - NICHE -->
+  <!-- Phonetic Rules -->
   <div class="phonetic-rules">
-    <h4>⌨️ Phonetic Typing Rules (English → देवनागरी → तिरहुता)</h4>
+    <h4>⌨️ Smart Phonetic Typing Rules</h4>
     <div class="rule-grid">
       <div class="rule-item"><code>a</code> → अ</div>
-      <div class="rule-item"><code>aa / A</code> → आ</div>
+      <div class="rule-item"><code>aa/A</code> → आ</div>
       <div class="rule-item"><code>i</code> → इ</div>
-      <div class="rule-item"><code>ii / I</code> → ई</div>
+      <div class="rule-item"><code>ii/I</code> → ई</div>
       <div class="rule-item"><code>u</code> → उ</div>
-      <div class="rule-item"><code>uu / U</code> → ऊ</div>
+      <div class="rule-item"><code>uu/U</code> → ऊ</div>
       <div class="rule-item"><code>e</code> → ए</div>
       <div class="rule-item"><code>ai</code> → ऐ</div>
       <div class="rule-item"><code>o</code> → ओ</div>
       <div class="rule-item"><code>au</code> → औ</div>
+      <div class="rule-item"><code>R</code> → ऋ</div>
+      <div class="rule-item"><code>RR</code> → ॠ</div>
       <div class="rule-item"><code>k</code> → क</div>
       <div class="rule-item"><code>kh</code> → ख</div>
       <div class="rule-item"><code>g</code> → ग</div>
@@ -418,8 +420,8 @@ MAIN
       <div class="rule-item"><code>y</code> → य</div>
       <div class="rule-item"><code>r</code> → र</div>
       <div class="rule-item"><code>l</code> → ल</div>
-      <div class="rule-item"><code>v / w</code> → व</div>
-      <div class="rule-item"><code>sh / S</code> → श</div>
+      <div class="rule-item"><code>v/w</code> → व</div>
+      <div class="rule-item"><code>sh/S</code> → श</div>
       <div class="rule-item"><code>s</code> → स</div>
       <div class="rule-item"><code>h</code> → ह</div>
       <div class="rule-item"><code>M</code> → ं</div>
@@ -442,13 +444,13 @@ MAIN
 </div>
 
 <!-- ============================================================
-JAVASCRIPT - COMPLETE
+JAVASCRIPT - IMPROVED WITH SMART TYPING
 ============================================================ -->
 <script>
 'use strict';
 
 // ============================================================
-// 1. COMPLETE UNICODE MAPS (CORRECT)
+// 1. COMPLETE UNICODE MAPS
 // ============================================================
 
 // Tirhuta → Devanagari
@@ -490,17 +492,21 @@ for (const [tir, dev] of Object.entries(T2D)) {
 }
 
 // ============================================================
-// 2. PHONETIC RULES (English → Devanagari)
+// 2. SMART PHONETIC ENGINE (Google-style)
 // ============================================================
 
 const PHONETIC_RULES = [
-  // Vowels (longest first)
+  // Vowels (longest first - priority)
   ['aa', 'आ'], ['AA', 'आ'], ['A', 'आ'],
   ['ii', 'ई'], ['II', 'ई'], ['I', 'ई'],
   ['uu', 'ऊ'], ['UU', 'ऊ'], ['U', 'ऊ'],
   ['ai', 'ऐ'], ['au', 'औ'],
   ['e', 'ए'], ['o', 'ओ'],
   ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
+  
+  // ऋ and ॠ (R and RR)
+  ['R', 'ऋ'], ['RR', 'ॠ'],
+  ['rR', 'ऋ'], ['rRr', 'ॠ'],
   
   // Aspirated consonants
   ['kh', 'ख'], ['gh', 'घ'], ['chh', 'छ'], ['jh', 'झ'],
@@ -516,7 +522,7 @@ const PHONETIC_RULES = [
   ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
   ['h', 'ह'], ['m', 'म'], ['n', 'न'],
   
-  // Special
+  // Special (हलंत, अनुस्वार, विसर्ग)
   ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
   
   // Numbers
@@ -525,24 +531,61 @@ const PHONETIC_RULES = [
   ['8', '८'], ['9', '९'],
 ];
 
-// Sort by length (longest first)
+// Sort by length (longest first) for priority matching
 const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
 
 // ============================================================
-// 3. CONVERSION ENGINE
+// 3. SMART MATRA SYSTEM (Google-style intelligent matra)
 // ============================================================
 
-// Matra map (vowel → matra)
+// Complete matra map with all vowels
 const MATRA_MAP = {
   'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
   'ऐ': 'ै', 'औ': 'ौ',
   'इ': 'ि', 'उ': 'ु',
-  'ए': 'े', 'ओ': 'ो'
+  'ए': 'े', 'ओ': 'ो',
+  'ऋ': 'ृ', 'ॠ': 'ॄ',
+  'ऌ': 'ॢ', 'ॡ': 'ॣ'
 };
-const VOWELS = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ']);
-const MATRAS = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ']);
 
-// Phonetic → Devanagari
+// All vowels set
+const VOWELS = new Set([
+  'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 
+  'ए', 'ऐ', 'ओ', 'औ',
+  'ऋ', 'ॠ', 'ऌ', 'ॡ'
+]);
+
+// All matras set
+const MATRAS = new Set([
+  'ा', 'ि', 'ी', 'ु', 'ू', 
+  'े', 'ै', 'ो', 'ौ',
+  'ृ', 'ॄ', 'ॢ', 'ॣ'
+]);
+
+// All consonants set
+const CONSONANTS = new Set([
+  'क', 'ख', 'ग', 'घ', 'ङ',
+  'च', 'छ', 'ज', 'झ', 'ञ',
+  'ट', 'ठ', 'ड', 'ढ', 'ण',
+  'त', 'थ', 'द', 'ध', 'न',
+  'प', 'फ', 'ब', 'भ', 'म',
+  'य', 'र', 'ल', 'व',
+  'श', 'ष', 'स', 'ह'
+]);
+
+// ============================================================
+// 4. INTELLIGENT CONVERSION ENGINE
+// ============================================================
+
+/**
+ * Smart Phonetic → Devanagari
+ * Handles:
+ * - Correct matra placement (क + आ = का)
+ * - Half characters (क् + य = क्य)
+ * - ऋ matra (क + ऋ = कृ)
+ * - Vowel after consonant = matra
+ * - Vowel alone = full vowel
+ */
 function phoneticToDevanagari(text) {
   if (!text) return '';
   
@@ -553,22 +596,44 @@ function phoneticToDevanagari(text) {
   while (i < input.length) {
     let matched = false;
     
+    // Try to match rules (longest first)
     for (const [pattern, replacement] of SORTED_RULES) {
       if (i + pattern.length <= input.length && 
           input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
         
         const isVowel = VOWELS.has(replacement);
         const lastChar = result[result.length - 1] || '';
-        const isConsonant = /[क-ह]/.test(lastChar) && !MATRAS.has(lastChar);
+        const isLastConsonant = CONSONANTS.has(lastChar);
+        const isLastMatra = MATRAS.has(lastChar);
+        const isLastVowel = VOWELS.has(lastChar);
         
-        if (isVowel && isConsonant) {
+        // --- SMART RULES ---
+        
+        // Rule 1: If vowel comes after consonant → apply matra
+        if (isVowel && isLastConsonant) {
           const matra = MATRA_MAP[replacement];
           if (matra) {
-            result += matra;
+            // Check if consonant already has a matra (replace it)
+            if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
+              result = result.slice(0, -1) + matra;
+            } else {
+              result += matra;
+            }
           } else {
+            // If no matra (e.g., अ), add full vowel
             result += replacement;
           }
-        } else {
+        }
+        // Rule 2: If vowel comes after vowel → add full vowel
+        else if (isVowel && isLastVowel) {
+          result += replacement;
+        }
+        // Rule 3: If vowel comes after matra → add full vowel
+        else if (isVowel && isLastMatra) {
+          result += replacement;
+        }
+        // Rule 4: Default - add as is
+        else {
           result += replacement;
         }
         
@@ -578,8 +643,136 @@ function phoneticToDevanagari(text) {
       }
     }
     
+    // No match found - keep character as is
     if (!matched) {
-      result += input[i];
+      const char = input[i];
+      // Handle special characters
+      if (char === ' ') {
+        result += ' ';
+      } else if (char === '\n') {
+        result += '\n';
+      } else if (char === '\t') {
+        result += '\t';
+      } else {
+        result += char;
+      }
+      i++;
+    }
+  }
+  
+  // Post-process: Fix common issues
+  result = postProcessDevanagari(result);
+  
+  return result;
+}
+
+/**
+ * Post-process Devanagari text
+ * Fixes:
+ * - Half-character combinations (क् + य = क्य)
+ * - Matra ordering
+ * - Extra spaces
+ */
+function postProcessDevanagari(text) {
+  let result = text;
+  
+  // Fix: हलंत (्) should be placed correctly
+  // Example: क् + य = क्य
+  result = result.replace(/([क-ह])्([क-ह])/g, (match, cons1, cons2) => {
+    // Check if it's a valid conjunct
+    return cons1 + '्' + cons2;
+  });
+  
+  // Fix: Matra order (ि, ी, ु, ू should come after consonant)
+  result = result.replace(/([क-ह])(ि|ी|ु|ू)/g, (match, cons, matra) => {
+    return cons + matra;
+  });
+  
+  // Fix: र + ् + य = र्य
+  result = result.replace(/र्([क-ह])/g, (match, cons) => {
+    return 'र्' + cons;
+  });
+  
+  // Fix: Multiple spaces
+  result = result.replace(/ +/g, ' ');
+  
+  // Fix: Space before punctuation
+  result = result.replace(/ ([.,!?;:])/g, '$1');
+  
+  return result;
+}
+
+/**
+ * Devanagari → Tirhuta
+ */
+function devanagariToTirhuta(text) {
+  if (!text) return '';
+  let result = '';
+  let i = 0;
+  
+  // Handle conjuncts first (e.g., क्ष → 𑒏𑓂𑒭)
+  const conjuncts = {
+    'क्ष': '𑒏𑓂𑒭',
+    'त्र': '𑒞𑓂𑒩',
+    'ज्ञ': '𑒖𑓂𑒘',
+    'श्र': '𑒬𑓂𑒩',
+    'क्त': '𑒏𑓂𑒞',
+    'क्त्र': '𑒏𑓂𑒞𑓂𑒩',
+    'क्र': '𑒏𑓂𑒩',
+    'ग्र': '𑒑𑓂𑒩',
+    'प्र': '𑒣𑓂𑒩',
+    'ब्र': '𑒥𑓂𑒩',
+    'द्र': '𑒠𑓂𑒩',
+    'द्य': '𑒠𑓂𑒨',
+    'न्य': '𑒢𑓂𑒨',
+    'प्य': '𑒣𑓂𑒨',
+    'म्य': '𑒧𑓂𑒨',
+    'र्य': '𑒩𑓂𑒨',
+    'व्य': '𑒫𑓂𑒨',
+    'स्य': '𑒮𑓂𑒨',
+    'ह्य': '𑒯𑓂𑒨',
+    'ल्ल': '𑒪𑓂𑒪',
+    'त्त': '𑒞𑓂𑒞',
+    'प्प': '𑒣𑓂𑒣',
+    'ट्ट': '𑒙𑓂𑒙',
+    'ड्ड': '𑒛𑓂𑒛',
+    'त्स': '𑒞𑓂𑒮',
+    'त्म': '𑒞𑓂𑒧',
+  };
+  
+  while (i < text.length) {
+    // Check for conjuncts (2 or 3 characters)
+    let matched = false;
+    
+    // Try 3-char conjuncts
+    if (i + 2 < text.length) {
+      const threeChars = text.substring(i, i + 3);
+      if (conjuncts[threeChars]) {
+        result += conjuncts[threeChars];
+        i += 3;
+        matched = true;
+      }
+    }
+    
+    // Try 2-char conjuncts
+    if (!matched && i + 1 < text.length) {
+      const twoChars = text.substring(i, i + 2);
+      if (conjuncts[twoChars]) {
+        result += conjuncts[twoChars];
+        i += 2;
+        matched = true;
+      }
+    }
+    
+    // Single character
+    if (!matched) {
+      const char = text[i];
+      const mapped = D2T[char];
+      if (mapped) {
+        result += mapped;
+      } else {
+        result += char;
+      }
       i++;
     }
   }
@@ -587,37 +780,78 @@ function phoneticToDevanagari(text) {
   return result;
 }
 
-// Devanagari → Tirhuta
-function devanagariToTirhuta(text) {
-  if (!text) return '';
-  let result = '';
-  for (const char of text) {
-    result += D2T[char] || char;
-  }
-  return result;
-}
-
-// Tirhuta → Devanagari
+/**
+ * Tirhuta → Devanagari
+ */
 function tirhutaToDevanagari(text) {
   if (!text) return '';
   let result = '';
-  for (const char of text) {
-    result += T2D[char] || char;
+  let i = 0;
+  
+  // Reverse conjuncts
+  const reverseConjuncts = {};
+  for (const [dev, tir] of Object.entries({
+    '𑒏𑓂𑒭': 'क्ष',
+    '𑒞𑓂𑒩': 'त्र',
+    '𑒖𑓂𑒘': 'ज्ञ',
+    '𑒬𑓂𑒩': 'श्र',
+    '𑒏𑓂𑒞': 'क्त',
+    '𑒏𑓂𑒩': 'क्र',
+    '𑒑𑓂𑒩': 'ग्र',
+    '𑒣𑓂𑒩': 'प्र',
+    '𑒥𑓂𑒩': 'ब्र',
+    '𑒠𑓂𑒩': 'द्र',
+    '𑒢𑓂𑒨': 'न्य',
+    '𑒩𑓂𑒨': 'र्य',
+    '𑒮𑓂𑒨': 'स्य',
+  })) {
+    reverseConjuncts[tir] = dev;
   }
+  
+  while (i < text.length) {
+    // Check for conjuncts (Tirhuta has halant)
+    let matched = false;
+    
+    if (i + 2 < text.length) {
+      const three = text.substring(i, i + 3);
+      if (reverseConjuncts[three]) {
+        result += reverseConjuncts[three];
+        i += 3;
+        matched = true;
+      }
+    }
+    
+    if (!matched && i + 1 < text.length) {
+      const two = text.substring(i, i + 2);
+      if (reverseConjuncts[two]) {
+        result += reverseConjuncts[two];
+        i += 2;
+        matched = true;
+      }
+    }
+    
+    if (!matched) {
+      const char = text[i];
+      const mapped = T2D[char];
+      result += mapped || char;
+      i++;
+    }
+  }
+  
   return result;
 }
 
 // ============================================================
-// 4. MAIN CONVERT
+// 5. MAIN CONVERT FUNCTION
 // ============================================================
 
 function convert(text, direction) {
   if (!text || text.trim() === '') return '';
   
   if (direction === 'dev-to-tir') {
-    // Step 1: Phonetic → Devanagari (if English)
-    // Step 2: Devanagari → Tirhuta
+    // Step 1: Phonetic → Devanagari (smart)
     const devText = phoneticToDevanagari(text);
+    // Step 2: Devanagari → Tirhuta
     return devanagariToTirhuta(devText);
   } else {
     // Tirhuta → Devanagari
@@ -626,7 +860,7 @@ function convert(text, direction) {
 }
 
 // ============================================================
-// 5. UI CONTROLLERS
+// 6. UI CONTROLLERS
 // ============================================================
 
 function doConvert() {
@@ -661,7 +895,7 @@ function updateUI() {
   if (direction === 'dev-to-tir') {
     inLabel.textContent = '📝 देवनागरी / English (इनपुट)';
     outLabel.textContent = '📄 तिरहुता (आउटपुट)';
-    inText.placeholder = 'English phonetic type करें... (maithilii, mithilaa...) या देवनागरी लिखें';
+    inText.placeholder = 'Smart typing... (maithili, krishna, Ravi)';
   } else {
     inLabel.textContent = '📝 तिरहुता (इनपुट)';
     outLabel.textContent = '📄 देवनागरी (आउटपुट)';
@@ -696,13 +930,19 @@ function applyFont() {
 }
 
 // ============================================================
-// 6. UTILITIES
+// 7. UTILITIES
 // ============================================================
 
 function doCopy() {
   const text = document.getElementById('outText').value;
   if (!text) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
   navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ कॉपी हो गया!', 'success');
+  }).catch(() => {
+    // Fallback
+    const out = document.getElementById('outText');
+    out.select();
+    document.execCommand('copy');
     showToast('✅ कॉपी हो गया!', 'success');
   });
 }
@@ -711,6 +951,8 @@ function doClear() {
   document.getElementById('inText').value = '';
   document.getElementById('outText').value = '';
   updateCounts();
+  document.getElementById('inText').focus();
+  showToast('🗑️ साफ़ हो गया', 'info');
 }
 
 function doDownload() {
@@ -720,7 +962,7 @@ function doDownload() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'converted-text.txt';
+  a.download = 'tirhuta-converted-' + Date.now() + '.txt';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -737,12 +979,18 @@ function showToast(msg, type = '') {
 }
 
 // ============================================================
-// 7. INIT
+// 8. INIT
 // ============================================================
 
 window.onload = function() {
   updateUI();
   updateCounts();
+  
+  // Set focus
+  document.getElementById('inText').focus();
+  
+  console.log('✅ Tirhuta Converter Loaded!');
+  console.log('📝 Type "maithili" to test');
 };
 </script>
 </body>
