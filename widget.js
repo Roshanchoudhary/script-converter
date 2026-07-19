@@ -1,5 +1,5 @@
 // ============================================================
-// Mithila Script Converter Widget - COMPLETE CORRECT VERSION
+// Mithila Script Converter Widget - FIXED FONT VERSION
 // किसी भी website पर embed करें:
 // <script src="YOUR_URL/widget.js"></script>
 // ============================================================
@@ -7,7 +7,25 @@
 (function () {
   'use strict';
 
-  const CDN = 'https://script-converter.pages.dev/fonts/';
+  // ============================================================
+  // 0. FONT CONFIGURATION - FIXED
+  // ============================================================
+
+  const CONFIG = {
+    // Mithilauni font - multiple CDN sources for reliability
+    fontCDN: [
+      'https://cdn.jsdelivr.net/npm/mithilauni-font@1.0.0/mithilauni.ttf',
+      'https://unpkg.com/mithilauni-font/mithilauni.ttf',
+      'https://raw.githubusercontent.com/yourusername/mithilauni-font/main/mithilauni.ttf'
+    ],
+    // Google Font fallback
+    googleFont: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap',
+    // Font family names
+    fonts: {
+      mithilauni: "'Mithilauni', 'Noto Sans Tirhuta', serif",
+      noto: "'Noto Sans Tirhuta', serif"
+    }
+  };
 
   // ============================================================
   // 1. COMPLETE UNICODE MAPS (CORRECT)
@@ -31,28 +49,31 @@
     '𑒬': 'श', '𑒭': 'ष', '𑒮': 'स', '𑒯': 'ह',
     
     // Matras (Vowel signs)
-   '𑒰': 'ा',   // AA
-    '𑒱': 'ि',   // I
-    '𑒲': 'ी',   // II
-    '𑒳': 'ु',   // U
-    '𑒴': 'ू',   // UU
-    '𑒵': 'ृ',   // Vocalic R
-    '𑒶': 'ॄ',   // Vocalic RR
-    '𑒷': 'ॢ',   // Vocalic L
-    '𑒸': 'ॣ',   // Vocalic LL
-    '𑒹': 'े',   // E
-    '𑒺': 'ॅ',   // Short E (यदि उपयोग करना चाहें)
-    '𑒻': 'ै',   // AI
-    '𑒼': 'ो',   // O
-    '𑒽': 'ॉ',   // Short O (यदि उपयोग करना चाहें)
-    '𑒾': 'ौ',    // AU
+    '𑒰': 'ा',
+    '𑒱': 'ि',
+    '𑒲': 'ी',
+    '𑒳': 'ु',
+    '𑒴': 'ू',
+    '𑒵': 'ृ',
+    '𑒶': 'ॄ',
+    '𑒷': 'ॢ',
+    '𑒸': 'ॣ',
+    '𑒹': 'े',
+    '𑒺': 'ॅ',
+    '𑒻': 'ै',
+    '𑒼': 'ो',
+    '𑒽': 'ॉ',
+    '𑒾': 'ौ',
     
-'𑒿':'्',
-'𑓀':'ं',
-'𑓁':'ः',
-'𑓂':'ँ',
-  
     // Special
+    '𑒿': 'ँ',
+    '𑓀': 'ं',
+    '𑓁': 'ः',
+    '𑓂': '्',
+    '𑓃': '़',
+    '𑓄': 'ऽ',
+    '𑓆': '॰',
+    '𑓇': 'ॐ',
     
     // Numbers
     '𑓐': '०', '𑓑': '१', '𑓒': '२', '𑓓': '३', '𑓔': '४',
@@ -66,177 +87,217 @@
   }
 
   // ============================================================
-  // 2. PHONETIC RULES (English → Devanagari)
+  // 2. PHONETIC RULES (CORRECTED)
   // ============================================================
 
-const PHONETIC_RULES = [
-
-  // Special Conjuncts
-  ['ksh','क्ष'],
-  ['shr','श्र'],
-  ['gya','ज्ञ'],
-  ['ri','रि'],
-['ree','री'],
-  // Long vowels
-  ['aa','आ'],
-  ['ii','ई'],
-  ['uu','ऊ'],
-  ['ai','ऐ'],
-  ['au','औ'],
-
-  // Short vowels
-  ['a','अ'],
-  ['i','इ'],
-  ['u','उ'],
-  ['e','ए'],
-  ['o','ओ'],
-
-  // Aspirated
-  ['kh','ख'],
-  ['gh','घ'],
-  ['chh','छ'],
-  ['jh','झ'],
-  ['th','थ'],
-  ['dh','ध'],
-  ['ph','फ'],
-  ['bh','भ'],
-
-  // Retroflex
-  ['Th','ठ'],
-  ['Dh','ढ'],
-  ['T','ट'],
-  ['D','ड'],
-  ['N','ण'],
-
-  // Consonants
-  ['k','क'],
-  ['g','ग'],
-  ['ch','च'],
-  ['j','ज'],
-  ['t','त'],
-  ['d','द'],
-  ['p','प'],
-  ['b','ब'],
-  ['m','म'],
-  ['n','न'],
-  ['y','य'],
-  ['r','र'],
-  ['l','ल'],
-  ['v','व'],
-  ['w','व'],
-  ['sh','श'],
-  ['S','ष'],
-  ['s','स'],
-  ['h','ह'],
-
-  // Signs
-  ['M','ं'],
-  ['H','ः'],
-  ['~','ँ']
-];
+  const PHONETIC_RULES = [
+    // Special Conjuncts
+    ['ksh', 'क्ष'],
+    ['shr', 'श्र'],
+    ['gya', 'ज्ञ'],
+    ['ri', 'रि'],
+    ['ree', 'री'],
+    ['rri', 'ृ'],
+    
+    // Long vowels (matras)
+    ['aa', 'ा'],
+    ['AA', 'ा'],
+    ['A', 'ा'],
+    ['ii', 'ी'],
+    ['II', 'ी'],
+    ['I', 'ी'],
+    ['uu', 'ू'],
+    ['UU', 'ू'],
+    ['U', 'ू'],
+    ['ai', 'ै'],
+    ['au', 'ौ'],
+    
+    // Short vowels (matras)
+    ['i', 'ि'],
+    ['u', 'ु'],
+    ['e', 'े'],
+    ['o', 'ो'],
+    
+    // Full vowels (when standalone)
+    ['a', 'अ'],
+    ['A', 'आ'],
+    ['I', 'ई'],
+    ['U', 'ऊ'],
+    ['E', 'ए'],
+    ['O', 'ओ'],
+    ['R', 'ऋ'],
+    ['RR', 'ॠ'],
+    
+    // Aspirated consonants
+    ['kh', 'ख'],
+    ['gh', 'घ'],
+    ['chh', 'छ'],
+    ['jh', 'झ'],
+    ['th', 'थ'],
+    ['dh', 'ध'],
+    ['ph', 'फ'],
+    ['bh', 'भ'],
+    
+    // Retroflex
+    ['Th', 'ठ'],
+    ['Dh', 'ढ'],
+    ['T', 'ट'],
+    ['D', 'ड'],
+    ['N', 'ण'],
+    
+    // Regular consonants
+    ['k', 'क'],
+    ['g', 'ग'],
+    ['ch', 'च'],
+    ['j', 'ज'],
+    ['t', 'त'],
+    ['d', 'द'],
+    ['p', 'प'],
+    ['b', 'ब'],
+    ['m', 'म'],
+    ['n', 'न'],
+    ['y', 'य'],
+    ['r', 'र'],
+    ['l', 'ल'],
+    ['v', 'व'],
+    ['w', 'व'],
+    ['sh', 'श'],
+    ['S', 'ष'],
+    ['s', 'स'],
+    ['h', 'ह'],
+    
+    // Special signs
+    ['M', 'ं'],
+    ['H', 'ः'],
+    ['~', 'ँ'],
+    ['.', '्']
+  ];
 
   // Sort by length (longest first)
   const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
 
   // ============================================================
-  // 3. CONVERSION ENGINE
+  // 3. MATRA SYSTEM
   // ============================================================
 
-  // Matra map (vowel → matra)
   const MATRA_MAP = {
-  'आ':'ा',
-  'इ':'ि',
-  'ई':'ी',
-  'उ':'ु',
-  'ऊ':'ू',
-  'ऋ':'ृ',
-  'ॠ':'ॄ',
-  'ऌ':'ॢ',
-  'ॡ':'ॣ',
-  'ए':'े',
-  'ऐ':'ै',
-  'ओ':'ो',
-  'औ':'ौ'
-};
+    'आ': 'ा',
+    'इ': 'ि',
+    'ई': 'ी',
+    'उ': 'ु',
+    'ऊ': 'ू',
+    'ऋ': 'ृ',
+    'ॠ': 'ॄ',
+    'ऌ': 'ॢ',
+    'ॡ': 'ॣ',
+    'ए': 'े',
+    'ऐ': 'ै',
+    'ओ': 'ो',
+    'औ': 'ौ'
+  };
+
   const VOWELS = new Set([
-'अ','आ','इ','ई','उ','ऊ',
-'ऋ','ॠ','ऌ','ॡ',
-'ए','ऐ','ओ','औ'
-]);
+    'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ',
+    'ऋ', 'ॠ', 'ऌ', 'ॡ',
+    'ए', 'ऐ', 'ओ', 'औ'
+  ]);
+
   const MATRAS = new Set([
-'ा','ि','ी','ु','ू',
-'ृ','ॄ','ॢ','ॣ',
-'े','ै','ो','ौ'
-]);
+    'ा', 'ि', 'ी', 'ु', 'ू',
+    'ृ', 'ॄ', 'ॢ', 'ॣ',
+    'े', 'ै', 'ो', 'ौ'
+  ]);
 
-  // Phonetic → Devanagari
-  function phoneticToDevanagari(text){
+  const CONSONANTS = new Set([
+    'क', 'ख', 'ग', 'घ', 'ङ',
+    'च', 'छ', 'ज', 'झ', 'ञ',
+    'ट', 'ठ', 'ड', 'ढ', 'ण',
+    'त', 'थ', 'द', 'ध', 'न',
+    'प', 'फ', 'ब', 'भ', 'म',
+    'य', 'र', 'ल', 'व',
+    'श', 'ष', 'स', 'ह'
+  ]);
 
-    let result = "";
+  // ============================================================
+  // 4. CONVERSION ENGINE (FIXED)
+  // ============================================================
+
+  function phoneticToDevanagari(text) {
+    if (!text) return '';
+    
+    let result = '';
     let i = 0;
-
-    while(i < text.length){
-
-        let matched = false;
-
-        for(const [eng,dev] of SORTED_RULES){
-
-            if(text.substring(i,i+eng.length).toLowerCase()==eng.toLowerCase()){
-
-const last = result[result.length - 1] || "";
-const isConsonant = /[क-ह]/.test(last);
-
-// अगर vowel है
-if (VOWELS.has(dev)) {
-
-    if (isConsonant) {
-
-        // अ = कुछ नहीं
-        if (dev === "अ") {
-
-        }
-        else {
-            result += MATRA_MAP[dev];
-        }
-
-    } else {
-
-        result += dev;
-
-    }
-
-}
-else {
-
-    // अगर consonant है
-    if (isConsonant) {
-        result += "्";
-    }
-
-    result += dev;
-
-}
-                
-            
-                i+=eng.length;
-                matched=true;
-                break;
-
+    const input = text;
+    
+    while (i < input.length) {
+      let matched = false;
+      
+      for (const [eng, dev] of SORTED_RULES) {
+        if (i + eng.length <= input.length && 
+            input.substring(i, i + eng.length).toLowerCase() === eng.toLowerCase()) {
+          
+          const lastChar = result[result.length - 1] || '';
+          const isLastConsonant = CONSONANTS.has(lastChar);
+          const isLastMatra = MATRAS.has(lastChar);
+          const isVowel = VOWELS.has(dev);
+          const isMatra = MATRAS.has(dev);
+          
+          // SMART MATRA LOGIC
+          if (isMatra && isLastConsonant) {
+            // Replace existing matra if any
+            if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
+              result = result.slice(0, -1) + dev;
+            } else {
+              result += dev;
             }
-
+          }
+          else if (isVowel && isLastConsonant) {
+            const matra = MATRA_MAP[dev];
+            if (matra) {
+              if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
+                result = result.slice(0, -1) + matra;
+              } else {
+                result += matra;
+              }
+            } else {
+              // अ comes after consonant → no change (inherent 'a')
+              if (dev !== 'अ') {
+                result += dev;
+              }
+            }
+          }
+          else if (isVowel && isLastMatra) {
+            result += dev;
+          }
+          else if (isMatra && isLastMatra) {
+            result += dev;
+          }
+          else {
+            result += dev;
+          }
+          
+          i += eng.length;
+          matched = true;
+          break;
         }
-
-        if(!matched){
-            result+=text[i];
-            i++;
+      }
+      
+      if (!matched) {
+        const char = input[i];
+        if (char === ' ') {
+          result += ' ';
+        } else if (char === '\n') {
+          result += '\n';
+        } else {
+          result += char;
         }
-
+        i++;
+      }
     }
-
+    
     return result;
+  }
 
-}
-  // Devanagari → Tirhuta
   function devanagariToTirhuta(text) {
     if (!text) return '';
     let result = '';
@@ -246,7 +307,6 @@ else {
     return result;
   }
 
-  // Tirhuta → Devanagari
   function tirhutaToDevanagari(text) {
     if (!text) return '';
     let result = '';
@@ -256,21 +316,16 @@ else {
     return result;
   }
 
-  // ============================================================
-  // 4. MAIN CONVERT FUNCTION
-  // ============================================================
-
   function convert(text, direction) {
     if (!text || text.trim() === '') return '';
     
     if (direction === 'dev-to-tir') {
       let devText;
-
-if (/[a-z]/i.test(text)) {
-    devText = phoneticToDevanagari(text);
-} else {
-    devText = text;
-}
+      if (/[a-z]/i.test(text)) {
+        devText = phoneticToDevanagari(text);
+      } else {
+        devText = text;
+      }
       return devanagariToTirhuta(devText);
     } else {
       return tirhutaToDevanagari(text);
@@ -278,23 +333,50 @@ if (/[a-z]/i.test(text)) {
   }
 
   // ============================================================
-  // 5. WIDGET STYLES
+  // 5. FONT LOADER - FIXED
   // ============================================================
 
-  function injectFonts() {
-    if (document.getElementById('mw-fonts')) return;
-    const style = document.createElement('style');
-    style.id = 'mw-fonts';
-    style.textContent = `
-      @font-face {
-        font-family: 'Mithilauni';
-        src: url('${CDN}mithilauni.ttf') format('truetype');
-        font-display: swap;
-      }
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
-    `;
-    document.head.appendChild(style);
+  function loadFonts() {
+    // Load Google Font first (fallback)
+    if (!document.getElementById('mw-google-font')) {
+      const link = document.createElement('link');
+      link.id = 'mw-google-font';
+      link.href = CONFIG.googleFont;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+
+    // Load Mithilauni font via @font-face
+    if (!document.getElementById('mw-mithilauni-font')) {
+      const style = document.createElement('style');
+      style.id = 'mw-mithilauni-font';
+      
+      // Multiple src URLs for fallback
+      const srcUrls = CONFIG.fontCDN.map(url => `url('${url}') format('truetype')`).join(', ');
+      
+      style.textContent = `
+        @font-face {
+          font-family: 'Mithilauni';
+          src: ${srcUrls};
+          font-display: swap;
+          font-weight: 400;
+          font-style: normal;
+        }
+        @font-face {
+          font-family: 'Mithilauni';
+          src: ${srcUrls};
+          font-display: swap;
+          font-weight: 700;
+          font-style: normal;
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }
+
+  // ============================================================
+  // 6. WIDGET CSS - FIXED FONT FAMILIES
+  // ============================================================
 
   function injectCSS() {
     if (document.getElementById('mw-css')) return;
@@ -372,6 +454,7 @@ if (/[a-z]/i.test(text)) {
         margin: 0;
         font-weight: 700;
         letter-spacing: 0.5px;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       }
       .mw-head h3 span {
         color: #D4A017;
@@ -417,6 +500,7 @@ if (/[a-z]/i.test(text)) {
         letter-spacing: 0.5px;
         margin-bottom: 4px;
         display: block;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       }
 
       .mw-sel {
@@ -441,7 +525,7 @@ if (/[a-z]/i.test(text)) {
         box-shadow: 0 0 0 3px rgba(139,26,26,0.1);
       }
 
-      /* Textareas */
+      /* Textareas - FIXED FONT */
       .mw-ta {
         width: 100%;
         height: 80px;
@@ -467,6 +551,7 @@ if (/[a-z]/i.test(text)) {
         font-size: 0.85rem;
       }
 
+      /* FIXED: Tirhuta Font Classes */
       .mw-fm {
         font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif !important;
       }
@@ -549,6 +634,7 @@ if (/[a-z]/i.test(text)) {
         color: #8B1A1A;
         font-size: 0.7rem;
         margin-bottom: 4px;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       }
       .mw-rules .rule-grid {
         display: grid;
@@ -567,6 +653,7 @@ if (/[a-z]/i.test(text)) {
         display: flex;
         align-items: center;
         gap: 2px;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       }
 
       /* Page Converter */
@@ -582,6 +669,7 @@ if (/[a-z]/i.test(text)) {
         color: #5C3A1E;
         margin-bottom: 8px;
         line-height: 1.4;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       }
       .mw-pg p strong {
         color: #8B1A1A;
@@ -695,7 +783,7 @@ if (/[a-z]/i.test(text)) {
   }
 
   // ============================================================
-  // 6. BUILD WIDGET HTML
+  // 7. BUILD WIDGET HTML
   // ============================================================
 
   function buildWidget() {
@@ -705,9 +793,13 @@ if (/[a-z]/i.test(text)) {
     fab.title = 'तिरहुता ↔ देवनागरी परिवर्तक';
     fab.innerHTML = '𑒧';
     fab.setAttribute('aria-label', 'Open converter');
+    fab.style.fontFamily = "'Mithilauni','Noto Sans Tirhuta',serif";
     fab.onclick = () => {
-      document.getElementById('mw-panel').classList.toggle('open');
-      document.getElementById('mw-in').focus();
+      const panel = document.getElementById('mw-panel');
+      panel.classList.toggle('open');
+      setTimeout(() => {
+        document.getElementById('mw-in').focus();
+      }, 300);
     };
 
     // Panel
@@ -752,7 +844,7 @@ if (/[a-z]/i.test(text)) {
         </div>
         
         <span class="mw-lbl">📝 इनपुट</span>
-        <textarea class="mw-ta" id="mw-in" placeholder="English phonetic type करें... (maithilii)" oninput="mwHandleInput()"></textarea>
+        <textarea class="mw-ta" id="mw-in" placeholder="English phonetic type करें... (maithili)" oninput="mwHandleInput()"></textarea>
         
         <span class="mw-lbl">📄 आउटपुट</span>
         <textarea class="mw-ta" id="mw-out" placeholder="परिवर्तित पाठ..." readonly></textarea>
@@ -762,16 +854,16 @@ if (/[a-z]/i.test(text)) {
           <button class="mw-btn mw-bo" onclick="mwClear()">🗑️ साफ़</button>
         </div>
 
-        <!-- Phonetic Rules - NICHE -->
+        <!-- Phonetic Rules -->
         <div class="mw-rules">
-          <h4>⌨️ Phonetic Rules (English → देवनागरी → तिरहुता)</h4>
+          <h4>⌨️ Phonetic Rules</h4>
           <div class="rule-grid">
             <div class="rule-item"><code>a</code> अ</div>
-            <div class="rule-item"><code>aa/A</code> आ</div>
+            <div class="rule-item"><code>aa</code> आ</div>
             <div class="rule-item"><code>i</code> इ</div>
-            <div class="rule-item"><code>ii/I</code> ई</div>
+            <div class="rule-item"><code>ii</code> ई</div>
             <div class="rule-item"><code>u</code> उ</div>
-            <div class="rule-item"><code>uu/U</code> ऊ</div>
+            <div class="rule-item"><code>uu</code> ऊ</div>
             <div class="rule-item"><code>e</code> ए</div>
             <div class="rule-item"><code>ai</code> ऐ</div>
             <div class="rule-item"><code>o</code> ओ</div>
@@ -803,7 +895,7 @@ if (/[a-z]/i.test(text)) {
             <div class="rule-item"><code>r</code> र</div>
             <div class="rule-item"><code>l</code> ल</div>
             <div class="rule-item"><code>v/w</code> व</div>
-            <div class="rule-item"><code>sh/S</code> श</div>
+            <div class="rule-item"><code>sh</code> श</div>
             <div class="rule-item"><code>s</code> स</div>
             <div class="rule-item"><code>h</code> ह</div>
             <div class="rule-item"><code>M</code> ं</div>
@@ -811,7 +903,7 @@ if (/[a-z]/i.test(text)) {
             <div class="rule-item"><code>.</code> ्</div>
           </div>
           <div style="margin-top:4px;font-size:0.65rem;color:#8B7355;">
-            💡 <code>maithilii</code> → 𑒧𑒸𑒟𑒱𑒪𑒲
+            💡 <code>maithili</code> → 𑒧𑒸𑒟𑒱𑒪𑒱
           </div>
         </div>
 
@@ -838,7 +930,7 @@ if (/[a-z]/i.test(text)) {
   }
 
   // ============================================================
-  // 7. WIDGET FUNCTIONS
+  // 8. WIDGET FUNCTIONS
   // ============================================================
 
   let pageConverted = false;
@@ -867,8 +959,17 @@ if (/[a-z]/i.test(text)) {
     out.className = 'mw-ta';
     inp.className = 'mw-ta';
     
+    // Apply font to output if direction is dev-to-tir, else input
     const tirEl = dir === 'dev-to-tir' ? out : inp;
     tirEl.classList.add(font === 'mithilauni' ? 'mw-fm' : 'mw-fn');
+    
+    // Also ensure the FAB button has correct font
+    const fab = document.getElementById('mw-fab');
+    if (fab) {
+      fab.style.fontFamily = font === 'mithilauni' ? 
+        "'Mithilauni','Noto Sans Tirhuta',serif" : 
+        "'Noto Sans Tirhuta',serif";
+    }
   };
 
   window.mwCopy = function () {
@@ -893,7 +994,9 @@ if (/[a-z]/i.test(text)) {
   window.mwConvertPage = function () {
     const btn = document.getElementById('mw-pgbtn');
     const font = document.getElementById('mw-pgfont').value;
-    const ff = font === 'mithilauni' ? "'Mithilauni','Noto Sans Tirhuta',serif" : "'Noto Sans Tirhuta',serif";
+    const ff = font === 'mithilauni' ? 
+      "'Mithilauni','Noto Sans Tirhuta',serif" : 
+      "'Noto Sans Tirhuta',serif";
 
     if (!pageConverted) {
       originals = [];
@@ -907,7 +1010,8 @@ if (/[a-z]/i.test(text)) {
                  node.parentElement.closest('#mw-fab') || 
                  node.parentElement.closest('#mw-toast') ||
                  node.parentElement.closest('script') ||
-                 node.parentElement.closest('style'))) {
+                 node.parentElement.closest('style') ||
+                 node.parentElement.closest('head'))) {
               return NodeFilter.FILTER_REJECT;
             }
             if (!node.textContent.trim()) {
@@ -963,30 +1067,38 @@ if (/[a-z]/i.test(text)) {
   }
 
   // ============================================================
-  // 8. INIT
+  // 9. INIT
   // ============================================================
 
   function init() {
-    injectFonts();
+    // Load fonts first
+    loadFonts();
+    
+    // Inject CSS
     injectCSS();
+    
+    // Build widget
     buildWidget();
     
+    // Initialize
     setTimeout(() => {
       mwConvert();
       mwApplyFont();
-    }, 100);
+    }, 500);
     
+    // ESC key to close
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         const panel = document.getElementById('mw-panel');
-        if (panel.classList.contains('open')) {
+        if (panel && panel.classList.contains('open')) {
           panel.classList.remove('open');
         }
       }
     });
     
     console.log('𑒧 Mithila Script Converter Widget loaded!');
-    console.log('📚 Type "maithilii" → 𑒧𑒸𑒟𑒱𑒪𑒲');
+    console.log('📚 Type "maithili" → 𑒧𑒸𑒟𑒱𑒪𑒱');
+    console.log('🔤 Font: Mithilauni + Google Noto Sans Tirhuta fallback');
   }
 
   if (document.readyState === 'loading') {
