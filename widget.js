@@ -75,9 +75,8 @@ const PHONETIC_RULES = [
   ['ksh','क्ष'],
   ['shr','श्र'],
   ['gya','ज्ञ'],
-  ['gy','ज्ञ'],
-  ['tr','त्र'],
-
+  ['ri','रि'],
+['ree','री'],
   // Long vowels
   ['aa','आ'],
   ['ii','ई'],
@@ -184,7 +183,6 @@ const PHONETIC_RULES = [
 
             if(text.substring(i,i+eng.length).toLowerCase()==eng.toLowerCase()){
 
-                const last=result[result.length-1] || "";
 const last = result[result.length - 1] || "";
 const isConsonant = /[क-ह]/.test(last);
 
@@ -219,12 +217,7 @@ else {
 
 }
                 
-                }else{
-
-                    result+=dev;
-
-                }
-
+            
                 i+=eng.length;
                 matched=true;
                 break;
