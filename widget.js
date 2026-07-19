@@ -1,5 +1,5 @@
 // ============================================================
-// Mithila Script Converter Widget - COMPLETE VERSION
+// Mithila Script Converter Widget - COMPLETE CORRECT VERSION
 // किसी भी website पर embed करें:
 // <script src="YOUR_URL/widget.js"></script>
 // ============================================================
@@ -10,81 +10,73 @@
   const CDN = 'https://script-converter.pages.dev/fonts/';
 
   // ============================================================
-  // 1. COMPLETE UNICODE MAPS (Using actual characters for clarity)
+  // 1. COMPLETE UNICODE MAPS (CORRECT)
   // ============================================================
 
   // Tirhuta → Devanagari
   const T2D = {
-    // Vowels
+    // Vowels (ALL 14)
     '𑒁': 'अ', '𑒂': 'आ', '𑒃': 'इ', '𑒄': 'ई',
-    '𑒅': 'उ', '𑒆': 'ऊ', '𑒇': 'ऋ', '𑒈': 'ऌ',
-    '𑒉': 'ए', '𑒊': 'ऐ', '𑒋': 'ओ', '𑒌': 'औ',
+    '𑒅': 'उ', '𑒆': 'ऊ', '𑒇': 'ऋ', '𑒈': 'ॠ',
+    '𑒉': 'ऌ', '𑒊': 'ॡ', '𑒋': 'ए', '𑒌': 'ऐ',
+    '𑒍': 'ओ', '𑒎': 'औ',
     
-    // Consonants
-    '𑒍': 'क', '𑒎': 'ख', '𑒏': 'ग', '𑒐': 'घ', '𑒑': 'ङ',
-    '𑒒': 'च', '𑒓': 'छ', '𑒔': 'ज', '𑒕': 'झ', '𑒖': 'ञ',
-    '𑒗': 'ट', '𑒘': 'ठ', '𑒙': 'ड', '𑒚': 'ढ', '𑒛': 'ण',
-    '𑒜': 'त', '𑒝': 'थ', '𑒞': 'द', '𑒟': 'ध', '𑒠': 'न',
-    '𑒡': 'प', '𑒢': 'फ', '𑒣': 'ब', '𑒤': 'भ', '𑒥': 'म',
-    '𑒦': 'य', '𑒧': 'र', '𑒨': 'ल', '𑒩': 'व',
-    '𑒪': 'श', '𑒫': 'ष', '𑒬': 'स', '𑒭': 'ह',
+    // Consonants (CORRECT)
+    '𑒏': 'क', '𑒐': 'ख', '𑒑': 'ग', '𑒒': 'घ', '𑒓': 'ङ',
+    '𑒔': 'च', '𑒕': 'छ', '𑒖': 'ज', '𑒗': 'झ', '𑒘': 'ञ',
+    '𑒙': 'ट', '𑒚': 'ठ', '𑒛': 'ड', '𑒜': 'ढ', '𑒝': 'ण',
+    '𑒞': 'त', '𑒟': 'थ', '𑒠': 'द', '𑒡': 'ध', '𑒢': 'न',
+    '𑒣': 'प', '𑒤': 'फ', '𑒥': 'ब', '𑒦': 'भ', '𑒧': 'म',
+    '𑒨': 'य', '𑒩': 'र', '𑒪': 'ल', '𑒫': 'व',
+    '𑒬': 'श', '𑒭': 'ष', '𑒮': 'स', '𑒯': 'ह',
     
     // Matras (Vowel signs)
-    '𑒮': 'ा', '𑒯': 'ि', '𑒰': 'ी', '𑒱': 'ु', '𑒲': 'ू',
-    '𑒳': 'ृ', '𑒴': 'े', '𑒵': 'ै', '𑒶': 'ो', '𑒷': 'ौ',
+    '𑒰': 'ा', '𑒱': 'ि', '𑒲': 'ी', '𑒳': 'ु', '𑒴': 'ू',
+    '𑒵': 'ृ', '𑒶': 'ॄ', '𑒷': 'े', '𑒸': 'ै', '𑒹': 'ो', '𑒺': 'ौ',
     
     // Special
-    '𑒸': 'ं', '𑒹': 'ः', '𑓀': '्', '𑓁': 'ँ',
+    '𑒻': 'ं', '𑒼': 'ः', '𑒽': '्', '𑒾': 'ँ',
     
     // Numbers
     '𑓐': '०', '𑓑': '१', '𑓒': '२', '𑓓': '३', '𑓔': '४',
     '𑓕': '५', '𑓖': '६', '𑓗': '७', '𑓘': '८', '𑓙': '९',
   };
 
-  // Devanagari → Tirhuta (Reverse mapping)
+  // Devanagari → Tirhuta (Reverse)
   const D2T = {};
   for (const [tir, dev] of Object.entries(T2D)) {
     D2T[dev] = tir;
   }
 
   // ============================================================
-  // 2. COMPLETE PHONETIC MAP (English → Devanagari)
+  // 2. PHONETIC RULES (English → Devanagari)
   // ============================================================
 
   const PHONETIC_RULES = [
-    // Special/Nukta (with .)
-    ['.k', 'क़'], ['.kh', 'ख़'], ['.z', 'ज़'], ['.f', 'फ़'],
+    // Vowels (longest first)
+    ['aa', 'आ'], ['AA', 'आ'], ['A', 'आ'],
+    ['ii', 'ई'], ['II', 'ई'], ['I', 'ई'],
+    ['uu', 'ऊ'], ['UU', 'ऊ'], ['U', 'ऊ'],
+    ['ai', 'ऐ'], ['au', 'औ'],
+    ['e', 'ए'], ['o', 'ओ'],
+    ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
     
-    // Compound consonants
-    ['ksh', 'क्ष'], ['gya', 'ज्ञ'], ['tr', 'त्र'],
-    
-    // Aspirated consonants (with h)
+    // Aspirated consonants
     ['kh', 'ख'], ['gh', 'घ'], ['chh', 'छ'], ['jh', 'झ'],
     ['th', 'थ'], ['dh', 'ध'], ['ph', 'फ'], ['bh', 'भ'],
     
-    // Retroflex (Capital letters)
-    ['Th', 'ठ'], ['Dh', 'ढ'], ['N', 'ण'],
-    ['T', 'ट'], ['D', 'ड'],
+    // Retroflex (Capital)
+    ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'], ['N', 'ण'],
     
-    // Vowels (long)
-    ['aa', 'आ'], ['ii', 'ई'], ['uu', 'ऊ'],
-    ['ai', 'ऐ'], ['au', 'औ'],
-    ['A', 'आ'], ['I', 'ई'], ['U', 'ऊ'],
-    
-    // Vowels (short)
-    ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
-    ['e', 'ए'], ['o', 'ओ'],
-    
-    // Consonants (regular)
+    // Regular consonants
     ['k', 'क'], ['g', 'ग'], ['ch', 'च'], ['j', 'ज'],
     ['t', 'त'], ['d', 'द'], ['p', 'प'], ['b', 'ब'],
     ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
     ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
-    ['h', 'ह'], ['m', 'म'], ['n', 'न'], ['ng', 'ङ'],
-    ['ny', 'ञ'], ['yn', 'ञ'],
+    ['h', 'ह'], ['m', 'म'], ['n', 'न'],
     
     // Special
-    ['M', 'ं'], ['H', 'ः'], ['~', 'ँ'],
+    ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
     
     // Numbers
     ['0', '०'], ['1', '१'], ['2', '२'], ['3', '३'],
@@ -92,13 +84,24 @@
     ['8', '८'], ['9', '९'],
   ];
 
-  // Sort rules by length (longest first) for proper matching
+  // Sort by length (longest first)
   const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
 
   // ============================================================
-  // 3. PHONETIC ENGINE (With matra handling)
+  // 3. CONVERSION ENGINE
   // ============================================================
 
+  // Matra map (vowel → matra)
+  const MATRA_MAP = {
+    'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
+    'ऐ': 'ै', 'औ': 'ौ',
+    'इ': 'ि', 'उ': 'ु',
+    'ए': 'े', 'ओ': 'ो'
+  };
+  const VOWELS = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ']);
+  const MATRAS = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ']);
+
+  // Phonetic → Devanagari
   function phoneticToDevanagari(text) {
     if (!text) return '';
     
@@ -106,37 +109,19 @@
     let i = 0;
     const input = text;
     
-    // Matra map for vowels
-    const matraMap = {
-      'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
-      'ऐ': 'ै', 'औ': 'ौ',
-      'इ': 'ि', 'उ': 'ु',
-      'ए': 'े', 'ओ': 'ो'
-    };
-    
-    // Set of vowel characters
-    const vowels = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ']);
-    const matras = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ']);
-    
     while (i < input.length) {
       let matched = false;
       
-      // Try to match longest rule first (case insensitive)
       for (const [pattern, replacement] of SORTED_RULES) {
         if (i + pattern.length <= input.length && 
             input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
           
-          // Check if replacement is a vowel
-          const isVowel = vowels.has(replacement);
-          const isMatra = matras.has(replacement);
-          
-          // Get last character of result (if any)
+          const isVowel = VOWELS.has(replacement);
           const lastChar = result[result.length - 1] || '';
-          const isConsonant = /[क-ह]/.test(lastChar) && !matras.has(lastChar);
+          const isConsonant = /[क-ह]/.test(lastChar) && !MATRAS.has(lastChar);
           
-          if (isVowel && isConsonant && !isMatra) {
-            // Convert vowel to matra form
-            const matra = matraMap[replacement];
+          if (isVowel && isConsonant) {
+            const matra = MATRA_MAP[replacement];
             if (matra) {
               result += matra;
             } else {
@@ -152,7 +137,6 @@
         }
       }
       
-      // If no match, keep the character
       if (!matched) {
         result += input[i];
         i++;
@@ -162,44 +146,43 @@
     return result;
   }
 
+  // Devanagari → Tirhuta
+  function devanagariToTirhuta(text) {
+    if (!text) return '';
+    let result = '';
+    for (const char of text) {
+      result += D2T[char] || char;
+    }
+    return result;
+  }
+
+  // Tirhuta → Devanagari
+  function tirhutaToDevanagari(text) {
+    if (!text) return '';
+    let result = '';
+    for (const char of text) {
+      result += T2D[char] || char;
+    }
+    return result;
+  }
+
   // ============================================================
   // 4. MAIN CONVERT FUNCTION
   // ============================================================
 
-  function convert(text, direction, inputMode) {
+  function convert(text, direction) {
     if (!text || text.trim() === '') return '';
     
     if (direction === 'dev-to-tir') {
-      // Devanagari → Tirhuta
-      let devanagariText = '';
-      
-      if (inputMode === 'phonetic') {
-        // Convert phonetic to Devanagari first
-        devanagariText = phoneticToDevanagari(text);
-      } else {
-        // Input is already Devanagari
-        devanagariText = text;
-      }
-      
-      // Convert Devanagari to Tirhuta
-      let result = '';
-      for (const char of devanagariText) {
-        result += D2T[char] || char;
-      }
-      return result;
-      
+      const devText = phoneticToDevanagari(text);
+      return devanagariToTirhuta(devText);
     } else {
-      // Tirhuta → Devanagari
-      let result = '';
-      for (const char of text) {
-        result += T2D[char] || char;
-      }
-      return result;
+      return tirhutaToDevanagari(text);
     }
   }
 
   // ============================================================
-  // 5. WIDGET STYLES (Complete CSS)
+  // 5. WIDGET STYLES
   // ============================================================
 
   function injectFonts() {
@@ -256,7 +239,7 @@
         position: fixed;
         bottom: 96px;
         right: 24px;
-        width: 400px;
+        width: 420px;
         max-width: calc(100vw - 32px);
         max-height: calc(100vh - 120px);
         background: #FDF6E3;
@@ -274,14 +257,8 @@
         animation: mwSlideUp 0.3s ease;
       }
       @keyframes mwSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px) scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
+        from { opacity: 0; transform: translateY(30px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
       }
 
       /* Panel Header */
@@ -460,6 +437,42 @@
         background: rgba(139,26,26,0.05);
       }
 
+      /* Phonetic Rules inside widget */
+      .mw-rules {
+        background: #FFF8E7;
+        border: 1px solid #C8A96E;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-top: 10px;
+        font-size: 0.7rem;
+        line-height: 1.6;
+        max-height: 100px;
+        overflow-y: auto;
+      }
+      .mw-rules h4 {
+        color: #8B1A1A;
+        font-size: 0.7rem;
+        margin-bottom: 4px;
+      }
+      .mw-rules .rule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 2px 8px;
+      }
+      .mw-rules code {
+        background: #2C1810;
+        color: #D4A017;
+        padding: 0 4px;
+        border-radius: 2px;
+        font-size: 0.65rem;
+        font-family: 'Courier New', monospace;
+      }
+      .mw-rules .rule-item {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+
       /* Page Converter */
       .mw-pg {
         margin-top: 10px;
@@ -567,6 +580,9 @@
           font-size: 0.8rem;
           padding: 10px 16px;
         }
+        .mw-rules .rule-grid {
+          grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        }
       }
 
       @media (max-width: 400px) {
@@ -618,21 +634,14 @@
             </select>
           </div>
           <div>
-            <span class="mw-lbl">🎤 मोड</span>
-            <select class="mw-sel" id="mw-mode" onchange="mwUpdateUI()">
-              <option value="phonetic">English Phonetic</option>
-              <option value="direct">देवनागरी</option>
-            </select>
-          </div>
-        </div>
-        <div class="mw-row">
-          <div>
             <span class="mw-lbl">🔤 फ़ॉन्ट</span>
             <select class="mw-sel" id="mw-font" onchange="mwApplyFont()">
               <option value="mithilauni">Mithilauni</option>
               <option value="noto">Noto Sans Tirhuta</option>
             </select>
           </div>
+        </div>
+        <div class="mw-row">
           <div>
             <span class="mw-lbl">⚡ स्वचालित</span>
             <select class="mw-sel" id="mw-auto">
@@ -640,20 +649,76 @@
               <option value="no">नहीं</option>
             </select>
           </div>
+          <div>
+            <span class="mw-lbl">📋</span>
+            <button class="mw-btn mw-bs" onclick="mwCopy()" style="width:100%;padding:8px;">📋 कॉपी</button>
+          </div>
         </div>
         
         <span class="mw-lbl">📝 इनपुट</span>
-        <textarea class="mw-ta" id="mw-in" placeholder="यहाँ लिखें..." oninput="mwHandleInput()"></textarea>
+        <textarea class="mw-ta" id="mw-in" placeholder="English phonetic type करें... (maithilii)" oninput="mwHandleInput()"></textarea>
         
         <span class="mw-lbl">📄 आउटपुट</span>
         <textarea class="mw-ta" id="mw-out" placeholder="परिवर्तित पाठ..." readonly></textarea>
         
         <div class="mw-btns">
           <button class="mw-btn mw-bp" onclick="mwConvert()">🔄 परिवर्तित</button>
-          <button class="mw-btn mw-bs" onclick="mwCopy()">📋 कॉपी</button>
           <button class="mw-btn mw-bo" onclick="mwClear()">🗑️ साफ़</button>
         </div>
-        
+
+        <!-- Phonetic Rules - NICHE -->
+        <div class="mw-rules">
+          <h4>⌨️ Phonetic Rules (English → देवनागरी → तिरहुता)</h4>
+          <div class="rule-grid">
+            <div class="rule-item"><code>a</code> अ</div>
+            <div class="rule-item"><code>aa/A</code> आ</div>
+            <div class="rule-item"><code>i</code> इ</div>
+            <div class="rule-item"><code>ii/I</code> ई</div>
+            <div class="rule-item"><code>u</code> उ</div>
+            <div class="rule-item"><code>uu/U</code> ऊ</div>
+            <div class="rule-item"><code>e</code> ए</div>
+            <div class="rule-item"><code>ai</code> ऐ</div>
+            <div class="rule-item"><code>o</code> ओ</div>
+            <div class="rule-item"><code>au</code> औ</div>
+            <div class="rule-item"><code>k</code> क</div>
+            <div class="rule-item"><code>kh</code> ख</div>
+            <div class="rule-item"><code>g</code> ग</div>
+            <div class="rule-item"><code>gh</code> घ</div>
+            <div class="rule-item"><code>ch</code> च</div>
+            <div class="rule-item"><code>chh</code> छ</div>
+            <div class="rule-item"><code>j</code> ज</div>
+            <div class="rule-item"><code>jh</code> झ</div>
+            <div class="rule-item"><code>T</code> ट</div>
+            <div class="rule-item"><code>Th</code> ठ</div>
+            <div class="rule-item"><code>D</code> ड</div>
+            <div class="rule-item"><code>Dh</code> ढ</div>
+            <div class="rule-item"><code>N</code> ण</div>
+            <div class="rule-item"><code>t</code> त</div>
+            <div class="rule-item"><code>th</code> थ</div>
+            <div class="rule-item"><code>d</code> द</div>
+            <div class="rule-item"><code>dh</code> ध</div>
+            <div class="rule-item"><code>n</code> न</div>
+            <div class="rule-item"><code>p</code> प</div>
+            <div class="rule-item"><code>ph</code> फ</div>
+            <div class="rule-item"><code>b</code> ब</div>
+            <div class="rule-item"><code>bh</code> भ</div>
+            <div class="rule-item"><code>m</code> म</div>
+            <div class="rule-item"><code>y</code> य</div>
+            <div class="rule-item"><code>r</code> र</div>
+            <div class="rule-item"><code>l</code> ल</div>
+            <div class="rule-item"><code>v/w</code> व</div>
+            <div class="rule-item"><code>sh/S</code> श</div>
+            <div class="rule-item"><code>s</code> स</div>
+            <div class="rule-item"><code>h</code> ह</div>
+            <div class="rule-item"><code>M</code> ं</div>
+            <div class="rule-item"><code>H</code> ः</div>
+            <div class="rule-item"><code>.</code> ्</div>
+          </div>
+          <div style="margin-top:4px;font-size:0.65rem;color:#8B7355;">
+            💡 <code>maithilii</code> → 𑒧𑒸𑒟𑒱𑒪𑒲
+          </div>
+        </div>
+
         <div class="mw-pg">
           <p>🌐 <strong>पूरे पेज</strong> का पाठ तिरहुता में बदलें</p>
           <select class="mw-sel" id="mw-pgfont" style="margin-bottom:8px;width:100%">
@@ -677,48 +742,26 @@
   }
 
   // ============================================================
-  // 7. WIDGET FUNCTIONS (Exposed globally)
+  // 7. WIDGET FUNCTIONS
   // ============================================================
 
   let pageConverted = false;
   let originals = [];
 
-  // Main convert function exposed globally
   window.mwConvert = function () {
     const inp = document.getElementById('mw-in').value;
     const dir = document.getElementById('mw-dir').value;
-    const mode = document.getElementById('mw-mode').value;
-    const result = convert(inp, dir, mode);
+    const result = convert(inp, dir);
     document.getElementById('mw-out').value = result;
     mwApplyFont();
   };
 
-  // Handle input with auto-convert
   window.mwHandleInput = function () {
     if (document.getElementById('mw-auto').value === 'yes') {
       mwConvert();
     }
   };
 
-  // Update UI based on mode
-  window.mwUpdateUI = function () {
-    const dir = document.getElementById('mw-dir').value;
-    const mode = document.getElementById('mw-mode').value;
-    const inp = document.getElementById('mw-in');
-    
-    if (dir === 'dev-to-tir') {
-      if (mode === 'phonetic') {
-        inp.placeholder = 'English phonetic type करें... (ka, ma, ra...)';
-      } else {
-        inp.placeholder = 'देवनागरी में लिखें...';
-      }
-    } else {
-      inp.placeholder = 'तिरहुता पाठ paste करें...';
-    }
-    mwConvert();
-  };
-
-  // Apply font to textareas
   window.mwApplyFont = function () {
     const font = document.getElementById('mw-font').value;
     const dir = document.getElementById('mw-dir').value;
@@ -732,17 +775,12 @@
     tirEl.classList.add(font === 'mithilauni' ? 'mw-fm' : 'mw-fn');
   };
 
-  // Copy output text
   window.mwCopy = function () {
     const text = document.getElementById('mw-out').value;
-    if (!text) {
-      mwToast('⚠️ पहले परिवर्तित करें!', 'error');
-      return;
-    }
+    if (!text) { mwToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
     navigator.clipboard.writeText(text).then(() => {
       mwToast('✅ कॉपी हो गया!', 'success');
     }).catch(() => {
-      // Fallback for older browsers
       const ta = document.getElementById('mw-out');
       ta.select();
       document.execCommand('copy');
@@ -750,28 +788,24 @@
     });
   };
 
-  // Clear all fields
   window.mwClear = function () {
     document.getElementById('mw-in').value = '';
     document.getElementById('mw-out').value = '';
     document.getElementById('mw-in').focus();
   };
 
-  // Convert entire page
   window.mwConvertPage = function () {
     const btn = document.getElementById('mw-pgbtn');
     const font = document.getElementById('mw-pgfont').value;
     const ff = font === 'mithilauni' ? "'Mithilauni','Noto Sans Tirhuta',serif" : "'Noto Sans Tirhuta',serif";
 
     if (!pageConverted) {
-      // Convert page to Tirhuta
       originals = [];
       const walker = document.createTreeWalker(
         document.body,
         NodeFilter.SHOW_TEXT,
         {
           acceptNode: function(node) {
-            // Skip widget elements
             if (node.parentElement && 
                 (node.parentElement.closest('#mw-panel') || 
                  node.parentElement.closest('#mw-fab') || 
@@ -780,7 +814,6 @@
                  node.parentElement.closest('style'))) {
               return NodeFilter.FILTER_REJECT;
             }
-            // Skip empty text
             if (!node.textContent.trim()) {
               return NodeFilter.FILTER_SKIP;
             }
@@ -792,14 +825,12 @@
       let node;
       while ((node = walker.nextNode())) {
         originals.push({ node: node, orig: node.textContent });
-        // Convert Devanagari text to Tirhuta
         const devText = node.textContent;
         let tirText = '';
         for (const char of devText) {
           tirText += D2T[char] || char;
         }
         node.textContent = tirText;
-        // Apply font to parent element
         if (node.parentElement) {
           node.parentElement.style.fontFamily = ff;
         }
@@ -811,7 +842,6 @@
       mwToast('✅ पेज तिरहुता में बदल गया!', 'success');
       
     } else {
-      // Restore original text
       originals.forEach(({ node, orig }) => {
         node.textContent = orig;
         if (node.parentElement) {
@@ -826,7 +856,6 @@
     }
   };
 
-  // Toast notification
   function mwToast(msg, type = '') {
     const toast = document.getElementById('mw-toast');
     toast.textContent = msg;
@@ -838,7 +867,7 @@
   }
 
   // ============================================================
-  // 8. INITIALIZATION
+  // 8. INIT
   // ============================================================
 
   function init() {
@@ -846,13 +875,11 @@
     injectCSS();
     buildWidget();
     
-    // Auto-convert on load if input has value
     setTimeout(() => {
       mwConvert();
       mwApplyFont();
     }, 100);
     
-    // Close panel on Escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         const panel = document.getElementById('mw-panel');
@@ -863,10 +890,9 @@
     });
     
     console.log('𑒧 Mithila Script Converter Widget loaded!');
-    console.log('📚 Use: Phonetic typing supported!');
+    console.log('📚 Type "maithilii" → 𑒧𑒸𑒟𑒱𑒪𑒲');
   }
 
-  // Run on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
