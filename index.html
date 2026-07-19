@@ -428,8 +428,8 @@ MAIN
       <div class="ctrl-group">
         <label>⚡ स्वचालित</label>
         <select id="autoConv">
-          <option value="yes">हाँ - टाइप करते ही</option>
-          <option value="no">नहीं - बटन दबाएं</option>
+          <option value="yes">हँ - टाइप करिते </option>
+          <option value="no">नहि - बटन दबाऊ</option>
         </select>
       </div>
       
@@ -501,18 +501,18 @@ MAIN
         <span class="count" id="outCount">0 अक्षर</span>
       </div>
       <textarea id="outText"
-        placeholder="परिवर्तित पाठ यहाँ दिखेगा..."
+        placeholder="परिवर्तित पाठ एतय देखायत ..."
         readonly></textarea>
     </div>
   </div>
 
   <!-- Actions -->
   <div class="action-bar">
-    <button class="btn btn-primary" onclick="doConvert()">🔄 परिवर्तित करें</button>
-    <button class="btn btn-secondary" onclick="doCopy()">📋 कॉपी करें</button>
-    <button class="btn btn-outline" onclick="doClear()">🗑️ साफ़ करें</button>
+    <button class="btn btn-primary" onclick="doConvert()">🔄 परिवर्तित करु</button>
+    <button class="btn btn-secondary" onclick="doCopy()">📋 कॉपी करु</button>
+    <button class="btn btn-outline" onclick="doClear()">🗑️ समेटाबू </button>
     <button class="btn btn-success" onclick="doDownload()">⬇️ डाउनलोड</button>
-    <button class="btn btn-outline" onclick="doShare()">🔗 शेयर करें</button>
+    <button class="btn btn-outline" onclick="doShare()">🔗 शेयर करू</button>
   </div>
 
   <!-- Font Preview -->
@@ -825,16 +825,16 @@ function updateUI() {
     outLabel.textContent = '📄 तिरहुता';
     
     if (inputMode === 'phonetic') {
-      inText.placeholder = 'English phonetic type करें... (ka, ma, ra...)';
+      inText.placeholder = 'English phonetic type करु... (ka, ma, ra...)';
       document.getElementById('phoneticInfo').style.display = 'block';
     } else {
-      inText.placeholder = 'देवनागरी में लिखें...';
+      inText.placeholder = 'देवनागरी में लिखु...';
       document.getElementById('phoneticInfo').style.display = 'none';
     }
   } else {
     inLabel.textContent = '📝 तिरहुता';
     outLabel.textContent = '📄 देवनागरी';
-    inText.placeholder = 'तिरहुता पाठ paste करें...';
+    inText.placeholder = 'तिरहुता पाठ paste करु...';
     document.getElementById('phoneticInfo').style.display = 'none';
   }
   
@@ -903,7 +903,7 @@ function doShare() {
 
 function doDownload() {
   const text = document.getElementById('outText').value;
-  if (!text) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
+  if (!text) { showToast('⚠️ पहिले परिवर्तित करु!', 'error'); return; }
   
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -914,7 +914,7 @@ function doDownload() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('✅ डाउनलोड हो गया!', 'success');
+  showToast('✅ डाउनलोड भगेल!', 'success');
 }
 
 function toggleHelp() {
