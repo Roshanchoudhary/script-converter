@@ -2,12 +2,23 @@
 <html lang="mai">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>मिथिला लिपि परिवर्तक | Tirhuta Converter</title>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="मैथिली भाषा के लिए तिरहुता-देवनागरी लिपि परिवर्तक। मोबाइल फ्रेंडली, PDF डाउनलोड के साथ।">
+<meta name="theme-color" content="#8B1A1A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- html2pdf Library for PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <style>
 /* ============================================================
-   COMPLETE CSS
+   PROFESSIONAL CSS - MOBILE FIRST
    ============================================================ */
 @font-face {
   font-family: 'Mithilauni';
@@ -18,62 +29,97 @@
 :root {
   --primary: #8B1A1A;
   --primary-dark: #5C0F0F;
+  --primary-light: #A52020;
   --secondary: #D4A017;
+  --secondary-dark: #B8860B;
   --bg: #FDF6E3;
   --surface: #FFFFFF;
   --text: #2C1810;
   --text-light: #8B7355;
   --border: #C8A96E;
   --radius: 12px;
-  --shadow: 0 4px 20px rgba(139,26,26,0.15);
-  --shadow-hover: 0 8px 30px rgba(139,26,26,0.25);
+  --shadow: 0 4px 20px rgba(139,26,26,0.12);
+  --shadow-hover: 0 8px 30px rgba(139,26,26,0.2);
+  --font-primary: 'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif;
+  --font-tirhuta: 'Mithilauni', 'Noto Sans Tirhuta', serif;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  font-family: 'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-primary);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  min-height: 100dvh;
   line-height: 1.6;
+  padding-bottom: calc(20px + var(--safe-bottom));
+  overflow-x: hidden;
 }
 
-/* Header */
+/* ============================================================
+   HEADER
+   ============================================================ */
 .header {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   padding: 16px 20px;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.header h1 { font-size: 1.6rem; letter-spacing: 1px; }
+
+.header h1 { 
+  font-size: clamp(1.2rem, 4vw, 1.8rem); 
+  letter-spacing: 1px; 
+}
 .header h1 span { color: var(--secondary); }
-.header p { opacity: 0.9; font-size: 0.9rem; margin-top: 2px; }
+.header p { 
+  opacity: 0.9; 
+  font-size: clamp(0.75rem, 2vw, 0.95rem); 
+  margin-top: 2px; 
+}
 
 /* Language Switcher */
 .lang-switcher {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   margin-top: 10px;
   flex-wrap: wrap;
 }
 .lang-btn {
-  padding: 6px 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  padding: 5px 14px;
+  border: 2px solid rgba(255,255,255,0.25);
   border-radius: 20px;
   background: transparent;
   color: white;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 700;
-  transition: all 0.3s;
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+  font-weight: 600;
+  transition: all 0.3s ease;
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .lang-btn:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
+}
+.lang-btn:active {
+  transform: scale(0.95);
 }
 .lang-btn.active {
   background: var(--secondary);
@@ -81,56 +127,71 @@ body {
   color: var(--text);
 }
 
-/* Container */
-.container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+/* ============================================================
+   CONTAINER
+   ============================================================ */
+.container { 
+  max-width: 1100px; 
+  margin: 12px auto; 
+  padding: 0 12px; 
+}
 
-/* Cards */
+/* ============================================================
+   CARDS
+   ============================================================ */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 16px;
+  margin-bottom: 14px;
   box-shadow: var(--shadow);
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
-.card:hover { box-shadow: var(--shadow-hover); }
+.card:active {
+  transform: scale(0.99);
+}
 
-/* Controls */
+/* ============================================================
+   CONTROLS - MOBILE OPTIMIZED
+   ============================================================ */
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
 }
 .ctrl-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex: 1;
-  min-width: 140px;
+  min-width: 120px;
 }
 .ctrl-group label {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 .ctrl-group select {
-  padding: 9px 14px;
+  padding: 8px 12px;
   border: 2px solid var(--border);
   border-radius: 8px;
   background: var(--bg);
-  font-size: 0.88rem;
+  font-size: clamp(0.78rem, 2vw, 0.88rem);
   color: var(--text);
   cursor: pointer;
-  font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+  font-family: var(--font-primary);
   transition: all 0.2s;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B1A1A' stroke-width='2' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
+  padding-right: 32px;
+  width: 100%;
+  min-height: 44px;
 }
 .ctrl-group select:focus {
   outline: none;
@@ -142,127 +203,166 @@ body {
   background: var(--secondary);
   border: none;
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
-  font-size: 1.3rem;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   flex-shrink: 0;
   color: var(--text);
   box-shadow: 0 2px 10px rgba(212,160,23,0.3);
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn-swap:hover { transform: rotate(180deg) scale(1.05); }
-.btn-swap:active { transform: rotate(180deg) scale(0.95); }
+.btn-swap:active {
+  transform: rotate(180deg) scale(0.92);
+}
 
-/* Editor */
+/* ============================================================
+   EDITOR - MOBILE OPTIMIZED
+   ============================================================ */
 .editor-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
 }
-@media (max-width: 700px) { .editor-grid { grid-template-columns: 1fr; } }
+@media (min-width: 700px) {
+  .editor-grid { grid-template-columns: 1fr 1fr; }
+}
 
 .panel {
   border: 2px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   transition: all 0.3s;
+  background: var(--surface);
 }
 .panel:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(139,26,26,0.1);
+  box-shadow: 0 0 0 4px rgba(139,26,26,0.08);
 }
 
 .panel-head {
-  background: linear-gradient(90deg, var(--primary), #A52020);
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
   color: white;
-  padding: 10px 16px;
-  font-size: 0.82rem;
+  padding: 8px 14px;
+  font-size: clamp(0.7rem, 1.8vw, 0.82rem);
   font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 40px;
 }
 .panel-head .count {
-  font-size: 0.7rem;
-  opacity: 0.8;
+  font-size: 0.65rem;
+  opacity: 0.85;
   background: rgba(255,255,255,0.15);
   padding: 2px 10px;
   border-radius: 12px;
+  white-space: nowrap;
 }
 
 textarea {
   width: 100%;
-  height: 200px;
+  height: 180px;
   border: none;
-  padding: 14px;
-  font-size: 1.1rem;
+  padding: 12px 14px;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
   line-height: 2;
   resize: vertical;
-  background: white;
+  background: var(--bg);
   color: var(--text);
-  font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+  font-family: var(--font-primary);
   transition: all 0.3s;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 600px) {
+  textarea { height: 140px; font-size: 1rem; }
 }
 textarea:focus { outline: none; }
 textarea::placeholder { color: #B0A090; font-size: 0.9rem; }
+textarea[readonly] {
+  background: var(--surface);
+  cursor: default;
+}
 
 /* Script-specific fonts */
-.tir-font { font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif !important; }
+.tir-font { font-family: var(--font-tirhuta) !important; }
 .noto-font { font-family: 'Noto Sans Tirhuta', serif !important; }
 
-/* Buttons */
+/* ============================================================
+   ACTION BAR - MOBILE OPTIMIZED
+   ============================================================ */
 .action-bar {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
 }
+@media (min-width: 500px) {
+  .action-bar { grid-template-columns: repeat(4, 1fr); }
+}
+
 .btn {
-  padding: 10px 18px;
+  padding: 10px 8px;
   border: none;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
-  font-family: 'Noto Sans Devanagari', Arial, sans-serif;
-  display: inline-flex;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+  display: flex;
   align-items: center;
-  gap: 6px;
-  flex: 1;
   justify-content: center;
-  min-width: 90px;
+  gap: 5px;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active {
+  transform: scale(0.96);
 }
 .btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(139,26,26,0.3); }
+.btn-primary:active { background: var(--primary-dark); }
 .btn-secondary { background: var(--secondary); color: var(--text); }
-.btn-secondary:hover { background: #B8860B; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(212,160,23,0.3); }
-.btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
-.btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+.btn-secondary:active { background: var(--secondary-dark); }
+.btn-outline { 
+  background: transparent; 
+  border: 2px solid var(--border); 
+  color: var(--text);
+}
+.btn-outline:active { border-color: var(--primary); color: var(--primary); }
 .btn-success { background: #2D6A4F; color: white; }
-.btn-success:hover { background: #1B4D3E; transform: translateY(-2px); }
+.btn-success:active { background: #1B4D3E; }
 
-/* Phonetic Rules */
+/* ============================================================
+   PHONETIC RULES - MOBILE SCROLLABLE
+   ============================================================ */
 .phonetic-rules {
   background: #FFF8E7;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 14px 18px;
-  margin-top: 16px;
-  font-size: 0.82rem;
+  padding: 12px 14px;
+  margin-top: 14px;
+  font-size: clamp(0.7rem, 1.8vw, 0.82rem);
   line-height: 1.8;
 }
 .phonetic-rules h4 {
   color: var(--primary);
   margin-bottom: 6px;
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
 }
 .phonetic-rules .rule-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 4px 8px;
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  gap: 2px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .phonetic-rules code {
   background: var(--text);
@@ -270,56 +370,120 @@ textarea::placeholder { color: #B0A090; font-size: 0.9rem; }
   padding: 1px 6px;
   border-radius: 3px;
   font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
+  font-size: clamp(0.6rem, 1.5vw, 0.75rem);
 }
 .phonetic-rules .rule-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.8rem;
+  gap: 3px;
+  font-size: clamp(0.65rem, 1.6vw, 0.78rem);
+  padding: 1px 0;
 }
 
-/* Toast */
+/* ============================================================
+   TOAST
+   ============================================================ */
 .toast {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: calc(20px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
   background: var(--text);
   color: white;
-  padding: 14px 24px;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 9999;
   pointer-events: none;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-.toast.show { opacity: 1; transform: translateY(0); }
+.toast.show { 
+  opacity: 1; 
+  transform: translateX(-50%) translateY(0);
+}
 .toast.success { background: #2D6A4F; }
 .toast.error { background: #B91C1C; }
+.toast.info { background: var(--primary); }
 
-/* Footer */
+/* ============================================================
+   FOOTER
+   ============================================================ */
 .footer {
   text-align: center;
-  padding: 24px 16px;
+  padding: 20px 16px;
   color: var(--text-light);
-  font-size: 0.82rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.82rem);
   border-top: 1px solid var(--border);
-  margin-top: 20px;
+  margin-top: 16px;
+}
+.footer .tirhuta-text {
+  font-family: var(--font-tirhuta);
+  font-size: 1.1em;
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .header h1 { font-size: 1.2rem; }
-  .controls { flex-direction: column; align-items: stretch; }
-  .btn-swap { align-self: center; }
-  textarea { height: 140px; font-size: 1rem; }
-  .action-bar .btn { flex: 1; min-width: 60px; font-size: 0.75rem; padding: 8px 10px; }
-  .phonetic-rules .rule-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
-  .lang-btn { padding: 4px 12px; font-size: 0.7rem; }
+/* ============================================================
+   PDF DOWNLOAD BUTTON - SPECIAL
+   ============================================================ */
+.btn-pdf {
+  background: #DC3545;
+  color: white;
+}
+.btn-pdf:active { background: #B02A37; }
+
+/* ============================================================
+   SCROLLBAR STYLING
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ============================================================
+   PRINT STYLES - PDF के लिए
+   ============================================================ */
+@media print {
+  .header { position: static; }
+  .lang-switcher, .btn-swap, .action-bar, .toast { display: none !important; }
+  .panel { border-color: #000 !important; break-inside: avoid; }
+  textarea { height: auto !important; min-height: 100px; border: 1px solid #ccc; }
+  .container { margin: 10px auto; }
+  .card { box-shadow: none !important; border-color: #ddd; }
+  .phonetic-rules { background: #f9f9f9; }
+  .footer { border-top-color: #ddd; }
+}
+
+/* ============================================================
+   TOUCH IMPROVEMENTS
+   ============================================================ */
+@media (hover: none) {
+  .btn:hover { transform: none !important; }
+  .card:hover { box-shadow: var(--shadow); }
+  .btn:active { transform: scale(0.96); }
+}
+
+/* ============================================================
+   SAFE AREA SUPPORT
+   ============================================================ */
+@supports (padding: max(0px)) {
+  .header { padding-top: max(16px, env(safe-area-inset-top)); }
+  .container { padding-left: max(12px, env(safe-area-inset-left)); }
+  .container { padding-right: max(12px, env(safe-area-inset-right)); }
 }
 </style>
 </head>
@@ -332,7 +496,6 @@ HEADER
   <h1 id="siteTitle">𑒧 <span id="titleText">मिथिला लिपि परिवर्तक</span></h1>
   <p id="subtitleText">तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग</p>
   
-  <!-- भाषा चयन -->
   <div class="lang-switcher">
     <button class="lang-btn active" data-lang="mai" onclick="setLanguage('mai')">𑒧 मैथिली</button>
     <button class="lang-btn" data-lang="hi" onclick="setLanguage('hi')">हिन्दी</button>
@@ -349,14 +512,14 @@ MAIN
   <div class="card">
     <div class="controls">
       <div class="ctrl-group">
-        <label id="dirLabel">🔄 परिवर्तन दिशा</label>
+        <label id="dirLabel">🔄 दिशा</label>
         <select id="dir" onchange="updateUI()">
           <option value="dev-to-tir">देवनागरी → तिरहुता</option>
           <option value="tir-to-dev">तिरहुता → देवनागरी</option>
         </select>
       </div>
       
-      <button class="btn-swap" onclick="swapDir()" title="दिशा बदलू">⇄</button>
+      <button class="btn-swap" onclick="swapDir()" aria-label="Swap direction">⇄</button>
       
       <div class="ctrl-group">
         <label id="fontLabel">🔤 फ़ॉन्ट</label>
@@ -381,16 +544,17 @@ MAIN
     <div class="panel">
       <div class="panel-head">
         <b id="inLabel">📝 देवनागरी / English (इनपुट)</b>
-        <span class="count" id="inCount">0</span>
+        <span class="count" id="inCount">0 अक्षर</span>
       </div>
       <textarea id="inText"
-        placeholder="एतय लिखू... (English phonetic या देवनागरी)"
-        oninput="handleInput()"></textarea>
+        placeholder="एतय लिखू... (English phonetic)"
+        oninput="handleInput()"
+        autofocus></textarea>
     </div>
     <div class="panel">
       <div class="panel-head">
         <b id="outLabel">📄 तिरहुता (आउटपुट)</b>
-        <span class="count" id="outCount">0</span>
+        <span class="count" id="outCount">0 अक्षर</span>
       </div>
       <textarea id="outText"
         placeholder="परिवर्तित पाठ एतय देखाई..."
@@ -400,20 +564,24 @@ MAIN
 
   <!-- Actions -->
   <div class="action-bar">
-    <button class="btn btn-primary" onclick="doConvert()" id="convertBtn">🔄 परिवर्तित करू</button>
-    <button class="btn btn-secondary" onclick="doCopy()" id="copyBtn">📋 कॉपी करू</button>
-    <button class="btn btn-outline" onclick="doClear()" id="clearBtn">🗑️ साफ़ करू</button>
-    <button class="btn btn-success" onclick="doDownload()" id="downloadBtn">⬇️ डाउनलोड</button>
+    <button class="btn btn-primary" onclick="doConvert()" id="convertBtn">🔄 परिवर्तित</button>
+    <button class="btn btn-secondary" onclick="doCopy()" id="copyBtn">📋 कॉपी</button>
+    <button class="btn btn-outline" onclick="doClear()" id="clearBtn">🗑️ साफ़</button>
+    <button class="btn btn-success" onclick="doDownloadTxt()" id="downloadBtn">⬇️ टेक्स्ट</button>
+  </div>
+  
+  <!-- PDF Download - Extra row -->
+  <div class="action-bar" style="grid-template-columns: 1fr 1fr;">
+    <button class="btn btn-pdf" onclick="doDownloadPDF()" id="pdfBtn">📄 PDF डाउनलोड</button>
+    <button class="btn btn-success" onclick="doDownloadTirhuta()" id="tirhutaDownloadBtn">𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड</button>
   </div>
 
   <!-- Phonetic Rules -->
-  <div class="phonetic-rules">
-    <h4 id="rulesTitle">⌨️ फोनेटिक टाइपिंग नियम (English → देवनागरी → तिरहुता)</h4>
-    <div class="rule-grid" id="ruleGrid">
-      <!-- Rules rendered by JS -->
-    </div>
-    <div style="margin-top:8px;font-size:0.78rem;color:var(--text-light);" id="exampleText">
-      💡 <strong>उदाहरण:</strong> <code>maithilii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒲
+  <div class="phonetic-rules" id="rulesContainer">
+    <h4 id="rulesTitle">⌨️ फोनेटिक टाइपिंग नियम</h4>
+    <div class="rule-grid" id="ruleGrid"></div>
+    <div style="margin-top:8px;font-size:clamp(0.65rem,1.6vw,0.78rem);color:var(--text-light);" id="exampleText">
+      💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱
     </div>
   </div>
 
@@ -424,7 +592,7 @@ MAIN
 
 <!-- Footer -->
 <div class="footer" id="footerText">
-  𑒧𑒻𑒟𑒱𑒪𑒲 𑒦𑒰𑒭𑒰 𑒮𑒹𑒦𑒰 | ❤️ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒪𑒱𑒣𑒱 𑒮𑒴𑒩𑒏𑓂𑒮𑒰 
+  <span class="tirhuta-text">𑒧𑒻𑒟𑒱𑒪𑒲 𑒦𑒰𑒭𑒰 𑒮𑒹𑒦𑒰</span> | ❤️ <span class="tirhuta-text">𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒪𑒱𑒣𑒱 𑒮𑒴𑒩𑒏𑓂𑒮𑒰</span>
   <br><small>मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
 </div>
 
@@ -435,28 +603,30 @@ JAVASCRIPT - COMPLETE
 'use strict';
 
 // ============================================================
-// 1. LANGUAGE DATA - सब भाषा
+// 1. LANGUAGE DATA
 // ============================================================
 
 const LANGUAGES = {
   mai: {
     siteTitle: 'मिथिला लिपि परिवर्तक',
     subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग',
-    dirLabel: '🔄 परिवर्तन दिशा',
+    dirLabel: '🔄 दिशा',
     fontLabel: '🔤 फ़ॉन्ट',
     autoLabel: '⚡ स्वचालित',
     autoYes: 'हँ - टाइप करतहि',
     autoNo: 'नहि - बटन दबाऊ',
     inLabel: '📝 देवनागरी / English (इनपुट)',
     outLabel: '📄 तिरहुता (आउटपुट)',
-    inPlaceholder: 'एतय लिखू... (English phonetic या देवनागरी)',
+    inPlaceholder: 'एतय लिखू... (English phonetic)',
     outPlaceholder: 'परिवर्तित पाठ एतय देखाई...',
-    convertBtn: '🔄 परिवर्तित करू',
-    copyBtn: '📋 कॉपी करू',
-    clearBtn: '🗑️ साफ़ करू',
-    downloadBtn: '⬇️ डाउनलोड',
-    rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम (English → देवनागरी → तिरहुता)',
-    example: '💡 <strong>उदाहरण:</strong> <code>maithilii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒲',
+    convertBtn: '🔄 परिवर्तित',
+    copyBtn: '📋 कॉपी',
+    clearBtn: '🗑️ साफ़',
+    downloadBtn: '⬇️ टेक्स्ट',
+    pdfBtn: '📄 PDF डाउनलोड',
+    tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
+    rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
+    example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
     footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
     dirDevToTir: 'देवनागरी → तिरहुता',
     dirTirToDev: 'तिरहुता → देवनागरी'
@@ -464,21 +634,23 @@ const LANGUAGES = {
   hi: {
     siteTitle: 'मिथिला लिपि परिवर्तक',
     subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग',
-    dirLabel: '🔄 परिवर्तन दिशा',
+    dirLabel: '🔄 दिशा',
     fontLabel: '🔤 फ़ॉन्ट',
     autoLabel: '⚡ स्वचालित',
     autoYes: 'हाँ - टाइप करते ही',
     autoNo: 'नहीं - बटन दबाएं',
     inLabel: '📝 देवनागरी / English (इनपुट)',
     outLabel: '📄 तिरहुता (आउटपुट)',
-    inPlaceholder: 'यहाँ लिखें... (English phonetic या देवनागरी)',
+    inPlaceholder: 'यहाँ लिखें... (English phonetic)',
     outPlaceholder: 'परिवर्तित पाठ यहाँ दिखेगा...',
-    convertBtn: '🔄 परिवर्तित करें',
-    copyBtn: '📋 कॉपी करें',
-    clearBtn: '🗑️ साफ़ करें',
-    downloadBtn: '⬇️ डाउनलोड',
-    rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम (English → देवनागरी → तिरहुता)',
-    example: '💡 <strong>उदाहरण:</strong> <code>maithilii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒲',
+    convertBtn: '🔄 परिवर्तित',
+    copyBtn: '📋 कॉपी',
+    clearBtn: '🗑️ साफ़',
+    downloadBtn: '⬇️ टेक्स्ट',
+    pdfBtn: '📄 PDF डाउनलोड',
+    tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
+    rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
+    example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
     footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
     dirDevToTir: 'देवनागरी → तिरहुता',
     dirTirToDev: 'तिरहुता → देवनागरी'
@@ -493,14 +665,16 @@ const LANGUAGES = {
     autoNo: 'No - Manual',
     inLabel: '📝 Devanagari / English (Input)',
     outLabel: '📄 Tirhuta (Output)',
-    inPlaceholder: 'Type here... (English phonetic or Devanagari)',
+    inPlaceholder: 'Type here... (English phonetic)',
     outPlaceholder: 'Converted text will appear here...',
     convertBtn: '🔄 Convert',
     copyBtn: '📋 Copy',
     clearBtn: '🗑️ Clear',
-    downloadBtn: '⬇️ Download',
-    rulesTitle: '⌨️ Phonetic Typing Rules (English → Devanagari → Tirhuta)',
-    example: '💡 <strong>Example:</strong> <code>maithilii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒲',
+    downloadBtn: '⬇️ Text',
+    pdfBtn: '📄 PDF Download',
+    tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 Download',
+    rulesTitle: '⌨️ Phonetic Typing Rules',
+    example: '💡 <strong>Example:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
     footer: 'Maithili Language Service | ❤️ Tirhuta Script Preservation',
     dirDevToTir: 'Devanagari → Tirhuta',
     dirTirToDev: 'Tirhuta → Devanagari'
@@ -539,32 +713,64 @@ for (const [tir, dev] of Object.entries(T2D)) {
 }
 
 // ============================================================
-// 3. PHONETIC RULES
+// 3. CORRECT PHONETIC RULES
 // ============================================================
 
 const PHONETIC_RULES = [
+  // VOWELS - LONGEST FIRST
   ['aa', 'आ'], ['AA', 'आ'], ['A', 'आ'],
-  ['ii', 'ई'], ['II', 'ई'], ['I', 'ई'],
-  ['uu', 'ऊ'], ['UU', 'ऊ'], ['U', 'ऊ'],
-  ['ai', 'ऐ'], ['au', 'औ'],
-  ['e', 'ए'], ['o', 'ओ'],
-  ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
+  ['ii', 'ी'], ['II', 'ी'], ['I', 'ी'],
+  ['uu', 'ू'], ['UU', 'ू'], ['U', 'ू'],
+  ['ai', 'ै'], ['au', 'ौ'],
+  ['e', 'े'], ['o', 'ो'],
+  ['i', 'ि'], ['u', 'ु'],
+  ['a', 'अ'],
+  
+  // ऋ and ॠ
   ['R', 'ऋ'], ['RR', 'ॠ'],
-  ['kh', 'ख'], ['gh', 'घ'], ['chh', 'छ'], ['jh', 'झ'],
-  ['th', 'थ'], ['dh', 'ध'], ['ph', 'फ'], ['bh', 'भ'],
-  ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'], ['N', 'ण'],
-  ['k', 'क'], ['g', 'ग'], ['ch', 'च'], ['j', 'ज'],
-  ['t', 'त'], ['d', 'द'], ['p', 'प'], ['b', 'ब'],
-  ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
-  ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
-  ['h', 'ह'], ['m', 'म'], ['n', 'न'],
-  ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
-  ['0', '०'], ['1', '१'], ['2', '२'], ['3', '३'],
-  ['4', '४'], ['5', '५'], ['6', '६'], ['7', '७'],
-  ['8', '८'], ['9', '९'],
+  
+  // ASPIRATED CONSONANTS
+  ['kh', 'ख'], ['Kh', 'ख'],
+  ['gh', 'घ'], ['Gh', 'घ'],
+  ['chh', 'छ'], ['Chh', 'छ'],
+  ['jh', 'झ'], ['Jh', 'झ'],
+  ['th', 'थ'], ['Th', 'थ'],
+  ['dh', 'ध'], ['Dh', 'ध'],
+  ['ph', 'फ'], ['Ph', 'फ'],
+  ['bh', 'भ'], ['Bh', 'भ'],
+  
+  // RETROFLEX
+  ['T', 'ट'], ['Th', 'ठ'],
+  ['D', 'ड'], ['Dh', 'ढ'],
+  ['N', 'ण'],
+  
+  // REGULAR CONSONANTS
+  ['k', 'क'], ['g', 'ग'],
+  ['ch', 'च'], ['j', 'ज'],
+  ['t', 'त'], ['d', 'द'],
+  ['p', 'प'], ['b', 'ब'],
+  ['y', 'य'], ['r', 'र'],
+  ['l', 'ल'], ['v', 'व'],
+  ['w', 'व'], ['sh', 'श'],
+  ['S', 'श'], ['s', 'स'],
+  ['h', 'ह'], ['m', 'म'],
+  ['n', 'न'],
+  
+  // SPECIAL
+  ['M', 'ं'], ['H', 'ः'],
+  ['.', '्'], ['~', 'ँ'],
+  
+  // NUMBERS
+  ['0', '०'], ['1', '१'], ['2', '२'],
+  ['3', '३'], ['4', '४'], ['5', '५'],
+  ['6', '६'], ['7', '७'], ['8', '८'], ['9', '९'],
 ];
 
 const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
+
+// ============================================================
+// 4. MATRA SYSTEM
+// ============================================================
 
 const MATRA_MAP = {
   'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
@@ -580,26 +786,37 @@ const MATRAS = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 
 const CONSONANTS = new Set(['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह']);
 
 // ============================================================
-// 4. CONVERSION ENGINE
+// 5. CONVERSION ENGINE
 // ============================================================
 
 function phoneticToDevanagari(text) {
   if (!text) return '';
+  
   let result = '';
   let i = 0;
   const input = text;
   
   while (i < input.length) {
     let matched = false;
+    
     for (const [pattern, replacement] of SORTED_RULES) {
       if (i + pattern.length <= input.length && 
           input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
-        const isVowel = VOWELS.has(replacement);
+        
         const lastChar = result[result.length - 1] || '';
         const isLastConsonant = CONSONANTS.has(lastChar);
         const isLastMatra = MATRAS.has(lastChar);
+        const isMatra = MATRAS.has(replacement);
+        const isVowel = VOWELS.has(replacement);
         
-        if (isVowel && isLastConsonant) {
+        if (isMatra && isLastConsonant) {
+          if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
+            result = result.slice(0, -1) + replacement;
+          } else {
+            result += replacement;
+          }
+        }
+        else if (isVowel && isLastConsonant) {
           const matra = MATRA_MAP[replacement];
           if (matra) {
             if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
@@ -610,21 +827,26 @@ function phoneticToDevanagari(text) {
           } else {
             result += replacement;
           }
-        } else if (isVowel && isLastMatra) {
-          result += replacement;
-        } else {
+        }
+        else if ((isVowel || isMatra) && (isLastMatra || VOWELS.has(lastChar))) {
           result += replacement;
         }
+        else {
+          result += replacement;
+        }
+        
         i += pattern.length;
         matched = true;
         break;
       }
     }
+    
     if (!matched) {
       result += input[i];
       i++;
     }
   }
+  
   return result.replace(/ +/g, ' ');
 }
 
@@ -656,11 +878,10 @@ function convert(text, direction) {
 }
 
 // ============================================================
-// 5. LANGUAGE SWITCHER FUNCTION
+// 6. LANGUAGE SWITCHER
 // ============================================================
 
 function setLanguage(lang) {
-  // Update active button
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
@@ -668,7 +889,6 @@ function setLanguage(lang) {
   const data = LANGUAGES[lang];
   if (!data) return;
   
-  // Update all UI elements
   document.getElementById('titleText').textContent = data.siteTitle;
   document.getElementById('subtitleText').textContent = data.subtitle;
   document.getElementById('dirLabel').textContent = data.dirLabel;
@@ -684,6 +904,8 @@ function setLanguage(lang) {
   document.getElementById('copyBtn').textContent = data.copyBtn;
   document.getElementById('clearBtn').textContent = data.clearBtn;
   document.getElementById('downloadBtn').textContent = data.downloadBtn;
+  document.getElementById('pdfBtn').textContent = data.pdfBtn;
+  document.getElementById('tirhutaDownloadBtn').textContent = data.tirhutaDownloadBtn;
   document.getElementById('rulesTitle').textContent = data.rulesTitle;
   document.getElementById('exampleText').innerHTML = data.example;
   document.getElementById('footerText').innerHTML = data.footer;
@@ -692,12 +914,11 @@ function setLanguage(lang) {
   dirSelect.options[0].text = data.dirDevToTir;
   dirSelect.options[1].text = data.dirTirToDev;
   
-  // Save language preference
   localStorage.setItem('tirhuta-lang', lang);
 }
 
 // ============================================================
-// 6. UI CONTROLLERS
+// 7. UI CONTROLLERS
 // ============================================================
 
 function doConvert() {
@@ -732,7 +953,7 @@ function updateUI() {
   if (direction === 'dev-to-tir') {
     inLabel.textContent = '📝 देवनागरी / English (इनपुट)';
     outLabel.textContent = '📄 तिरहुता (आउटपुट)';
-    inText.placeholder = 'English phonetic type करू... (maithilii, mithilaa...)';
+    inText.placeholder = 'English phonetic type करू... (maithili, mithila...)';
   } else {
     inLabel.textContent = '📝 तिरहुता (इनपुट)';
     outLabel.textContent = '📄 देवनागरी (आउटपुट)';
@@ -764,10 +985,19 @@ function applyFont() {
   tirElement.classList.add(font === 'mithilauni' ? 'tir-font' : 'noto-font');
 }
 
+// ============================================================
+// 8. DOWNLOAD FUNCTIONS
+// ============================================================
+
 function doCopy() {
   const text = document.getElementById('outText').value;
   if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
   navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ कॉपी भ गेल!', 'success');
+  }).catch(() => {
+    const out = document.getElementById('outText');
+    out.select();
+    document.execCommand('copy');
     showToast('✅ कॉपी भ गेल!', 'success');
   });
 }
@@ -776,10 +1006,11 @@ function doClear() {
   document.getElementById('inText').value = '';
   document.getElementById('outText').value = '';
   updateCounts();
+  document.getElementById('inText').focus();
   showToast('🗑️ साफ़ भ गेल!', 'info');
 }
 
-function doDownload() {
+function doDownloadTxt() {
   const text = document.getElementById('outText').value;
   if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -791,8 +1022,113 @@ function doDownload() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('✅ डाउनलोड भ गेल!', 'success');
+  showToast('✅ टेक्स्ट डाउनलोड भ गेल!', 'success');
 }
+
+function doDownloadTirhuta() {
+  const text = document.getElementById('outText').value;
+  if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
+  
+  // Convert to Tirhuta only
+  const direction = document.getElementById('dir').value;
+  let tirhutaText = text;
+  if (direction === 'tir-to-dev') {
+    tirhutaText = devanagariToTirhuta(text);
+  }
+  
+  const blob = new Blob([tirhutaText], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tirhuta-only-' + Date.now() + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✅ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड भ गेल!', 'success');
+}
+
+function doDownloadPDF() {
+  const outputText = document.getElementById('outText').value;
+  if (!outputText) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
+  
+  const inputText = document.getElementById('inText').value;
+  const direction = document.getElementById('dir').value;
+  const lang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
+  const data = LANGUAGES[lang] || LANGUAGES.mai;
+  
+  // Create PDF content
+  const pdfContent = document.createElement('div');
+  pdfContent.style.cssText = `
+    font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    color: #2C1810;
+    line-height: 1.8;
+  `;
+  
+  pdfContent.innerHTML = `
+    <h1 style="color: #8B1A1A; font-size: 24px; border-bottom: 3px solid #D4A017; padding-bottom: 10px;">
+      ${data.siteTitle}
+    </h1>
+    <p style="color: #8B7355; font-size: 14px; margin-bottom: 20px;">
+      ${data.subtitle}
+    </p>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #FDF6E3; border-radius: 8px; border-left: 4px solid #8B1A1A;">
+      <strong style="color: #8B1A1A;">📝 ${data.inLabel.split(' ').slice(1).join(' ')}:</strong>
+      <p style="font-size: 16px; margin: 5px 0 0 0; padding: 10px; background: white; border-radius: 4px;">
+        ${inputText || '(empty)'}
+      </p>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #FDF6E3; border-radius: 8px; border-left: 4px solid #D4A017;">
+      <strong style="color: #8B1A1A;">📄 ${data.outLabel.split(' ').slice(1).join(' ')}:</strong>
+      <p style="font-size: 18px; margin: 5px 0 0 0; padding: 10px; background: white; border-radius: 4px; font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;">
+        ${outputText}
+      </p>
+    </div>
+    
+    <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #C8A96E; font-size: 12px; color: #8B7355; text-align: center;">
+      ${data.footer} | ${new Date().toLocaleDateString('mai')}
+      <br>${data.dirDevToTir} ${direction === 'dev-to-tir' ? '✓' : ''} | ${data.dirTirToDev} ${direction === 'tir-to-dev' ? '✓' : ''}
+    </div>
+  `;
+  
+  // Generate PDF
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: 'tirhuta-converted-' + Date.now() + '.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { 
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#FFFFFF'
+    },
+    jsPDF: { 
+      unit: 'mm', 
+      format: 'a4', 
+      orientation: 'portrait' 
+    },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+  
+  showToast('⏳ PDF बन रहल अछि...', 'info');
+  
+  html2pdf().set(opt).from(pdfContent).save().then(() => {
+    showToast('✅ PDF डाउनलोड भ गेल!', 'success');
+  }).catch((err) => {
+    console.error('PDF Error:', err);
+    showToast('⚠️ PDF बनए मे त्रुटि!', 'error');
+  });
+}
+
+// ============================================================
+// 9. TOAST
+// ============================================================
 
 function showToast(msg, type = '') {
   const toast = document.getElementById('toast');
@@ -803,14 +1139,14 @@ function showToast(msg, type = '') {
 }
 
 // ============================================================
-// 7. RENDER RULES
+// 10. RENDER RULES
 // ============================================================
 
 function renderRules() {
   const rules = [
-    ['a', 'अ'], ['aa', 'आ'], ['i', 'इ'], ['ii', 'ई'],
-    ['u', 'उ'], ['uu', 'ऊ'], ['e', 'ए'], ['ai', 'ऐ'],
-    ['o', 'ओ'], ['au', 'औ'], ['R', 'ऋ'], ['RR', 'ॠ'],
+    ['a', 'अ'], ['aa', 'आ'], ['i', 'ि'], ['ii', 'ी'],
+    ['u', 'ु'], ['uu', 'ू'], ['e', 'े'], ['o', 'ो'],
+    ['ai', 'ै'], ['au', 'ौ'], ['R', 'ृ'], ['RR', 'ॄ'],
     ['k', 'क'], ['kh', 'ख'], ['g', 'ग'], ['gh', 'घ'],
     ['ch', 'च'], ['chh', 'छ'], ['j', 'ज'], ['jh', 'झ'],
     ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'],
@@ -818,7 +1154,7 @@ function renderRules() {
     ['n', 'न'], ['p', 'प'], ['ph', 'फ'], ['b', 'ब'],
     ['bh', 'भ'], ['m', 'म'], ['y', 'य'], ['r', 'र'],
     ['l', 'ल'], ['v', 'व'], ['sh', 'श'], ['s', 'स'],
-    ['h', 'ह'], ['.', '्']
+    ['h', 'ह'], ['.', '्'], ['M', 'ं'], ['H', 'ः']
   ];
   
   const grid = document.getElementById('ruleGrid');
@@ -828,7 +1164,7 @@ function renderRules() {
 }
 
 // ============================================================
-// 8. INIT
+// 11. INIT
 // ============================================================
 
 window.onload = function() {
@@ -836,11 +1172,9 @@ window.onload = function() {
   updateUI();
   updateCounts();
   
-  // Load saved language preference
   const savedLang = localStorage.getItem('tirhuta-lang') || 'mai';
   setLanguage(savedLang);
   
-  // Focus
   document.getElementById('inText').focus();
   
   console.log('✅ मिथिला लिपि परिवर्तक लोड भ गेल!');
