@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   CSS - पूरा (Same as before)
+   COMPLETE CSS
    ============================================================ */
 @font-face {
   font-family: 'Mithilauni';
@@ -57,6 +57,7 @@ body {
   justify-content: center;
   gap: 8px;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 .lang-btn {
   padding: 6px 16px;
@@ -325,11 +326,11 @@ textarea::placeholder { color: #B0A090; font-size: 0.9rem; }
 <body>
 
 <!-- ============================================================
-HEADER - मैथिली मे
+HEADER
 ============================================================ -->
 <header class="header">
-  <h1>𑒧 <span>मिथिला लिपि परिवर्तक</span></h1>
-  <p>तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग</p>
+  <h1 id="siteTitle">𑒧 <span id="titleText">मिथिला लिपि परिवर्तक</span></h1>
+  <p id="subtitleText">तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग</p>
   
   <!-- भाषा चयन -->
   <div class="lang-switcher">
@@ -340,7 +341,7 @@ HEADER - मैथिली मे
 </header>
 
 <!-- ============================================================
-MAIN - मैथिली मे
+MAIN
 ============================================================ -->
 <div class="container">
 
@@ -348,7 +349,7 @@ MAIN - मैथिली मे
   <div class="card">
     <div class="controls">
       <div class="ctrl-group">
-        <label>🔄 परिवर्तन दिशा</label>
+        <label id="dirLabel">🔄 परिवर्तन दिशा</label>
         <select id="dir" onchange="updateUI()">
           <option value="dev-to-tir">देवनागरी → तिरहुता</option>
           <option value="tir-to-dev">तिरहुता → देवनागरी</option>
@@ -358,7 +359,7 @@ MAIN - मैथिली मे
       <button class="btn-swap" onclick="swapDir()" title="दिशा बदलू">⇄</button>
       
       <div class="ctrl-group">
-        <label>🔤 फ़ॉन्ट</label>
+        <label id="fontLabel">🔤 फ़ॉन्ट</label>
         <select id="fontSel" onchange="applyFont()">
           <option value="mithilauni">Mithilauni</option>
           <option value="noto">Noto Sans Tirhuta</option>
@@ -366,10 +367,10 @@ MAIN - मैथिली मे
       </div>
       
       <div class="ctrl-group">
-        <label>⚡ स्वचालित</label>
+        <label id="autoLabel">⚡ स्वचालित</label>
         <select id="autoConv">
-          <option value="yes">हँ - टाइप करतहि</option>
-          <option value="no">नहि - बटन दबाऊ</option>
+          <option value="yes" id="autoYes">हँ - टाइप करतहि</option>
+          <option value="no" id="autoNo">नहि - बटन दबाऊ</option>
         </select>
       </div>
     </div>
@@ -399,19 +400,19 @@ MAIN - मैथिली मे
 
   <!-- Actions -->
   <div class="action-bar">
-    <button class="btn btn-primary" onclick="doConvert()">🔄 परिवर्तित करू</button>
-    <button class="btn btn-secondary" onclick="doCopy()">📋 कॉपी करू</button>
-    <button class="btn btn-outline" onclick="doClear()">🗑️ साफ़ करू</button>
-    <button class="btn btn-success" onclick="doDownload()">⬇️ डाउनलोड</button>
+    <button class="btn btn-primary" onclick="doConvert()" id="convertBtn">🔄 परिवर्तित करू</button>
+    <button class="btn btn-secondary" onclick="doCopy()" id="copyBtn">📋 कॉपी करू</button>
+    <button class="btn btn-outline" onclick="doClear()" id="clearBtn">🗑️ साफ़ करू</button>
+    <button class="btn btn-success" onclick="doDownload()" id="downloadBtn">⬇️ डाउनलोड</button>
   </div>
 
-  <!-- Phonetic Rules - मैथिली मे -->
+  <!-- Phonetic Rules -->
   <div class="phonetic-rules">
-    <h4>⌨️ फोनेटिक टाइपिंग नियम (English → देवनागरी → तिरहुता)</h4>
+    <h4 id="rulesTitle">⌨️ फोनेटिक टाइपिंग नियम (English → देवनागरी → तिरहुता)</h4>
     <div class="rule-grid" id="ruleGrid">
       <!-- Rules rendered by JS -->
     </div>
-    <div style="margin-top:8px;font-size:0.78rem;color:var(--text-light);">
+    <div style="margin-top:8px;font-size:0.78rem;color:var(--text-light);" id="exampleText">
       💡 <strong>उदाहरण:</strong> <code>maithilii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒲
     </div>
   </div>
@@ -421,494 +422,20 @@ MAIN - मैथिली मे
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Footer - मैथिली मे -->
-<div class="footer">
+<!-- Footer -->
+<div class="footer" id="footerText">
   𑒧𑒻𑒟𑒱𑒪𑒲 𑒦𑒰𑒭𑒰 𑒮𑒹𑒦𑒰 | ❤️ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒪𑒱𑒣𑒱 𑒮𑒴𑒩𑒏𑓂𑒮𑒰 
   <br><small>मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
 </div>
 
 <!-- ============================================================
-JAVASCRIPT - COMPLETE WITH ALL MATRAS & MAITHILI UI
+JAVASCRIPT - COMPLETE
 ============================================================ -->
 <script>
 'use strict';
 
 // ============================================================
-// 1. COMPLETE UNICODE MAPS
-// ============================================================
-
-// Tirhuta → Devanagari
-const T2D = {
-  // Vowels (ALL 14)
-  '𑒁': 'अ', '𑒂': 'आ', '𑒃': 'इ', '𑒄': 'ई',
-  '𑒅': 'उ', '𑒆': 'ऊ', '𑒇': 'ऋ', '𑒈': 'ॠ',
-  '𑒉': 'ऌ', '𑒊': 'ॡ', '𑒋': 'ए', '𑒌': 'ऐ',
-  '𑒍': 'ओ', '𑒎': 'औ',
-
-  // Consonants
-  '𑒏': 'क', '𑒐': 'ख', '𑒑': 'ग', '𑒒': 'घ', '𑒓': 'ङ',
-  '𑒔': 'च', '𑒕': 'छ', '𑒖': 'ज', '𑒗': 'झ', '𑒘': 'ञ',
-  '𑒙': 'ट', '𑒚': 'ठ', '𑒛': 'ड', '𑒜': 'ढ', '𑒝': 'ण',
-  '𑒞': 'त', '𑒟': 'थ', '𑒠': 'द', '𑒡': 'ध', '𑒢': 'न',
-  '𑒣': 'प', '𑒤': 'फ', '𑒥': 'ब', '𑒦': 'भ', '𑒧': 'म',
-  '𑒨': 'य', '𑒩': 'र', '𑒪': 'ल', '𑒫': 'व',
-  '𑒬': 'श', '𑒭': 'ष', '𑒮': 'स', '𑒯': 'ह',
-
-  // Matras - COMPLETE
-  '𑒰': 'ा', '𑒱': 'ि', '𑒲': 'ी', '𑒳': 'ु', '𑒴': 'ू',
-  '𑒵': 'ृ', '𑒶': 'ॄ', '𑒷': 'ॢ', '𑒸': 'ॣ',
-  '𑒹': 'े', '𑒺': 'ॆ', '𑒻': 'ै',
-  '𑒼': 'ो', '𑒽': 'ॊ', '𑒾': 'ौ',
-
-  // Special
-  '𑒿': 'ँ', '𑓀': 'ं', '𑓁': 'ः', '𑓂': '्',
-  '𑓃': '़', '𑓄': 'ऽ', '𑓆': '॰', '𑓇': 'ॐ',
-
-  // Numbers
-  '𑓐': '०', '𑓑': '१', '𑓒': '२', '𑓓': '३', '𑓔': '४',
-  '𑓕': '५', '𑓖': '६', '𑓗': '७', '𑓘': '८', '𑓙': '९',
-};
-
-// Devanagari → Tirhuta (Reverse)
-const D2T = {};
-for (const [tir, dev] of Object.entries(T2D)) {
-  D2T[dev] = tir;
-}
-
-// ============================================================
-// 2. COMPLETE PHONETIC RULES
-// ============================================================
-
-const PHONETIC_RULES = [
-  // Vowels (longest first)
-  ['aa', 'आ'], ['AA', 'आ'], ['A', 'आ'],
-  ['ii', 'ई'], ['II', 'ई'], ['I', 'ई'],
-  ['uu', 'ऊ'], ['UU', 'ऊ'], ['U', 'ऊ'],
-  ['ai', 'ऐ'], ['au', 'औ'],
-  ['e', 'ए'], ['o', 'ओ'],
-  ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
-  
-  // ऋ and ॠ
-  ['R', 'ऋ'], ['RR', 'ॠ'],
-  ['rR', 'ऋ'], ['rRr', 'ॠ'],
-  
-  // ऌ and ॡ
-  ['L', 'ऌ'], ['LL', 'ॡ'],
-  ['lR', 'ऌ'], ['lRR', 'ॡ'],
-  
-  // Aspirated consonants
-  ['kh', 'ख'], ['gh', 'घ'], ['chh', 'छ'], ['jh', 'झ'],
-  ['th', 'थ'], ['dh', 'ध'], ['ph', 'फ'], ['bh', 'भ'],
-  
-  // Retroflex
-  ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'], ['N', 'ण'],
-  
-  // Regular consonants
-  ['k', 'क'], ['g', 'ग'], ['ch', 'च'], ['j', 'ज'],
-  ['t', 'त'], ['d', 'द'], ['p', 'प'], ['b', 'ब'],
-  ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
-  ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
-  ['h', 'ह'], ['m', 'म'], ['n', 'न'],
-  
-  // Special
-  ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
-  
-  // Numbers
-  ['0', '०'], ['1', '१'], ['2', '२'], ['3', '३'],
-  ['4', '४'], ['5', '५'], ['6', '६'], ['7', '७'],
-  ['8', '८'], ['9', '९'],
-];
-
-// Sort by length (longest first)
-const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
-
-// ============================================================
-// 3. COMPLETE MATRA SYSTEM
-// ============================================================
-
-const MATRA_MAP = {
-  'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
-  'ऐ': 'ै', 'औ': 'ौ',
-  'इ': 'ि', 'उ': 'ु',
-  'ए': 'े', 'ओ': 'ो',
-  'ऋ': 'ृ', 'ॠ': 'ॄ',
-  'ऌ': 'ॢ', 'ॡ': 'ॣ'
-};
-
-const VOWELS = new Set([
-  'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 
-  'ए', 'ऐ', 'ओ', 'औ',
-  'ऋ', 'ॠ', 'ऌ', 'ॡ'
-]);
-
-const MATRAS = new Set([
-  'ा', 'ि', 'ी', 'ु', 'ू', 
-  'े', 'ै', 'ो', 'ौ',
-  'ृ', 'ॄ', 'ॢ', 'ॣ'
-]);
-
-const CONSONANTS = new Set([
-  'क', 'ख', 'ग', 'घ', 'ङ',
-  'च', 'छ', 'ज', 'झ', 'ञ',
-  'ट', 'ठ', 'ड', 'ढ', 'ण',
-  'त', 'थ', 'द', 'ध', 'न',
-  'प', 'फ', 'ब', 'भ', 'म',
-  'य', 'र', 'ल', 'व',
-  'श', 'ष', 'स', 'ह'
-]);
-
-// ============================================================
-// 4. INTELLIGENT CONVERSION ENGINE
-// ============================================================
-
-function phoneticToDevanagari(text) {
-  if (!text) return '';
-  
-  let result = '';
-  let i = 0;
-  const input = text;
-  
-  while (i < input.length) {
-    let matched = false;
-    
-    for (const [pattern, replacement] of SORTED_RULES) {
-      if (i + pattern.length <= input.length && 
-          input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
-        
-        const isVowel = VOWELS.has(replacement);
-        const lastChar = result[result.length - 1] || '';
-        const isLastConsonant = CONSONANTS.has(lastChar);
-        const isLastMatra = MATRAS.has(lastChar);
-        const isLastVowel = VOWELS.has(lastChar);
-        
-        // SMART RULES
-        if (isVowel && isLastConsonant) {
-          const matra = MATRA_MAP[replacement];
-          if (matra) {
-            if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
-              result = result.slice(0, -1) + matra;
-            } else {
-              result += matra;
-            }
-          } else {
-            result += replacement;
-          }
-        }
-        else if (isVowel && isLastVowel) {
-          result += replacement;
-        }
-        else if (isVowel && isLastMatra) {
-          result += replacement;
-        }
-        else {
-          result += replacement;
-        }
-        
-        i += pattern.length;
-        matched = true;
-        break;
-      }
-    }
-    
-    if (!matched) {
-      const char = input[i];
-      if (char === ' ') {
-        result += ' ';
-      } else if (char === '\n') {
-        result += '\n';
-      } else if (char === '\t') {
-        result += '\t';
-      } else {
-        result += char;
-      }
-      i++;
-    }
-  }
-  
-  result = postProcessDevanagari(result);
-  return result;
-}
-
-function postProcessDevanagari(text) {
-  let result = text;
-  
-  // Fix halant
-  result = result.replace(/([क-ह])्([क-ह])/g, (match, cons1, cons2) => {
-    return cons1 + '्' + cons2;
-  });
-  
-  // Fix matra order
-  result = result.replace(/([क-ह])(ि|ी|ु|ू)/g, (match, cons, matra) => {
-    return cons + matra;
-  });
-  
-  // Fix multiple spaces
-  result = result.replace(/ +/g, ' ');
-  
-  return result;
-}
-
-function devanagariToTirhuta(text) {
-  if (!text) return '';
-  let result = '';
-  
-  // Conjuncts
-  const conjuncts = {
-    'क्ष': '𑒏𑓂𑒭',
-    'त्र': '𑒞𑓂𑒩',
-    'ज्ञ': '𑒖𑓂𑒘',
-    'श्र': '𑒬𑓂𑒩',
-    'क्र': '𑒏𑓂𑒩',
-    'ग्र': '𑒑𑓂𑒩',
-    'प्र': '𑒣𑓂𑒩',
-    'ब्र': '𑒥𑓂𑒩',
-    'द्र': '𑒠𑓂𑒩',
-    'न्य': '𑒢𑓂𑒨',
-    'र्य': '𑒩𑓂𑒨',
-    'स्य': '𑒮𑓂𑒨',
-  };
-  
-  let i = 0;
-  while (i < text.length) {
-    let matched = false;
-    
-    if (i + 2 < text.length) {
-      const three = text.substring(i, i + 3);
-      if (conjuncts[three]) {
-        result += conjuncts[three];
-        i += 3;
-        matched = true;
-      }
-    }
-    
-    if (!matched && i + 1 < text.length) {
-      const two = text.substring(i, i + 2);
-      if (conjuncts[two]) {
-        result += conjuncts[two];
-        i += 2;
-        matched = true;
-      }
-    }
-    
-    if (!matched) {
-      const char = text[i];
-      const mapped = D2T[char];
-      result += mapped || char;
-      i++;
-    }
-  }
-  
-  return result;
-}
-
-function tirhutaToDevanagari(text) {
-  if (!text) return '';
-  let result = '';
-  for (const char of text) {
-    result += T2D[char] || char;
-  }
-  return result;
-}
-
-// ============================================================
-// 5. MAIN CONVERT
-// ============================================================
-
-function convert(text, direction) {
-  if (!text || text.trim() === '') return '';
-  
-  if (direction === 'dev-to-tir') {
-    const devText = phoneticToDevanagari(text);
-    return devanagariToTirhuta(devText);
-  } else {
-    return tirhutaToDevanagari(text);
-  }
-}
-
-// ============================================================
-// 6. UI CONTROLLERS
-// ============================================================
-
-function doConvert() {
-  const input = document.getElementById('inText').value;
-  const direction = document.getElementById('dir').value;
-  const result = convert(input, direction);
-  document.getElementById('outText').value = result;
-  updateCounts();
-  applyFont();
-}
-
-function handleInput() {
-  updateCounts();
-  if (document.getElementById('autoConv').value === 'yes') {
-    doConvert();
-  }
-}
-
-function updateCounts() {
-  const inText = document.getElementById('inText').value;
-  const outText = document.getElementById('outText').value;
-  document.getElementById('inCount').textContent = [...inText].length + ' अक्षर';
-  document.getElementById('outCount').textContent = [...outText].length + ' अक्षर';
-}
-
-function updateUI() {
-  const direction = document.getElementById('dir').value;
-  const inLabel = document.getElementById('inLabel');
-  const outLabel = document.getElementById('outLabel');
-  const inText = document.getElementById('inText');
-  
-  if (direction === 'dev-to-tir') {
-    inLabel.textContent = '📝 देवनागरी / English (इनपुट)';
-    outLabel.textContent = '📄 तिरहुता (आउटपुट)';
-    inText.placeholder = 'English phonetic type करू... (maithilii, mithilaa...) या देवनागरी लिखू';
-  } else {
-    inLabel.textContent = '📝 तिरहुता (इनपुट)';
-    outLabel.textContent = '📄 देवनागरी (आउटपुट)';
-    inText.placeholder = 'तिरहुता पाठ paste करू...';
-  }
-  applyFont();
-  doConvert();
-}
-
-function swapDir() {
-  const sel = document.getElementById('dir');
-  const inp = document.getElementById('inText');
-  const out = document.getElementById('outText');
-  const tmp = inp.value;
-  inp.value = out.value;
-  out.value = tmp;
-  sel.value = sel.value === 'dev-to-tir' ? 'tir-to-dev' : 'dev-to-tir';
-  updateUI();
-}
-
-function applyFont() {
-  const font = document.getElementById('fontSel').value;
-  const direction = document.getElementById('dir').value;
-  const out = document.getElementById('outText');
-  const inp = document.getElementById('inText');
-  
-  out.className = '';
-  inp.className = '';
-  
-  const tirElement = direction === 'dev-to-tir' ? out : inp;
-  tirElement.classList.add(font === 'mithilauni' ? 'tir-font' : 'noto-font');
-}
-
-// ============================================================
-// 7. UTILITIES
-// ============================================================
-
-function doCopy() {
-  const text = document.getElementById('outText').value;
-  if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('✅ कॉपी भ गेल!', 'success');
-  });
-}
-
-function doClear() {
-  document.getElementById('inText').value = '';
-  document.getElementById('outText').value = '';
-  updateCounts();
-  showToast('🗑️ साफ़ भ गेल!', 'info');
-}
-
-function doDownload() {
-  const text = document.getElementById('outText').value;
-  if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'tirhuta-converted-' + Date.now() + '.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('✅ डाउनलोड भ गेल!', 'success');
-}
-
-function showToast(msg, type = '') {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.className = 'toast show ' + type;
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-// ============================================================
-// 8. RENDER RULES
-// ============================================================
-
-function renderRules() {
-  const rules = [
-    ['a', 'अ'], ['aa', 'आ'], ['i', 'इ'], ['ii', 'ई'],
-    ['u', 'उ'], ['uu', 'ऊ'], ['e', 'ए'], ['ai', 'ऐ'],
-    ['o', 'ओ'], ['au', 'औ'], ['R', 'ऋ'], ['RR', 'ॠ'],
-    ['L', 'ऌ'], ['LL', 'ॡ'], ['k', 'क'], ['kh', 'ख'],
-    ['g', 'ग'], ['gh', 'घ'], ['ch', 'च'], ['chh', 'छ'],
-    ['j', 'ज'], ['jh', 'झ'], ['T', 'ट'], ['Th', 'ठ'],
-    ['D', 'ड'], ['Dh', 'ढ'], ['t', 'त'], ['th', 'थ'],
-    ['d', 'द'], ['dh', 'ध'], ['n', 'न'], ['p', 'प'],
-    ['ph', 'फ'], ['b', 'ब'], ['bh', 'भ'], ['m', 'म'],
-    ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
-    ['sh', 'श'], ['s', 'स'], ['h', 'ह'], ['.', '्']
-  ];
-  
-  const grid = document.getElementById('ruleGrid');
-  grid.innerHTML = rules.map(([eng, dev]) => `
-    <div class="rule-item"><code>${eng}</code> → ${dev}</div>
-  `).join('');
-}
-
-// ============================================================
-// 9. LANGUAGE SWITCHER
-// ============================================================
-
-function setLanguage(lang) {
-  currentLang = lang;
-  
-  // Update active button
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === lang);
-  });
-  
-  // Get language data
-  const data = LANGUAGES[lang];
-  if (!data) return;
-  
-  // Update UI elements
-  document.getElementById('titleText').textContent = data.siteTitle;
-  document.getElementById('subtitleText').textContent = data.subtitle;
-  document.getElementById('dirLabel').textContent = data.dirLabel;
-  document.getElementById('fontLabel').textContent = data.fontLabel;
-  document.getElementById('autoLabel').textContent = data.autoLabel;
-  document.getElementById('autoYes').textContent = data.autoYes;
-  document.getElementById('autoNo').textContent = data.autoNo;
-  document.getElementById('inLabel').textContent = data.inLabel;
-  document.getElementById('outLabel').textContent = data.outLabel;
-  document.getElementById('inText').placeholder = data.inPlaceholder;
-  document.getElementById('outText').placeholder = data.outPlaceholder;
-  document.getElementById('convertBtn').textContent = data.convertBtn;
-  document.getElementById('copyBtn').textContent = data.copyBtn;
-  document.getElementById('clearBtn').textContent = data.clearBtn;
-  document.getElementById('downloadBtn').textContent = data.downloadBtn;
-  document.getElementById('rulesTitle').textContent = data.rulesTitle;
-  document.getElementById('exampleText').innerHTML = data.example;
-  document.getElementById('footerText').innerHTML = data.footer;
-  
-  // Update direction options
-  const dirSelect = document.getElementById('dir');
-  dirSelect.options[0].text = data.dirDevToTir;
-  dirSelect.options[1].text = data.dirTirToDev;
-  
-  // Toast messages
-  window._toastMessages = data;
-}
-
-// ============================================================
-// 10. LANGUAGE DATA
+// 1. LANGUAGE DATA - सब भाषा
 // ============================================================
 
 const LANGUAGES = {
@@ -981,20 +508,343 @@ const LANGUAGES = {
 };
 
 // ============================================================
-// 11. INIT
+// 2. UNICODE MAPS
+// ============================================================
+
+const T2D = {
+  '𑒁': 'अ', '𑒂': 'आ', '𑒃': 'इ', '𑒄': 'ई',
+  '𑒅': 'उ', '𑒆': 'ऊ', '𑒇': 'ऋ', '𑒈': 'ॠ',
+  '𑒉': 'ऌ', '𑒊': 'ॡ', '𑒋': 'ए', '𑒌': 'ऐ',
+  '𑒍': 'ओ', '𑒎': 'औ',
+  '𑒏': 'क', '𑒐': 'ख', '𑒑': 'ग', '𑒒': 'घ', '𑒓': 'ङ',
+  '𑒔': 'च', '𑒕': 'छ', '𑒖': 'ज', '𑒗': 'झ', '𑒘': 'ञ',
+  '𑒙': 'ट', '𑒚': 'ठ', '𑒛': 'ड', '𑒜': 'ढ', '𑒝': 'ण',
+  '𑒞': 'त', '𑒟': 'थ', '𑒠': 'द', '𑒡': 'ध', '𑒢': 'न',
+  '𑒣': 'प', '𑒤': 'फ', '𑒥': 'ब', '𑒦': 'भ', '𑒧': 'म',
+  '𑒨': 'य', '𑒩': 'र', '𑒪': 'ल', '𑒫': 'व',
+  '𑒬': 'श', '𑒭': 'ष', '𑒮': 'स', '𑒯': 'ह',
+  '𑒰': 'ा', '𑒱': 'ि', '𑒲': 'ी', '𑒳': 'ु', '𑒴': 'ू',
+  '𑒵': 'ृ', '𑒶': 'ॄ', '𑒷': 'ॢ', '𑒸': 'ॣ',
+  '𑒹': 'े', '𑒺': 'ॆ', '𑒻': 'ै',
+  '𑒼': 'ो', '𑒽': 'ॊ', '𑒾': 'ौ',
+  '𑒿': 'ँ', '𑓀': 'ं', '𑓁': 'ः', '𑓂': '्',
+  '𑓃': '़', '𑓄': 'ऽ', '𑓆': '॰', '𑓇': 'ॐ',
+  '𑓐': '०', '𑓑': '१', '𑓒': '२', '𑓓': '३', '𑓔': '४',
+  '𑓕': '५', '𑓖': '६', '𑓗': '७', '𑓘': '८', '𑓙': '९',
+};
+
+const D2T = {};
+for (const [tir, dev] of Object.entries(T2D)) {
+  D2T[dev] = tir;
+}
+
+// ============================================================
+// 3. PHONETIC RULES
+// ============================================================
+
+const PHONETIC_RULES = [
+  ['aa', 'आ'], ['AA', 'आ'], ['A', 'आ'],
+  ['ii', 'ई'], ['II', 'ई'], ['I', 'ई'],
+  ['uu', 'ऊ'], ['UU', 'ऊ'], ['U', 'ऊ'],
+  ['ai', 'ऐ'], ['au', 'औ'],
+  ['e', 'ए'], ['o', 'ओ'],
+  ['a', 'अ'], ['i', 'इ'], ['u', 'उ'],
+  ['R', 'ऋ'], ['RR', 'ॠ'],
+  ['kh', 'ख'], ['gh', 'घ'], ['chh', 'छ'], ['jh', 'झ'],
+  ['th', 'थ'], ['dh', 'ध'], ['ph', 'फ'], ['bh', 'भ'],
+  ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'], ['N', 'ण'],
+  ['k', 'क'], ['g', 'ग'], ['ch', 'च'], ['j', 'ज'],
+  ['t', 'त'], ['d', 'द'], ['p', 'प'], ['b', 'ब'],
+  ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'],
+  ['w', 'व'], ['sh', 'श'], ['S', 'श'], ['s', 'स'],
+  ['h', 'ह'], ['m', 'म'], ['n', 'न'],
+  ['M', 'ं'], ['H', 'ः'], ['.', '्'], ['~', 'ँ'],
+  ['0', '०'], ['1', '१'], ['2', '२'], ['3', '३'],
+  ['4', '४'], ['5', '५'], ['6', '६'], ['7', '७'],
+  ['8', '८'], ['9', '९'],
+];
+
+const SORTED_RULES = [...PHONETIC_RULES].sort((a, b) => b[0].length - a[0].length);
+
+const MATRA_MAP = {
+  'आ': 'ा', 'ई': 'ी', 'ऊ': 'ू',
+  'ऐ': 'ै', 'औ': 'ौ',
+  'इ': 'ि', 'उ': 'ु',
+  'ए': 'े', 'ओ': 'ो',
+  'ऋ': 'ृ', 'ॠ': 'ॄ',
+  'ऌ': 'ॢ', 'ॡ': 'ॣ'
+};
+
+const VOWELS = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'ऋ', 'ॠ', 'ऌ', 'ॡ']);
+const MATRAS = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ', 'ृ', 'ॄ', 'ॢ', 'ॣ']);
+const CONSONANTS = new Set(['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह']);
+
+// ============================================================
+// 4. CONVERSION ENGINE
+// ============================================================
+
+function phoneticToDevanagari(text) {
+  if (!text) return '';
+  let result = '';
+  let i = 0;
+  const input = text;
+  
+  while (i < input.length) {
+    let matched = false;
+    for (const [pattern, replacement] of SORTED_RULES) {
+      if (i + pattern.length <= input.length && 
+          input.substring(i, i + pattern.length).toLowerCase() === pattern.toLowerCase()) {
+        const isVowel = VOWELS.has(replacement);
+        const lastChar = result[result.length - 1] || '';
+        const isLastConsonant = CONSONANTS.has(lastChar);
+        const isLastMatra = MATRAS.has(lastChar);
+        
+        if (isVowel && isLastConsonant) {
+          const matra = MATRA_MAP[replacement];
+          if (matra) {
+            if (result.length > 1 && MATRAS.has(result[result.length - 1])) {
+              result = result.slice(0, -1) + matra;
+            } else {
+              result += matra;
+            }
+          } else {
+            result += replacement;
+          }
+        } else if (isVowel && isLastMatra) {
+          result += replacement;
+        } else {
+          result += replacement;
+        }
+        i += pattern.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      result += input[i];
+      i++;
+    }
+  }
+  return result.replace(/ +/g, ' ');
+}
+
+function devanagariToTirhuta(text) {
+  if (!text) return '';
+  let result = '';
+  for (const char of text) {
+    result += D2T[char] || char;
+  }
+  return result;
+}
+
+function tirhutaToDevanagari(text) {
+  if (!text) return '';
+  let result = '';
+  for (const char of text) {
+    result += T2D[char] || char;
+  }
+  return result;
+}
+
+function convert(text, direction) {
+  if (!text || text.trim() === '') return '';
+  if (direction === 'dev-to-tir') {
+    return devanagariToTirhuta(phoneticToDevanagari(text));
+  } else {
+    return tirhutaToDevanagari(text);
+  }
+}
+
+// ============================================================
+// 5. LANGUAGE SWITCHER FUNCTION
+// ============================================================
+
+function setLanguage(lang) {
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  
+  const data = LANGUAGES[lang];
+  if (!data) return;
+  
+  // Update all UI elements
+  document.getElementById('titleText').textContent = data.siteTitle;
+  document.getElementById('subtitleText').textContent = data.subtitle;
+  document.getElementById('dirLabel').textContent = data.dirLabel;
+  document.getElementById('fontLabel').textContent = data.fontLabel;
+  document.getElementById('autoLabel').textContent = data.autoLabel;
+  document.getElementById('autoYes').textContent = data.autoYes;
+  document.getElementById('autoNo').textContent = data.autoNo;
+  document.getElementById('inLabel').textContent = data.inLabel;
+  document.getElementById('outLabel').textContent = data.outLabel;
+  document.getElementById('inText').placeholder = data.inPlaceholder;
+  document.getElementById('outText').placeholder = data.outPlaceholder;
+  document.getElementById('convertBtn').textContent = data.convertBtn;
+  document.getElementById('copyBtn').textContent = data.copyBtn;
+  document.getElementById('clearBtn').textContent = data.clearBtn;
+  document.getElementById('downloadBtn').textContent = data.downloadBtn;
+  document.getElementById('rulesTitle').textContent = data.rulesTitle;
+  document.getElementById('exampleText').innerHTML = data.example;
+  document.getElementById('footerText').innerHTML = data.footer;
+  
+  const dirSelect = document.getElementById('dir');
+  dirSelect.options[0].text = data.dirDevToTir;
+  dirSelect.options[1].text = data.dirTirToDev;
+  
+  // Save language preference
+  localStorage.setItem('tirhuta-lang', lang);
+}
+
+// ============================================================
+// 6. UI CONTROLLERS
+// ============================================================
+
+function doConvert() {
+  const input = document.getElementById('inText').value;
+  const direction = document.getElementById('dir').value;
+  const result = convert(input, direction);
+  document.getElementById('outText').value = result;
+  updateCounts();
+  applyFont();
+}
+
+function handleInput() {
+  updateCounts();
+  if (document.getElementById('autoConv').value === 'yes') {
+    doConvert();
+  }
+}
+
+function updateCounts() {
+  const inText = document.getElementById('inText').value;
+  const outText = document.getElementById('outText').value;
+  document.getElementById('inCount').textContent = [...inText].length + ' अक्षर';
+  document.getElementById('outCount').textContent = [...outText].length + ' अक्षर';
+}
+
+function updateUI() {
+  const direction = document.getElementById('dir').value;
+  const inLabel = document.getElementById('inLabel');
+  const outLabel = document.getElementById('outLabel');
+  const inText = document.getElementById('inText');
+  
+  if (direction === 'dev-to-tir') {
+    inLabel.textContent = '📝 देवनागरी / English (इनपुट)';
+    outLabel.textContent = '📄 तिरहुता (आउटपुट)';
+    inText.placeholder = 'English phonetic type करू... (maithilii, mithilaa...)';
+  } else {
+    inLabel.textContent = '📝 तिरहुता (इनपुट)';
+    outLabel.textContent = '📄 देवनागरी (आउटपुट)';
+    inText.placeholder = 'तिरहुता पाठ paste करू...';
+  }
+  applyFont();
+  doConvert();
+}
+
+function swapDir() {
+  const sel = document.getElementById('dir');
+  const inp = document.getElementById('inText');
+  const out = document.getElementById('outText');
+  const tmp = inp.value;
+  inp.value = out.value;
+  out.value = tmp;
+  sel.value = sel.value === 'dev-to-tir' ? 'tir-to-dev' : 'dev-to-tir';
+  updateUI();
+}
+
+function applyFont() {
+  const font = document.getElementById('fontSel').value;
+  const direction = document.getElementById('dir').value;
+  const out = document.getElementById('outText');
+  const inp = document.getElementById('inText');
+  out.className = '';
+  inp.className = '';
+  const tirElement = direction === 'dev-to-tir' ? out : inp;
+  tirElement.classList.add(font === 'mithilauni' ? 'tir-font' : 'noto-font');
+}
+
+function doCopy() {
+  const text = document.getElementById('outText').value;
+  if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ कॉपी भ गेल!', 'success');
+  });
+}
+
+function doClear() {
+  document.getElementById('inText').value = '';
+  document.getElementById('outText').value = '';
+  updateCounts();
+  showToast('🗑️ साफ़ भ गेल!', 'info');
+}
+
+function doDownload() {
+  const text = document.getElementById('outText').value;
+  if (!text) { showToast('⚠️ पहिले परिवर्तित करू!', 'error'); return; }
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tirhuta-converted-' + Date.now() + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✅ डाउनलोड भ गेल!', 'success');
+}
+
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 7. RENDER RULES
+// ============================================================
+
+function renderRules() {
+  const rules = [
+    ['a', 'अ'], ['aa', 'आ'], ['i', 'इ'], ['ii', 'ई'],
+    ['u', 'उ'], ['uu', 'ऊ'], ['e', 'ए'], ['ai', 'ऐ'],
+    ['o', 'ओ'], ['au', 'औ'], ['R', 'ऋ'], ['RR', 'ॠ'],
+    ['k', 'क'], ['kh', 'ख'], ['g', 'ग'], ['gh', 'घ'],
+    ['ch', 'च'], ['chh', 'छ'], ['j', 'ज'], ['jh', 'झ'],
+    ['T', 'ट'], ['Th', 'ठ'], ['D', 'ड'], ['Dh', 'ढ'],
+    ['t', 'त'], ['th', 'थ'], ['d', 'द'], ['dh', 'ध'],
+    ['n', 'न'], ['p', 'प'], ['ph', 'फ'], ['b', 'ब'],
+    ['bh', 'भ'], ['m', 'म'], ['y', 'य'], ['r', 'र'],
+    ['l', 'ल'], ['v', 'व'], ['sh', 'श'], ['s', 'स'],
+    ['h', 'ह'], ['.', '्']
+  ];
+  
+  const grid = document.getElementById('ruleGrid');
+  grid.innerHTML = rules.map(([eng, dev]) => `
+    <div class="rule-item"><code>${eng}</code> → ${dev}</div>
+  `).join('');
+}
+
+// ============================================================
+// 8. INIT
 // ============================================================
 
 window.onload = function() {
   renderRules();
   updateUI();
   updateCounts();
-  setLanguage('mai'); // Default मैथिली
   
-  console.log('✅ मिथिला लिपि परिवर्तक लोड भ गेल!');
-  console.log('📝 "maithili" टाइप करू देखी');
+  // Load saved language preference
+  const savedLang = localStorage.getItem('tirhuta-lang') || 'mai';
+  setLanguage(savedLang);
   
   // Focus
   document.getElementById('inText').focus();
+  
+  console.log('✅ मिथिला लिपि परिवर्तक लोड भ गेल!');
+  console.log('📝 "maithili" टाइप करू देखी');
 };
 </script>
 </body>
