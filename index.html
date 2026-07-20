@@ -379,7 +379,7 @@
         <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;" id="rulesSubtext">English → Devanagari → Tirhuta के लिए ये नियम अपनाएं:</p>
         <div class="rule-grid" id="ruleGrid"></div>
         <div style="margin-top:10px;font-size:clamp(0.7rem,1.5vw,0.85rem);color:var(--text-light);" id="exampleText">
-            💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱
+            💡 <strong>उदाहरण:</strong> <code>maaithailaii</code> → मैथिली → 𑒧𑒸𑒟𑒱𑒪𑒱
         </div>
     </div>
 
@@ -457,8 +457,8 @@ const LANGUAGES = {
     dirLabel: '🔄 दिशा',
     fontLabel: '🔤 फ़ॉन्ट',
     autoLabel: '⚡ स्वचालित',
-    autoYes: 'हाँ - टाइप करते ही',
-    autoNo: 'नहीं - बटन दबाएं',
+    autoYes: 'हँ - टाइप करतहि',
+    autoNo: 'नञि - चुनु',
     inLabel: '📝 देवनागरी / English (इनपुट)',
     outLabel: '📄 तिरहुता (आउटपुट)',
     inPlaceholder: 'एतह लिखू... (English phonetic)',
@@ -472,9 +472,9 @@ const LANGUAGES = {
     rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
     rulesSubtext: 'English → Devanagari → Tirhuta के लेल ई नियम अपनाउ:',
     example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
-    aboutTitle: 'तिरहुता लिपि के बारे में',
-    aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा के पारंपरिक लिपि छी। ई <strong>मिथिला</strong> क्षेत्र में प्रचलित अछि। हमर <strong>तिरहुता-देवनागरी परिवर्तक</strong> अहाँ सभके <strong>English phonetic</strong> टाइपिंग सँ सीधा तिरहुता में लिखै के सुविधा दैत अछि।',
-    aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड आर नेपाल में बोलल जाइत अछि। ई <strong>लिपि परिवर्तक</strong> के मदद सँ अहाँ <strong>देवनागरी सँ तिरहुता</strong> आर <strong>तिरहुता सँ देवनागरी</strong> में आसानी सँ बदल सकैत छी।',
+    aboutTitle: 'तिरहुता लिपिके बारे में',
+    aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषाक पारम्परिक लिपि अछि। इ <strong>मिथिलाक</strong>प्रचलित लिपि अछि। हमर <strong>तिरहुता-देवनागरी परिवर्तक</strong> अहाँ सभकेँ <strong>English phonetic</strong> टाइपिंग सँ सोझा तिरहुतामे लिखबाक सुविधा दैत अछि।',
+    aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड, पश्चिम बंगाल, ओड़िसा, असम, बांग्लादेश तथा नेपालमे बाजल जाइत अछि। ई <strong>लिपि परिवर्तक</strong> के मदद सँ अहाँ <strong>देवनागरी सँ तिरहुता</strong> आर <strong>तिरहुता सँ देवनागरी</strong> में आसानी सँ बदल सकैत छी।',
     footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
     dirDevToTir: 'देवनागरी → तिरहुता',
     dirTirToDev: 'तिरहुता → देवनागरी'
@@ -555,6 +555,8 @@ const PHONETIC_RULES = [
   ['jna','ज्ञ'],
   ['shr','श्र'],
   ['tra','त्र'],
+['nga', 'ङ'],
+['nya', 'ञ'],
 
   // ===== Aspirated =====
   ['chh','छ'],
@@ -631,21 +633,46 @@ const PHONETIC_RULES = [
 ['sa','स'],
 ['ha','ह'],
 
-// Bare consonants
+// ===== Bare consonants =====
+['kh','ख्'],
+['gh','घ्'],
+['chh','छ्'],
+['jh','झ्'],
+['Th','ठ्'],
+['Dh','ढ्'],
+['th','थ्'],
+['dh','ध्'],
+['ph','फ्'],
+['bh','भ्'],
+
 ['k','क्'],
 ['g','ग्'],
+['ng','ङ्'],
+
+['ch','च्'],
 ['j','ज्'],
+['ny','ञ्'],
+
+['T','ट्'],
+['D','ड्'],
+['N','ण्'],
+
 ['t','त्'],
 ['d','द्'],
 ['n','न्'],
+
 ['p','प्'],
 ['b','ब्'],
 ['m','म्'],
+
 ['y','य्'],
 ['r','र्'],
 ['l','ल्'],
 ['v','व्'],
 ['w','व्'],
+
+['sh','श्'],
+['Sh','ष्'],
 ['s','स्'],
 ['h','ह्'],
 
@@ -661,6 +688,11 @@ const PHONETIC_RULES = [
   ['u','उ'],
   ['e','ए'],
   ['o','ओ'],
+
+// ===== Vocalic R =====
+['rri','ॠ'],
+['Ri','ऋ'],
+['ri','ृ'],
 
   // ===== Signs =====
   ['M','ं'],
