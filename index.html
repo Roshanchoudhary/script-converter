@@ -435,6 +435,29 @@
     }
 
     /* ============================================================
+       ABOUT SECTION
+       ============================================================ */
+    .about-section {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .about-section h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    .about-section p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    .about-section p strong {
+      color: var(--text);
+    }
+
+    /* ============================================================
        TOAST
        ============================================================ */
     .toast {
@@ -501,8 +524,8 @@
 <!-- 🔥 HEADER - Brand + Keywords              -->
 <!-- ════════════════════════════════════════════ -->
 <header class="header">
-    <h1>𑒧 <span class="highlight">मिथिला लिपि परिवर्तक</span></h1>
-    <p class="subtitle">तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | मैथिली भाषा</p>
+    <h1 id="siteTitle">𑒧 <span class="highlight">मिथिला लिपि परिवर्तक</span></h1>
+    <p class="subtitle" id="subtitleText">तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | मैथिली भाषा</p>
     
     <div class="lang-switcher">
         <button class="lang-btn active" data-lang="mai" onclick="setLanguage('mai')">𑒧 मैथिली</button>
@@ -517,7 +540,7 @@
 <main class="container">
 
     <!-- H2 for SEO -->
-    <h2 style="font-size:1.2rem;color:var(--primary);margin-bottom:12px;">तिरहुता-देवनागरी लिपि परिवर्तक - Online Free</h2>
+    <h2 style="font-size:1.2rem;color:var(--primary);margin-bottom:12px;" id="seoHeading">तिरहुता-देवनागरी लिपि परिवर्तक - Online Free</h2>
     
     <!-- Controls -->
     <div class="card">
@@ -591,7 +614,7 @@
     <!-- ════════════════════════════════════════════ -->
     <div class="phonetic-rules">
         <h3 id="rulesTitle">⌨️ Phonetic Typing Rules - तिरहुता लिपि सीखें</h3>
-        <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;">
+        <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;" id="rulesSubtext">
             English → Devanagari → Tirhuta के लिए ये rules follow करें:
         </p>
         <div class="rule-grid" id="ruleGrid"></div>
@@ -601,17 +624,17 @@
     </div>
 
     <!-- ════════════════════════════════════════════ -->
-    <!-- 🔥 SEO CONTENT - About Section           -->
+    <!-- 🔥 SEO CONTENT - About Section - NOW MULTI-LANGUAGE -->
     <!-- ════════════════════════════════════════════ -->
-    <div style="margin-top:24px;padding:20px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);">
-        <h3 style="color:var(--primary);font-size:1.1rem;">तिरहुता लिपि के बारे में</h3>
-        <p style="font-size:0.9rem;line-height:1.8;color:var(--text-light);">
+    <div class="about-section" id="aboutSection">
+        <h3 id="aboutTitle">तिरहुता लिपि के बारे में</h3>
+        <p id="aboutPara1">
             <strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा की पारंपरिक लिपि है। 
             यह <strong>मिथिला</strong> क्षेत्र में प्रचलित है। 
             हमारा <strong>तिरहुता-देवनागरी परिवर्तक</strong> आपको 
             <strong>English phonetic</strong> typing से सीधा तिरहुता में लिखने की सुविधा देता है।
         </p>
-        <p style="font-size:0.9rem;line-height:1.8;color:var(--text-light);margin-top:8px;">
+        <p id="aboutPara2" style="margin-top:8px;">
             <strong>मैथिली भाषा</strong> बिहार, झारखंड और नेपाल में बोली जाती है। 
             इस <strong>लिपि परिवर्तक</strong> की मदद से आप 
             <strong>देवनागरी से तिरहुता</strong> और <strong>तिरहुता से देवनागरी</strong> 
@@ -627,7 +650,7 @@
 <!-- Footer -->
 <footer class="footer" id="footerText">
     <span class="tirhuta-text">𑒧𑒻𑒟𑒱𑒪𑒲 𑒦𑒰𑒭𑒰 𑒮𑒹𑒦𑒰</span> | ❤️ <span class="tirhuta-text">𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒪𑒱𑒣𑒱 𑒮𑒴𑒩𑒏𑓂𑒮𑒰</span>
-    <br><small>मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
+    <br><small id="footerSubtext">मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
 </footer>
 
 <!-- ════════════════════════════════════════════ -->
@@ -645,8 +668,9 @@
 
 const LANGUAGES = {
   mai: {
-    siteTitle: 'मिथिला लिपि परिवर्तक',
-    subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग',
+    siteTitle: '𑒧 मिथिला लिपि परिवर्तक',
+    subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | मैथिली भाषा',
+    seoHeading: 'तिरहुता-देवनागरी लिपि परिवर्तक - Online Free',
     dirLabel: '🔄 दिशा',
     fontLabel: '🔤 फ़ॉन्ट',
     autoLabel: '⚡ स्वचालित',
@@ -663,14 +687,19 @@ const LANGUAGES = {
     pdfBtn: '📄 PDF डाउनलोड',
     tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
     rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
+    rulesSubtext: 'English → Devanagari → Tirhuta के लिए ये rules follow करें:',
     example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
+    aboutTitle: 'तिरहुता लिपि के बारे में',
+    aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा की पारंपरिक लिपि है। यह <strong>मिथिला</strong> क्षेत्र में प्रचलित है। हमारा <strong>तिरहुता-देवनागरी परिवर्तक</strong> आपको <strong>English phonetic</strong> typing से सीधा तिरहुता में लिखने की सुविधा देता है।',
+    aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड और नेपाल में बोली जाती है। इस <strong>लिपि परिवर्तक</strong> की मदद से आप <strong>देवनागरी से तिरहुता</strong> और <strong>तिरहुता से देवनागरी</strong> में आसानी से बदल सकते हैं।',
     footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
     dirDevToTir: 'देवनागरी → तिरहुता',
     dirTirToDev: 'तिरहुता → देवनागरी'
   },
   hi: {
     siteTitle: 'मिथिला लिपि परिवर्तक',
-    subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग',
+    subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | हिन्दी',
+    seoHeading: 'तिरहुता-देवनागरी लिपि परिवर्तक - मुफ्त ऑनलाइन',
     dirLabel: '🔄 दिशा',
     fontLabel: '🔤 फ़ॉन्ट',
     autoLabel: '⚡ स्वचालित',
@@ -680,14 +709,18 @@ const LANGUAGES = {
     outLabel: '📄 तिरहुता (आउटपुट)',
     inPlaceholder: 'यहाँ लिखें... (English phonetic)',
     outPlaceholder: 'परिवर्तित पाठ यहाँ दिखेगा...',
-    convertBtn: '🔄 परिवर्तित',
-    copyBtn: '📋 कॉपी',
-    clearBtn: '🗑️ साफ़',
-    downloadBtn: '⬇️ टेक्स्ट',
+    convertBtn: '🔄 परिवर्तित करें',
+    copyBtn: '📋 कॉपी करें',
+    clearBtn: '🗑️ साफ़ करें',
+    downloadBtn: '⬇️ टेक्स्ट डाउनलोड',
     pdfBtn: '📄 PDF डाउनलोड',
     tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
     rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
+    rulesSubtext: 'English → Devanagari → Tirhuta के लिए ये नियम अपनाएं:',
     example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
+    aboutTitle: 'तिरहुता लिपि के बारे में',
+    aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा की पारंपरिक लिपि है। यह <strong>मिथिला</strong> क्षेत्र में प्रचलित है। हमारा <strong>तिरहुता-देवनागरी परिवर्तक</strong> आपको <strong>English phonetic</strong> टाइपिंग से सीधा तिरहुता में लिखने की सुविधा देता है।',
+    aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड और नेपाल में बोली जाती है। इस <strong>लिपि परिवर्तक</strong> की मदद से आप <strong>देवनागरी से तिरहुता</strong> और <strong>तिरहुता से देवनागरी</strong> में आसानी से बदल सकते हैं।',
     footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
     dirDevToTir: 'देवनागरी → तिरहुता',
     dirTirToDev: 'तिरहुता → देवनागरी'
@@ -695,6 +728,7 @@ const LANGUAGES = {
   en: {
     siteTitle: 'Mithila Script Converter',
     subtitle: 'Tirhuta ↔ Devanagari | Smart Typing',
+    seoHeading: 'Tirhuta-Devanagari Script Converter - Online Free',
     dirLabel: '🔄 Direction',
     fontLabel: '🔤 Font',
     autoLabel: '⚡ Auto Convert',
@@ -711,7 +745,11 @@ const LANGUAGES = {
     pdfBtn: '📄 PDF Download',
     tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 Download',
     rulesTitle: '⌨️ Phonetic Typing Rules',
+    rulesSubtext: 'Follow these rules for English → Devanagari → Tirhuta:',
     example: '💡 <strong>Example:</strong> <code>maithili</code> → मैथिलि → 𑒧𑒸𑒟𑒱𑒪𑒱',
+    aboutTitle: 'About Tirhuta Script',
+    aboutPara1: '<strong>Tirhuta</strong> is the traditional script of the <strong>Maithili</strong> language. It is prevalent in the <strong>Mithila</strong> region. Our <strong>Tirhuta-Devanagari converter</strong> allows you to write directly in Tirhuta using <strong>English phonetic</strong> typing.',
+    aboutPara2: '<strong>Maithili language</strong> is spoken in Bihar, Jharkhand, and Nepal. With this <strong>script converter</strong>, you can easily convert between <strong>Devanagari to Tirhuta</strong> and <strong>Tirhuta to Devanagari</strong>.',
     footer: 'Maithili Language Service | ❤️ Tirhuta Script Preservation',
     dirDevToTir: 'Devanagari → Tirhuta',
     dirTirToDev: 'Tirhuta → Devanagari'
@@ -740,7 +778,7 @@ const T2D = {
   '𑒰': 'ा', '𑒱': 'ि', '𑒲': 'ी', '𑒳': 'ु', '𑒴': 'ू',
   '𑒵': 'ृ', '𑒶': 'ॄ', '𑒷': 'ॢ', '𑒸': 'ॣ',
   '𑒹': 'े', '𑒺': 'ॅ', '𑒻': 'ै',
-  '𑒼': 'ो', '𑒽': 'ॉ', '𑒾': 'ौ',  // ← CORRECT: 'ौ'
+  '𑒼': 'ो', '𑒽': 'ॉ', '𑒾': 'ौ',
   // Special
   '𑒿': 'ँ', '𑓀': 'ं', '𑓁': 'ः', '𑓂': '्',
   '𑓃': '़', '𑓄': 'ऽ', '𑓆': '॰', '𑓇': 'ॐ',
@@ -922,24 +960,13 @@ const MATRA_MAP = {
 const VOWELS = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'ऋ', 'ॠ', 'ऌ', 'ॡ']);
 const MATRAS = new Set(['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ', 'ृ', 'ॄ', 'ॢ', 'ॣ']);
 const CONSONANTS = new Set(['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह']);
-// =====================================
-// Phonetic Engine Helper
-// =====================================
-
-const VOWEL_KEYS = new Set([
-  'a','aa',
-  'i','ii',
-  'u','uu',
-  'e','ai',
-  'o','au',
-  'R','RR'
-]);
 
 const HALANT = '्';
 
 function isConsonant(ch) {
   return CONSONANTS.has(ch);
 }
+
 // ============================================================
 // 5. CONVERSION ENGINE
 // ============================================================
@@ -1033,43 +1060,97 @@ function convert(text, direction) {
 }
 
 // ============================================================
-// 6. LANGUAGE SWITCHER
+// 6. LANGUAGE SWITCHER - FIXED WITH ABOUT SECTION
 // ============================================================
 
 function setLanguage(lang) {
+  // Update button states
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
   
   const data = LANGUAGES[lang];
-  if (!data) return;
+  if (!data) {
+    console.error('Language not found:', lang);
+    return;
+  }
   
-  document.getElementById('titleText').textContent = data.siteTitle;
-  document.getElementById('subtitleText').textContent = data.subtitle;
-  document.getElementById('dirLabel').textContent = data.dirLabel;
-  document.getElementById('fontLabel').textContent = data.fontLabel;
-  document.getElementById('autoLabel').textContent = data.autoLabel;
-  document.getElementById('autoYes').textContent = data.autoYes;
-  document.getElementById('autoNo').textContent = data.autoNo;
-  document.getElementById('inLabel').textContent = data.inLabel;
-  document.getElementById('outLabel').textContent = data.outLabel;
-  document.getElementById('inText').placeholder = data.inPlaceholder;
-  document.getElementById('outText').placeholder = data.outPlaceholder;
-  document.getElementById('convertBtn').textContent = data.convertBtn;
-  document.getElementById('copyBtn').textContent = data.copyBtn;
-  document.getElementById('clearBtn').textContent = data.clearBtn;
-  document.getElementById('downloadBtn').textContent = data.downloadBtn;
-  document.getElementById('pdfBtn').textContent = data.pdfBtn;
-  document.getElementById('tirhutaDownloadBtn').textContent = data.tirhutaDownloadBtn;
-  document.getElementById('rulesTitle').textContent = data.rulesTitle;
-  document.getElementById('exampleText').innerHTML = data.example;
-  document.getElementById('footerText').innerHTML = data.footer;
+  // Update all UI elements
+  const elements = {
+    'siteTitle': data.siteTitle,
+    'subtitleText': data.subtitle,
+    'seoHeading': data.seoHeading,
+    'dirLabel': data.dirLabel,
+    'fontLabel': data.fontLabel,
+    'autoLabel': data.autoLabel,
+    'autoYes': data.autoYes,
+    'autoNo': data.autoNo,
+    'inLabel': data.inLabel,
+    'outLabel': data.outLabel,
+    'convertBtn': data.convertBtn,
+    'copyBtn': data.copyBtn,
+    'clearBtn': data.clearBtn,
+    'downloadBtn': data.downloadBtn,
+    'pdfBtn': data.pdfBtn,
+    'tirhutaDownloadBtn': data.tirhutaDownloadBtn,
+    'rulesTitle': data.rulesTitle,
+    'rulesSubtext': data.rulesSubtext,
+    'aboutTitle': data.aboutTitle,
+    'footerText': data.footer
+  };
   
+  // Update each element if it exists
+  for (const [id, text] of Object.entries(elements)) {
+    const el = document.getElementById(id);
+    if (el) {
+      if (id === 'tirhutaDownloadBtn') {
+        el.innerHTML = text;
+      } else if (id === 'siteTitle') {
+        // Preserve the 𑒧 and highlight span
+        el.innerHTML = '𑒧 <span class="highlight">' + text.replace('𑒧 ', '') + '</span>';
+      } else {
+        el.textContent = text;
+      }
+    }
+  }
+  
+  // Update about section paragraphs (they contain HTML)
+  const aboutPara1 = document.getElementById('aboutPara1');
+  const aboutPara2 = document.getElementById('aboutPara2');
+  if (aboutPara1) aboutPara1.innerHTML = data.aboutPara1;
+  if (aboutPara2) aboutPara2.innerHTML = data.aboutPara2;
+  
+  // Update placeholder texts
+  const inText = document.getElementById('inText');
+  const outText = document.getElementById('outText');
+  if (inText) inText.placeholder = data.inPlaceholder;
+  if (outText) outText.placeholder = data.outPlaceholder;
+  
+  // Update dropdown options
   const dirSelect = document.getElementById('dir');
-  dirSelect.options[0].text = data.dirDevToTir;
-  dirSelect.options[1].text = data.dirTirToDev;
+  if (dirSelect && dirSelect.options.length >= 2) {
+    dirSelect.options[0].text = data.dirDevToTir;
+    dirSelect.options[1].text = data.dirTirToDev;
+  }
   
-  localStorage.setItem('tirhuta-lang', lang);
+  // Update example text
+  const exampleEl = document.getElementById('exampleText');
+  if (exampleEl) {
+    exampleEl.innerHTML = data.example;
+  }
+  
+  // Update footer subtext
+  const footerSubtext = document.getElementById('footerSubtext');
+  if (footerSubtext) footerSubtext.textContent = data.footer;
+  
+  // Save preference
+  try {
+    localStorage.setItem('tirhuta-lang', lang);
+  } catch (e) {
+    // localStorage not available
+  }
+  
+  console.log('✅ Language changed to:', lang);
 }
 
 // ============================================================
@@ -1095,8 +1176,10 @@ function handleInput() {
 function updateCounts() {
   const inText = document.getElementById('inText').value;
   const outText = document.getElementById('outText').value;
-  document.getElementById('inCount').textContent = [...inText].length + ' अक्षर';
-  document.getElementById('outCount').textContent = [...outText].length + ' अक्षर';
+  const inCount = document.getElementById('inCount');
+  const outCount = document.getElementById('outCount');
+  if (inCount) inCount.textContent = [...inText].length + ' अक्षर';
+  if (outCount) outCount.textContent = [...outText].length + ' अक्षर';
 }
 
 function updateUI() {
@@ -1105,14 +1188,18 @@ function updateUI() {
   const outLabel = document.getElementById('outLabel');
   const inText = document.getElementById('inText');
   
+  // Get current language
+  const activeLang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
+  const data = LANGUAGES[activeLang] || LANGUAGES.mai;
+  
   if (direction === 'dev-to-tir') {
-    inLabel.textContent = '📝 देवनागरी / English (इनपुट)';
-    outLabel.textContent = '📄 तिरहुता (आउटपुट)';
-    inText.placeholder = 'English phonetic type करें... (maithili, mithila...)';
+    if (inLabel) inLabel.textContent = '📝 ' + data.inLabel.split(' ').slice(1).join(' ');
+    if (outLabel) outLabel.textContent = '📄 ' + data.outLabel.split(' ').slice(1).join(' ');
+    if (inText) inText.placeholder = 'English phonetic type करें... (maithili, mithila...)';
   } else {
-    inLabel.textContent = '📝 तिरहुता (इनपुट)';
-    outLabel.textContent = '📄 देवनागरी (आउटपुट)';
-    inText.placeholder = 'तिरहुता पाठ paste करें...';
+    if (inLabel) inLabel.textContent = '📝 तिरहुता (इनपुट)';
+    if (outLabel) outLabel.textContent = '📄 देवनागरी (आउटपुट)';
+    if (inText) inText.placeholder = 'तिरहुता पाठ paste करें...';
   }
   applyFont();
   doConvert();
@@ -1134,10 +1221,12 @@ function applyFont() {
   const direction = document.getElementById('dir').value;
   const out = document.getElementById('outText');
   const inp = document.getElementById('inText');
-  out.className = '';
-  inp.className = '';
+  if (out) out.className = '';
+  if (inp) inp.className = '';
   const tirElement = direction === 'dev-to-tir' ? out : inp;
-  tirElement.classList.add(font === 'mithilauni' ? 'tir-font' : 'noto-font');
+  if (tirElement) {
+    tirElement.classList.add(font === 'mithilauni' ? 'tir-font' : 'noto-font');
+  }
 }
 
 // ============================================================
@@ -1151,17 +1240,21 @@ function doCopy() {
     showToast('✅ कॉपी हो गया!', 'success');
   }).catch(() => {
     const out = document.getElementById('outText');
-    out.select();
-    document.execCommand('copy');
-    showToast('✅ कॉपी हो गया!', 'success');
+    if (out) {
+      out.select();
+      document.execCommand('copy');
+      showToast('✅ कॉपी हो गया!', 'success');
+    }
   });
 }
 
 function doClear() {
-  document.getElementById('inText').value = '';
-  document.getElementById('outText').value = '';
+  const inText = document.getElementById('inText');
+  const outText = document.getElementById('outText');
+  if (inText) inText.value = '';
+  if (outText) outText.value = '';
   updateCounts();
-  document.getElementById('inText').focus();
+  if (inText) inText.focus();
   showToast('🗑️ साफ़ हो गया!', 'info');
 }
 
@@ -1274,6 +1367,7 @@ function doDownloadPDF() {
 
 function showToast(msg, type = '') {
   const toast = document.getElementById('toast');
+  if (!toast) return;
   toast.textContent = msg;
   toast.className = 'toast show ' + type;
   clearTimeout(toast._timeout);
@@ -1300,6 +1394,7 @@ function renderRules() {
   ];
   
   const grid = document.getElementById('ruleGrid');
+  if (!grid) return;
   grid.innerHTML = rules.map(([eng, dev]) => `
     <div class="rule-item"><code>${eng}</code> → ${dev}</div>
   `).join('');
@@ -1314,10 +1409,17 @@ window.onload = function() {
   updateUI();
   updateCounts();
   
-  const savedLang = localStorage.getItem('tirhuta-lang') || 'mai';
+  // Load saved language preference
+  let savedLang = 'mai';
+  try {
+    savedLang = localStorage.getItem('tirhuta-lang') || 'mai';
+  } catch (e) {
+    // localStorage not available
+  }
   setLanguage(savedLang);
   
-  document.getElementById('inText').focus();
+  const inText = document.getElementById('inText');
+  if (inText) inText.focus();
   
   console.log('✅ मिथिला लिपि परिवर्तक लोड हो गया!');
   console.log('📝 "maithili" टाइप करें');
