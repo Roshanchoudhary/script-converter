@@ -337,6 +337,35 @@
             z-index: 1;
         }
         #pdfPreview .close-btn:hover { background: #7A1313; }
+        
+        /* Watermark style for generated PDF/Image containers */
+        .watermark-container {
+            position: relative;
+        }
+        .watermark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .watermark-text {
+            position: absolute;
+            color: rgba(139, 26, 26, 0.12);
+            font-size: 60px;
+            font-weight: bold;
+            white-space: nowrap;
+            transform: rotate(-30deg);
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            user-select: none;
+            letter-spacing: 4px;
+        }
     </style>
 </head>
 <body>
@@ -459,8 +488,10 @@
     <br><small id="footerSubtext">मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
 
 <script>
 'use strict';
@@ -563,6 +594,11 @@ const LANGUAGES = {
     dirTirToDev: 'Tirhuta → Devanagari'
   }
 };
+
+// ============================================================
+// WATERMARK URL
+// ============================================================
+const WATERMARK_URL = 'lipi.maithili.org.in';
 
 // ============================================================
 // UNICODE MAPS
@@ -812,6 +848,48 @@ function convert(text, direction) {
 }
 
 // ============================================================
+// WATERMARK GENERATOR
+// ============================================================
+function addWatermarkToContainer(container, watermarkText) {
+  // Ensure container has position relative
+  if (!container.style.position || container.style.position === 'static') {
+    container.style.position = 'relative';
+  }
+  container.classList.add('watermark-container');
+  
+  // Create watermark overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'watermark-overlay';
+  
+  // Add multiple diagonal watermarks
+  const wmText = watermarkText || WATERMARK_URL;
+  const positions = [
+    { top: '10%', left: '-10%' },
+    { top: '30%', left: '30%' },
+    { top: '50%', left: '10%' },
+    { top: '70%', left: '40%' },
+    { top: '90%', left: '-5%' },
+    { top: '15%', left: '60%' },
+    { top: '45%', left: '70%' },
+    { top: '75%', left: '65%' },
+    { top: '55%', left: '-20%' },
+    { top: '85%', left: '20%' },
+  ];
+  
+  positions.forEach(pos => {
+    const wmSpan = document.createElement('span');
+    wmSpan.className = 'watermark-text';
+    wmSpan.textContent = wmText;
+    wmSpan.style.top = pos.top;
+    wmSpan.style.left = pos.left;
+    overlay.appendChild(wmSpan);
+  });
+  
+  container.appendChild(overlay);
+  return container;
+}
+
+// ============================================================
 // LANGUAGE SWITCHER
 // ============================================================
 
@@ -1018,7 +1096,7 @@ function doDownloadTirhuta() {
 }
 
 // ============================================================
-// PDF DOWNLOAD - FIXED
+// PDF DOWNLOAD - WITH WATERMARK
 // ============================================================
 
 function doDownloadPDF() {
@@ -1045,6 +1123,7 @@ function doDownloadPDF() {
     left: -9999px;
     top: 0;
     z-index: -1;
+    min-height: 600px;
   `;
   
   const font = document.getElementById('fontSel').value;
@@ -1066,6 +1145,9 @@ function doDownloadPDF() {
       <br>${data.dirDevToTir} ${direction === 'dev-to-tir' ? '✓' : ''} | ${data.dirTirToDev} ${direction === 'tir-to-dev' ? '✓' : ''}
     </div>
   `;
+  
+  // Add watermark
+  addWatermarkToContainer(pdfContainer, WATERMARK_URL);
   
   document.body.appendChild(pdfContainer);
   
@@ -1105,7 +1187,7 @@ function doDownloadPDF() {
 }
 
 // ============================================================
-// IMAGE DOWNLOAD - NEW FUNCTION
+// IMAGE DOWNLOAD - WITH WATERMARK AND DYNAMIC SIZE
 // ============================================================
 
 function doDownloadImage() {
@@ -1119,13 +1201,20 @@ function doDownloadImage() {
   const font = document.getElementById('fontSel').value;
   const tirhutaFont = font === 'mithilauni' ? 'Mithilauni' : '"Noto Sans Tirhuta"';
   
+  // Calculate dynamic sizes based on text length
+  const textLength = Math.max(outputText.length, inputText.length, 10);
+  const fontSize = textLength > 200 ? 16 : textLength > 100 ? 20 : textLength > 50 ? 24 : 28;
+  const padding = textLength > 200 ? 30 : textLength > 100 ? 40 : 50;
+  const containerWidth = Math.min(Math.max(textLength * 20, 400), 1200);
+  
   // Create container for image
   const imgContainer = document.createElement('div');
   imgContainer.id = 'imgContainer';
   imgContainer.style.cssText = `
     font-family: 'Noto Sans Devanagari', 'Noto Sans Tirhuta', Arial, sans-serif;
-    padding: 40px 50px;
-    max-width: 900px;
+    padding: ${padding}px;
+    max-width: ${containerWidth}px;
+    width: fit-content;
     background: white;
     color: #2C1810;
     line-height: 1.8;
@@ -1139,51 +1228,57 @@ function doDownloadImage() {
   
   imgContainer.innerHTML = `
     <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #D4A017;">
-      <h1 style="color: #8B1A1A; font-size: 28px; margin: 0;">${data.siteTitle}</h1>
-      <p style="color: #8B7355; font-size: 14px; margin: 4px 0 0 0;">${data.subtitle}</p>
+      <h1 style="color: #8B1A1A; font-size: ${fontSize * 0.8}px; margin: 0;">${data.siteTitle}</h1>
+      <p style="color: #8B7355; font-size: ${fontSize * 0.5}px; margin: 4px 0 0 0;">${data.subtitle}</p>
     </div>
     <div style="margin: 12px 0; padding: 12px 16px; background: #FDF6E3; border-radius: 6px; border-left: 4px solid #8B1A1A;">
-      <strong style="color: #8B1A1A; font-size: 14px;">📝 इनपुट:</strong>
-      <p style="font-size: 15px; margin: 4px 0 0 0; padding: 8px; background: white; border-radius: 4px; min-height: 24px;">${inputText || '(empty)'}</p>
+      <strong style="color: #8B1A1A; font-size: ${fontSize * 0.55}px;">📝 इनपुट:</strong>
+      <p style="font-size: ${fontSize * 0.6}px; margin: 4px 0 0 0; padding: 8px; background: white; border-radius: 4px; min-height: 24px; word-wrap: break-word;">${inputText || '(empty)'}</p>
     </div>
     <div style="margin: 12px 0; padding: 12px 16px; background: #FDF6E3; border-radius: 6px; border-left: 4px solid #D4A017;">
-      <strong style="color: #8B1A1A; font-size: 14px;">📄 आउटपुट:</strong>
-      <p style="font-size: 22px; margin: 4px 0 0 0; padding: 10px; background: white; border-radius: 4px; font-family: ${tirhutaFont}, serif; min-height: 30px; word-wrap: break-word;">${outputText}</p>
+      <strong style="color: #8B1A1A; font-size: ${fontSize * 0.55}px;">📄 आउटपुट:</strong>
+      <p style="font-size: ${fontSize}px; margin: 4px 0 0 0; padding: 10px; background: white; border-radius: 4px; font-family: ${tirhutaFont}, serif; min-height: 30px; word-wrap: break-word; line-height: 2.2;">${outputText}</p>
     </div>
-    <div style="margin-top: 20px; padding-top: 12px; border-top: 1px solid #C8A96E; font-size: 11px; color: #8B7355; text-align: center;">
+    <div style="margin-top: 20px; padding-top: 12px; border-top: 1px solid #C8A96E; font-size: ${fontSize * 0.4}px; color: #8B7355; text-align: center;">
       ${data.footer} | ${new Date().toLocaleDateString('mai')}
     </div>
   `;
+  
+  // Add watermark
+  addWatermarkToContainer(imgContainer, WATERMARK_URL);
   
   document.body.appendChild(imgContainer);
   
   showToast('⏳ इमेज बन रही है...', 'info');
   
-  html2canvas(imgContainer, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: '#FFFFFF',
-    allowTaint: true,
-    logging: false,
-    width: imgContainer.scrollWidth,
-    height: imgContainer.scrollHeight,
-    windowWidth: imgContainer.scrollWidth,
-    windowHeight: imgContainer.scrollHeight
-  }).then(canvas => {
-    document.body.removeChild(imgContainer);
-    
-    // Create download link
-    const link = document.createElement('a');
-    link.download = 'tirhuta-converted-' + Date.now() + '.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    
-    showToast('✅ इमेज डाउनलोड हो गई!', 'success');
-  }).catch(err => {
-    console.error('Image Error:', err);
-    document.body.removeChild(imgContainer);
-    showToast('⚠️ इमेज बनाने में त्रुटि!', 'error');
-  });
+  // Wait a moment for layout to settle
+  setTimeout(() => {
+    html2canvas(imgContainer, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#FFFFFF',
+      allowTaint: true,
+      logging: false,
+      width: imgContainer.scrollWidth,
+      height: imgContainer.scrollHeight,
+      windowWidth: imgContainer.scrollWidth,
+      windowHeight: imgContainer.scrollHeight
+    }).then(canvas => {
+      document.body.removeChild(imgContainer);
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.download = 'tirhuta-converted-' + Date.now() + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      showToast('✅ इमेज डाउनलोड हो गई!', 'success');
+    }).catch(err => {
+      console.error('Image Error:', err);
+      document.body.removeChild(imgContainer);
+      showToast('⚠️ इमेज बनाने में त्रुटि!', 'error');
+    });
+  }, 300);
 }
 
 // ============================================================
