@@ -1,6 +1,5 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - CORRECTED य़ RULE
-// आधा य् (्य) पर नुक्ता नहीं, पूरा य पर नुक्ता
+// MITHILA SCRIPT CONVERTER - PERFECT य़ RULE
 // ============================================================
 
 (function() {
@@ -62,7 +61,7 @@
   };
 
   // ============================================================
-  // CONSONANTS SET
+  // CONSONANTS & MATRAS SET
   // ============================================================
 
   const CONSONANTS = new Set([
@@ -75,68 +74,77 @@
     'श', 'ष', 'स', 'ह'
   ]);
 
+  const MATRAS = new Set([
+    'ा', 'ि', 'ी', 'ु', 'ू',
+    'ृ', 'ॄ', 'े', 'ै', 'ो', 'ौ', 'ं', 'ः', 'ँ'
+  ]);
+
   // ============================================================
-  // CORRECTED य → य़ RULE
-  // आधा य् (्य) पर नुक्ता नहीं
-  // पूरा य (बीच/अंत में) पर नुक्ता
+  // PERFECT य → य़ RULE
   // ============================================================
 
   function applyYaRule(text) {
     if (!text) return '';
-    
+
     let result = '';
     const words = text.split(/(\s+)/);
-    
+
     for (const word of words) {
       if (!word.trim() || /^[\s\d]+$/.test(word)) {
         result += word;
         continue;
       }
-      
+
       let converted = '';
       const chars = word.split('');
       const len = chars.length;
-      
+
       for (let i = 0; i < len; i++) {
         const char = chars[i];
         const nextChar = chars[i + 1] || '';
         const prevChar = chars[i - 1] || '';
-        
+        const nextNextChar = chars[i + 2] || '';
+
         if (char === 'य') {
           // ============================================================
-          // CHECK: क्या य आधा है? (्य)
-          // आधा य् तब होता है जब:
-          // 1. पहले कोई consonant हो (क्य, ग्य, व्य, द्य, त्य, न्य, म्य, स्य, ह्य, र्य, ल्य)
-          // 2. या बाद में कोई consonant हो (प्र्य, ब्र्य)
+          // STEP 1: क्या य आधा है? (्य)
           // ============================================================
-          const isHalfYa = 
-            (i > 0 && CONSONANTS.has(prevChar)) ||  // पहले consonant (क्य, ग्य, व्य)
-            (i < len - 1 && CONSONANTS.has(nextChar)); // बाद में consonant (प्र्य, ब्र्य)
           
+          // CASE A: पहले consonant है और बाद में कोई vowel/matra नहीं है
+          // उदाहरण: व्य, क्य, ग्य, द्य, त्य, न्य, म्य, स्य, ह्य, र्य, ल्य
+          const hasPrevConsonant = i > 0 && CONSONANTS.has(prevChar);
+          const hasNextMatra = MATRAS.has(nextChar);
+          const hasNextConsonant = i < len - 1 && CONSONANTS.has(nextChar);
+          
+          // आधा य् - पहले consonant और बाद में matra नहीं
+          const isHalfYaWithPrev = hasPrevConsonant && !hasNextMatra && !hasNextConsonant;
+          
+          // CASE B: बाद में consonant है (प्र्य, ब्र्य)
+          const isHalfYaWithNext = i < len - 1 && CONSONANTS.has(nextChar);
+          
+          const isHalfYa = isHalfYaWithPrev || isHalfYaWithNext;
+
           // ============================================================
-          // RULE 1: शब्द के अंत में पूरा य → य़ ✅
+          // STEP 2: नियम लागू करें
           // ============================================================
-          if (i === len - 1 && !isHalfYa) {
+          
+          // RULE 1: शब्द के अंत में य → हमेशा य़ (चाहे कुछ भी हो)
+          if (i === len - 1) {
             converted += 'य़';
           }
-          // ============================================================
-          // RULE 2: शब्द के बीच में पूरा य → य़ ✅
-          // ============================================================
+          // RULE 2: शब्द के बीच में पूरा य → य़
           else if (i > 0 && i < len - 1 && !isHalfYa) {
             converted += 'य़';
           }
-          // ============================================================
-          // RULE 3: आधा य् (्य) → य (नुक्ता नहीं) ❌
-          // ============================================================
+          // RULE 3: आधा य् (्य) → य (नुक्ता नहीं)
           else if (isHalfYa) {
             converted += 'य';
           }
-          // ============================================================
-          // RULE 4: शब्द के शुरू में य → य (कोई बदलाव नहीं)
-          // ============================================================
+          // RULE 4: शब्द के शुरू में य → य
           else if (i === 0) {
             converted += 'य';
           }
+          // Default
           else {
             converted += 'य';
           }
@@ -144,10 +152,10 @@
           converted += char;
         }
       }
-      
+
       result += converted;
     }
-    
+
     return result;
   }
 
@@ -200,38 +208,63 @@
       ['राज्य', 'राज्य', '𑒩𑒰𑒖𑓂𑒨'],
       ['कार्य', 'कार्य', '𑒏𑒰𑒩𑓂𑒨'],
       ['प्रत्यय', 'प्रत्यय', '𑒣𑓂𑒩𑒞𑓂𑒨𑒨'],
+      ['व्यय', 'व्यय', '𑒫𑓂𑒨𑒨'],
       
-      // पूरा य (बीच/अंत में) - नुक्ता लगेगा
+      // अंत में पूरा य - नुक्ता लगेगा
       ['राजय', 'राजय़', '𑒩𑒰𑒖𑒨𑓃'],
       ['सोय', 'सोय़', '𑒮𑒼𑒨𑓃'],
+      ['भय', 'भय़', '𑒦𑒨𑓃'],
+      ['जय', 'जय़', '𑒖𑒨𑓃'],
+      ['नय', 'नय़', '𑒢𑒨𑓃'],
+      ['रय', 'रय़', '𑒩𑒨𑓃'],
+      ['लय', 'लय़', '𑒪𑒨𑓃'],
+      ['क्षय', 'क्षय़', '𑒏𑓂𑒭𑒨𑓃'],
+      
+      // बीच में पूरा य - नुक्ता लगेगा
       ['प्रयोग', 'प्रय़ोग', '𑒣𑓂𑒩𑒨𑓃𑒼𑒑'],
       ['वयस', 'वय़स', '𑒫𑒨𑓃𑒮'],
       ['अयन', 'अय़न', '𑒁𑒨𑓃𑒢'],
-      ['भय', 'भय़', '𑒦𑒨𑓃'],
+      ['अयोध्या', 'अय़ोध्या', '𑒁𑒨𑓃𑒼𑒡𑓂𑒨𑒰'],
+      ['प्रयत्न', 'प्रय़त्न', '𑒣𑓂𑒩𑒨𑓃𑒞𑓂𑒢'],
       
       // शुरू में य - नुक्ता नहीं
       ['योग', 'योग', '𑒨𑒼𑒑'],
       ['यम', 'यम', '𑒨𑒧'],
+      ['युद्ध', 'युद्ध', '𑒨𑒳𑒠𑓂𑒡'],
+      ['युग', 'युग', '𑒨𑒳𑒑'],
+      
+      // Complex cases
+      ['महाय', 'महाय़', '𑒧𑒯𑒰𑒨𑓃'],
+      ['विजय', 'विजय़', '𑒫𑒱𑒖𑒨𑓃'],
+      ['सदय', 'सदय़', '𑒮𑒠𑒨𑓃'],
+      ['निरय', 'निरय़', '𑒢𑒱𑒩𑒨𑓃'],
     ];
     
     console.log('🧪 Testing य → य़ Rule:');
     console.log('📝 आधा य् (्य) → नुक्ता नहीं ❌');
     console.log('📝 पूरा य (बीच/अंत) → नुक्ता लगेगा ✅\n');
     
-    let allPassed = true;
+    let passed = 0;
+    let failed = 0;
+    
     tests.forEach(([input, expectedDev, expectedTir]) => {
       const afterDev = applyYaRule(input);
       const afterTir = convertToTirhuta(input);
       const devStatus = afterDev === expectedDev ? '✅' : '❌';
       const tirStatus = afterTir === expectedTir ? '✅' : '❌';
-      if (devStatus === '❌' || tirStatus === '❌') allPassed = false;
-      console.log(`${input} → ${afterDev} ${devStatus} → ${afterTir} ${tirStatus}`);
+      
+      if (devStatus === '✅' && tirStatus === '✅') {
+        passed++;
+      } else {
+        failed++;
+        console.log(`❌ ${input} → Dev: ${afterDev} ${devStatus}, Tir: ${afterTir} ${tirStatus}`);
+        console.log(`   Expected Dev: ${expectedDev}, Tir: ${expectedTir}`);
+      }
     });
     
-    if (allPassed) {
-      console.log('\n🎉 सभी टेस्ट पास!');
-    } else {
-      console.log('\n⚠️ कुछ टेस्ट फेल!');
+    console.log(`\n📊 Results: ${passed} passed, ${failed} failed out of ${tests.length}`);
+    if (failed === 0) {
+      console.log('🎉 सभी टेस्ट पास!');
     }
   }
 
@@ -601,6 +634,4 @@
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
-  }
-
-})();
+ 
