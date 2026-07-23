@@ -904,6 +904,17 @@
             💡 <code>maithili</code> → 𑒧𑒸𑒟𑒱𑒪𑒱
           </div>
         </div>
+<hr style="margin:12px 0;border:none;border-top:1px solid #ddd;">
+
+<div class="mw-powered" style="text-align:center;font-size:12px;color:#666;margin-bottom:10px;">
+    Powered by
+    <a href="https://lipi.maithili.org.in/"
+       target="_blank"
+       style="color:#8B1A1A;font-weight:bold;text-decoration:none;">
+        lipi.maithili.org.in
+    </a>
+</div>
+
 
         <div class="mw-pg">
           <p>🌐 <strong>पूरे पेज</strong> का पाठ तिरहुता में बदलें</p>
@@ -991,10 +1002,7 @@
 
   window.mwConvertPage = function () {
     const btn = document.getElementById('mw-pgbtn');
-    const font = document.getElementById('mw-pgfont').value;
-    const ff = font === 'mithilauni' ? 
-      "'Mithilauni','Noto Sans Tirhuta',serif" : 
-      "'Noto Sans Tirhuta',serif";
+   const ff = "'Mithilauni','Noto Sans Tirhuta',serif";
 
     if (!pageConverted) {
       originals = [];
@@ -1003,13 +1011,14 @@
         NodeFilter.SHOW_TEXT,
         {
           acceptNode: function(node) {
-            if (node.parentElement && 
-                (node.parentElement.closest('#mw-panel') || 
-                 node.parentElement.closest('#mw-fab') || 
-                 node.parentElement.closest('#mw-toast') ||
-                 node.parentElement.closest('script') ||
-                 node.parentElement.closest('style') ||
-                 node.parentElement.closest('head'))) {
+         if (node.parentElement &&
+    (node.parentElement.closest('#mw-panel') ||
+     node.parentElement.closest('#mw-fab') ||
+     node.parentElement.closest('#mw-toast') ||
+     node.parentElement.closest('.mw-powered') ||
+     node.parentElement.closest('script') ||
+     node.parentElement.closest('style') ||
+     node.parentElement.closest('head'))) {
               return NodeFilter.FILTER_REJECT;
             }
             if (!node.textContent.trim()) {
@@ -1037,7 +1046,7 @@
       btn.textContent = '↩️ मूल पाठ वापस लाएं';
       btn.classList.add('active');
       pageConverted = true;
-      mwToast('✅ पेज तिरहुता में बदल गया!', 'success');
+      mwToast('✅ पेज तिरहुतामे बदललि  गेल !', 'success');
       
     } else {
       originals.forEach(({ node, orig }) => {
@@ -1047,7 +1056,7 @@
         }
       });
       originals = [];
-      btn.textContent = '🔄 पेज को तिरहुता में बदलें';
+     btn.textContent = '🌐 Website के मिथिलाक्षरमे परिवर्तित करू';
       btn.classList.remove('active');
       pageConverted = false;
       mwToast('↩️ मूल पाठ वापस आ गया!', 'success');
