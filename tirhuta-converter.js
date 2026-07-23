@@ -1,6 +1,5 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - COMPLETE
-// Button + Credit Link + Perfect य़ Rule
+// MITHILA SCRIPT CONVERTER - ONLY BUTTON + CREDIT LINK
 // ============================================================
 
 (function() {
@@ -106,39 +105,23 @@
         const prevChar = chars[i - 1] || '';
 
         if (char === 'य') {
-          // ============================================================
-          // CHECK: क्या य आधा है? (्य)
-          // ============================================================
-          
           const hasPrevConsonant = i > 0 && CONSONANTS.has(prevChar);
           const hasNextMatra = MATRAS.has(nextChar);
           const hasNextConsonant = i < len - 1 && CONSONANTS.has(nextChar);
           
-          // आधा य् - पहले consonant और बाद में matra नहीं
           const isHalfYaWithPrev = hasPrevConsonant && !hasNextMatra && !hasNextConsonant;
-          
-          // बाद में consonant है (प्र्य, ब्र्य)
           const isHalfYaWithNext = i < len - 1 && CONSONANTS.has(nextChar);
-          
           const isHalfYa = isHalfYaWithPrev || isHalfYaWithNext;
 
-          // ============================================================
-          // RULES APPLY
-          // ============================================================
-          
-          // RULE 1: अंत में य → य़ (हमेशा)
           if (i === len - 1) {
             converted += 'य़';
           }
-          // RULE 2: बीच में पूरा य → य़
           else if (i > 0 && i < len - 1 && !isHalfYa) {
             converted += 'य़';
           }
-          // RULE 3: आधा य् → य (नुक्ता नहीं)
           else if (isHalfYa) {
             converted += 'य';
           }
-          // RULE 4: शुरू में य → य
           else if (i === 0) {
             converted += 'य';
           }
@@ -163,7 +146,6 @@
   function convertToTirhuta(text) {
     if (!text) return '';
     
-    // Step 1: Roman numbers → Devanagari
     let processed = '';
     for (let i = 0; i < text.length; i++) {
       const char = text[i];
@@ -174,17 +156,14 @@
       }
     }
     
-    // Step 2: Apply य → य़ rule
     const yaApplied = applyYaRule(processed);
     
-    // Step 3: Devanagari → Tirhuta
     let result = '';
     for (let i = 0; i < yaApplied.length; i++) {
       const char = yaApplied[i];
-      // Handle य़ (य + ़)
       if (char === 'य' && yaApplied[i+1] === '़') {
-        result += '𑒨𑓃'; // य़ in Tirhuta
-        i++; // Skip ़
+        result += '𑒨𑓃';
+        i++;
       } else {
         result += D2T[char] || char;
       }
@@ -219,8 +198,6 @@
       const afterTir = convertToTirhuta(input);
       if (afterDev === expectedDev && afterTir === expectedTir) {
         passed++;
-      } else {
-        console.log(`❌ ${input} → ${afterDev} → ${afterTir}`);
       }
     });
     console.log(`✅ ${passed}/${tests.length} tests passed`);
@@ -441,7 +418,6 @@
     const style = document.createElement('style');
     style.id = 'mw-css';
     style.textContent = `
-      /* FAB Button */
       #mw-fab {
         position: fixed;
         bottom: 24px;
@@ -471,39 +447,32 @@
         transform: scale(0.95);
       }
 
-      /* Credit Link */
       #mw-credit {
         position: fixed;
         bottom: 88px;
         right: 24px;
-        background: rgba(255,255,255,0.92);
-        backdrop-filter: blur(6px);
-        padding: 5px 14px;
-        border-radius: 14px;
-        font-size: 11px;
+        font-size: 10px;
         font-family: 'Noto Sans Devanagari', Arial, sans-serif;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        color: #999;
         z-index: 99997;
-        border: 1px solid rgba(200,169,110,0.2);
+        text-align: center;
+        opacity: 0.6;
         transition: all 0.3s ease;
-        cursor: pointer;
-        user-select: none;
+        letter-spacing: 0.3px;
+        pointer-events: auto;
       }
       #mw-credit:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 20px rgba(139,26,26,0.15);
-        border-color: #8B1A1A;
+        opacity: 1;
       }
       #mw-credit a {
         color: #8B1A1A;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
       }
       #mw-credit a:hover {
         text-decoration: underline;
       }
 
-      /* Toast */
       #mw-toast {
         position: fixed;
         bottom: 90px;
@@ -533,7 +502,6 @@
         background: #B91C1C;
       }
 
-      /* Mobile Responsive */
       @media (max-width: 600px) {
         #mw-fab {
           width: 48px;
@@ -545,8 +513,7 @@
         #mw-credit {
           bottom: 76px;
           right: 16px;
-          font-size: 9px;
-          padding: 4px 10px;
+          font-size: 8px;
         }
         #mw-toast {
           bottom: 76px;
@@ -560,13 +527,10 @@
   }
 
   // ============================================================
-  // BUILD WIDGET - BUTTON + CREDIT LINK
+  // BUILD WIDGET
   // ============================================================
 
   function buildWidget() {
-    // ============================================================
-    // FAB BUTTON
-    // ============================================================
     const fab = document.createElement('button');
     fab.id = 'mw-fab';
     fab.title = '𑒧 मिथिला लिपि | Click to convert page to Tirhuta';
@@ -574,16 +538,10 @@
     fab.setAttribute('aria-label', 'Convert page to Tirhuta');
     fab.onclick = convertPage;
 
-    // ============================================================
-    // CREDIT LINK - Button के नीचे
-    // ============================================================
     const credit = document.createElement('div');
     credit.id = 'mw-credit';
-    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">𑒧 मिथिला लिपि</a>`;
+    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">lipi.maithili.org.in</a>`;
 
-    // ============================================================
-    // TOAST
-    // ============================================================
     const toast = document.createElement('div');
     toast.id = 'mw-toast';
 
@@ -626,7 +584,6 @@
     injectCSS();
     buildWidget();
     
-    // Run tests
     runTests();
     
     const saved = checkSavedPreference();
@@ -637,4 +594,16 @@
       }, 500);
     }
     
-    consol
+    console.log('𑒧 Mithila Script Converter loaded!');
+    console.log('📝 य → य़ नियम: आधा य् (्य) पर नुक्ता नहीं');
+    console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
+    console.log('🔗 ' + CONFIG.creditLink);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
