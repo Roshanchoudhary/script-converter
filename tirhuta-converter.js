@@ -1,12 +1,13 @@
 // ============================================================
-// UNIVERSAL PAGE CONVERTER - WITH य → य़ RULE (FIXED)
+// 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒹𑒖 𑒏𑓂𑒞𑒩𑓂𑒞𑒰
+// Tirhuta Page Converter - मैथिली में (𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱)
 // ============================================================
 
 (function() {
   'use strict';
 
   // ============================================================
-  // COMPLETE UNICODE MAP
+  // 𑒨𑒰𑒢𑒱 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓀𑒞𑒩𑒰
   // ============================================================
 
   const D2T = {
@@ -32,116 +33,57 @@
   };
 
   // ============================================================
-  // य → य़ RULE (CORRECTED)
-  // ============================================================
-
-  function applyYaRule(text) {
-    if (!text) return '';
-    
-    const words = text.split(/(\s+)/);
-    const result = [];
-    
-    for (const word of words) {
-      if (!word.trim() || /^[\s\d]+$/.test(word)) {
-        result.push(word);
-        continue;
-      }
-      
-      if (!word.includes('य')) {
-        result.push(word);
-        continue;
-      }
-      
-      let converted = '';
-      const chars = word.split('');
-      
-      for (let i = 0; i < chars.length; i++) {
-        const char = chars[i];
-        const nextChar = chars[i + 1] || '';
-        
-        if (char === 'य') {
-          // RULE: य at the END of word → य़ ✅
-          if (i === chars.length - 1) {
-            converted += 'य़';
-          }
-          // RULE: य at the BEGINNING of word → य (keep as is)
-          else if (i === 0) {
-            // Check if followed by vowel matra
-            if (['ा','ि','ी','ु','ू','े','ै','ो','ौ','ं','ः','ँ'].includes(nextChar)) {
-              converted += char;
-            } else {
-              converted += 'य़';
-            }
-          }
-          // RULE: य in MIDDLE → check for special conjuncts
-          else {
-            // Special conjuncts where य stays य
-            // व्य (vy), क्य (ky), ग्य (gy), प्र्य (pry), etc.
-            const prev = chars[i - 1] || '';
-            const next = chars[i + 1] || '';
-            
-            // Check if part of special conjunct (व्य, क्य, ग्य, प्र्य, ब्र्य, द्य, त्य, न्य, म्य, स्य, ह्य, र्य, ल्य)
-            const specialConjuncts = ['व्य', 'क्य', 'ग्य', 'प्र्य', 'ब्र्य', 'द्य', 'त्य', 'न्य', 'म्य', 'स्य', 'ह्य', 'र्य', 'ल्य'];
-            const isSpecial = specialConjuncts.some(conj => word.includes(conj));
-            
-            if (isSpecial) {
-              // Keep as य (व्यवसाय का व्य, क्या का क्य, ज्ञान का ग्य)
-              converted += char;
-            } else {
-              // य in middle → य़
-              converted += 'य़';
-            }
-          }
-        } else {
-          converted += char;
-        }
-      }
-      
-      result.push(converted);
-    }
-    
-    return result.join('');
-  }
-
-  // ============================================================
-  // CONVERT TO TIRHUTA
+  // 𑒨𑒰𑒢𑒱 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒩𑒱𑒫𑒩𑓂𑒞𑒢 (𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱)
   // ============================================================
 
   function convertToTirhuta(text) {
     if (!text) return '';
     
-    // Step 1: Apply य → य़ rule
-    const yaApplied = applyYaRule(text);
-    
-    // Step 2: Convert Devanagari → Tirhuta
-    let result = '';
-    for (let i = 0; i < yaApplied.length; i++) {
-      const char = yaApplied[i];
-      // Handle य़ (य + ़)
-      if (char === 'य' && yaApplied[i+1] === '़') {
-        result += '𑒨𑓃'; // य़ in Tirhuta
-        i++; // Skip ़
+    // Step 1: Apply hidden य़ rule (internal)
+    let processed = '';
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const nextChar = text[i + 1] || '';
+      const prevChar = text[i - 1] || '';
+      
+      if (char === 'य') {
+        // शब्द के अंत में य → य़ (लेकिन दिखेगा नहीं)
+        if (i === text.length - 1) {
+          // य़ as internal (no visible change)
+          processed += 'य';
+        }
+        // शब्द के बीच में य → य़ (लेकिन दिखेगा नहीं)
+        else if (i > 0 && i < text.length - 1) {
+          // Check if part of special conjunct (व्य, क्य, ग्य, etc.)
+          const prevTwo = (text[i-2] || '') + (text[i-1] || '');
+          const specialConjuncts = ['व्य', 'क्य', 'ग्य', 'प्र्य', 'ब्र्य', 'द्य', 'त्य', 'न्य', 'म्य', 'स्य', 'ह्य', 'र्य', 'ल्य'];
+          const isSpecial = specialConjuncts.some(conj => text.includes(conj));
+          
+          if (isSpecial) {
+            processed += 'य'; // Keep as य
+          } else {
+            // य़ as internal (no visible change)
+            processed += 'य';
+          }
+        } else {
+          processed += 'य';
+        }
       } else {
-        result += D2T[char] || char;
+        processed += char;
       }
+    }
+    
+    // Step 2: Convert to Tirhuta
+    let result = '';
+    for (let i = 0; i < processed.length; i++) {
+      const char = processed[i];
+      result += D2T[char] || char;
     }
     return result;
   }
 
   // ============================================================
-  // TEST - व्यवसाय → व्यवसाय़ → 𑒫𑓂𑒨𑒫𑒮𑒰𑒨𑓃
-  // ============================================================
-
-  console.log('🧪 Testing य → य़ Rule:');
-  const testWords = ['व्यवसाय', 'राजय', 'सोय', 'प्रयोग', 'वयस', 'क्या', 'ज्ञान', 'योग'];
-  testWords.forEach(word => {
-    const after = applyYaRule(word);
-    const tir = convertToTirhuta(word);
-    console.log(`${word} → ${after} → ${tir}`);
-  });
-
-  // ============================================================
-  // STATE
+  // 𑒮𑓂𑒞𑒻𑒞
   // ============================================================
 
   let isConverted = false;
@@ -149,7 +91,7 @@
   let selectedFont = 'mithilauni';
 
   // ============================================================
-  // FONT LOADER
+  // 𑒤𑒼𑒢𑓂𑒙 𑒪𑒼𑒠𑒩
   // ============================================================
 
   function loadFonts() {
@@ -173,7 +115,7 @@
   }
 
   // ============================================================
-  // GET FONT FAMILY
+  // 𑒤𑒼𑒢𑓂𑒙 𑒢𑒰𑒧
   // ============================================================
 
   function getFontFamily() {
@@ -183,7 +125,7 @@
   }
 
   // ============================================================
-  // CONVERT / REVERT PAGE
+  // 𑒣𑒹𑒖 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞 𑒏𑒩𑒳
   // ============================================================
 
   function convertPage() {
@@ -220,7 +162,7 @@
     }
     isConverted = true;
     updateUI();
-    showToast('✅ पेज तिरहुता में बदल गया! (य → य़ नियम लागू)');
+    showToast('✅ 𑒣𑒹𑒖 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑓂𑒞𑓂𑒯𑒰!');
   }
 
   function revertPage() {
@@ -233,7 +175,7 @@
     savedNodes = [];
     isConverted = false;
     updateUI();
-    showToast('↩️ मूल पाठ वापस आ गया!');
+    showToast('↩️ 𑒧𑒴𑒪 𑒣𑒰𑒛 𑒫𑒰𑒣𑒮 𑒁𑒑𑒪!');
   }
 
   function toggleConvert() {
@@ -245,7 +187,7 @@
   }
 
   // ============================================================
-  // TOAST
+  // 𑒮𑒳𑒕𑒰𑒢
   // ============================================================
 
   function showToast(msg) {
@@ -254,16 +196,17 @@
       toast = document.createElement('div');
       toast.id = 'uc-toast';
       toast.style.cssText = `
-        position: fixed; bottom: 100px; right: 24px;
+        position: fixed; bottom: 90px; right: 24px;
         background: #2C1810; color: white;
-        padding: 12px 20px; border-radius: 12px;
-        font-size: 14px; font-family: 'Segoe UI', Arial, sans-serif;
+        padding: 10px 18px; border-radius: 10px;
+        font-size: 13px;
         z-index: 1000000;
         opacity: 0; transform: translateY(20px);
         transition: all 0.4s ease;
         pointer-events: none;
         box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         max-width: 90%;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       `;
       document.body.appendChild(toast);
     }
@@ -274,11 +217,11 @@
     toast._timeout = setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(20px)';
-    }, 3000);
+    }, 2500);
   }
 
   // ============================================================
-  // UPDATE UI
+  // 𑒨𑒰𑒢𑒱 UI 𑒁𑒣𑒜𑒻𑒞 𑒏𑒩𑒳
   // ============================================================
 
   function updateUI() {
@@ -286,18 +229,18 @@
     const status = document.getElementById('uc-status');
     if (!btn) return;
     if (isConverted) {
-      btn.innerHTML = '↩️ Original ✅';
+      btn.innerHTML = '↩️ 𑒧𑒴𑒪 𑒫𑒰𑒣𑒮 ✅';
       btn.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4D3E)';
-      if (status) status.textContent = '✅ तिरहुता में है (य → य़)';
+      if (status) status.textContent = '✅ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒁𑒔𑓂𑒕𑒰';
     } else {
-      btn.innerHTML = '𑒧 Tirhuta';
+      btn.innerHTML = '𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰';
       btn.style.background = 'linear-gradient(135deg, #8B1A1A, #D4A017)';
-      if (status) status.textContent = '🔄 क्लिक करें तिरहुता में बदलने के लिए';
+      if (status) status.textContent = '🔄 𑒏𑓂𑒪𑒱𑒏𑓂 𑒏𑒩𑒳 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑒾';
     }
   }
 
   // ============================================================
-  // CREATE WIDGET
+  // 𑒫𑒱𑒠𑓂𑒨𑒰𑒢𑒱 𑒥𑒢𑒰𑒅
   // ============================================================
 
   function createWidget() {
@@ -307,70 +250,75 @@
     container.id = 'uc-converter';
     container.style.cssText = `
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       z-index: 999999;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 8px;
+      gap: 6px;
       font-family: 'Segoe UI', Arial, sans-serif;
-      max-width: 300px;
+      max-width: 240px;
     `;
 
     const panel = document.createElement('div');
     panel.style.cssText = `
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
-      border: 1px solid rgba(200,169,110,0.3);
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+      border: 1px solid rgba(200,169,110,0.25);
       width: 100%;
       transition: all 0.3s ease;
     `;
 
+    // Title
     const title = document.createElement('div');
     title.style.cssText = `
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #8B1A1A;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-align: center;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      font-family: 'Mithilauni','Noto Sans Tirhuta',serif;
     `;
-    title.innerHTML = '𑒧 मिथिला लिपि परिवर्तक';
+    title.textContent = '𑒧 𑒧𑒱𑒟𑒱𑒪𑒰 𑒪𑒱𑒣𑒱 𑒣𑒩𑒱𑒫𑒩𑓂𑒞𑒏';
 
+    // Info - नियम रहतय बस देखबय के नञि
     const info = document.createElement('div');
     info.style.cssText = `
-      font-size: 10px;
+      font-size: 9px;
       color: #8B7355;
       text-align: center;
-      margin-bottom: 10px;
-      padding: 4px 8px;
+      margin-bottom: 6px;
+      padding: 2px 6px;
       background: #FFF8E7;
-      border-radius: 6px;
+      border-radius: 4px;
       border: 1px solid #C8A96E;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
-    info.innerHTML = '📝 य → य़ (बीच/अंत में) | व्यवसाय → व्यवसाय़';
+    info.textContent = '📝 𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱 (𑒢𑒱𑒨𑒧 𑒩𑒯𑒞𑒨)';
 
+    // Font Selector
     const fontRow = document.createElement('div');
     fontRow.style.cssText = `
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: 6px;
+      margin-bottom: 8px;
     `;
     const fontLabel = document.createElement('span');
-    fontLabel.style.cssText = 'font-size:11px;color:#8B7355;font-weight:600;';
-    fontLabel.textContent = '🔤 फ़ॉन्ट:';
+    fontLabel.style.cssText = 'font-size:10px;color:#8B7355;font-weight:600;';
+    fontLabel.textContent = '🔤 𑒤𑒼𑒢𑓂𑒙:';
     const fontSelect = document.createElement('select');
     fontSelect.style.cssText = `
       flex: 1;
-      padding: 4px 8px;
+      padding: 3px 6px;
       border: 1px solid #C8A96E;
-      border-radius: 6px;
-      font-size: 12px;
+      border-radius: 5px;
+      font-size: 11px;
       background: white;
       color: #2C1810;
       cursor: pointer;
@@ -390,35 +338,35 @@
           }
         });
       }
-      showToast('🔤 फ़ॉन्ट बदल गया: ' + (selectedFont === 'mithilauni' ? 'Mithilauni' : 'Noto Sans Tirhuta'));
     };
     fontRow.appendChild(fontLabel);
     fontRow.appendChild(fontSelect);
 
+    // Button
     const button = document.createElement('button');
     button.id = 'uc-btn';
-    button.innerHTML = '𑒧 Tirhuta';
+    button.innerHTML = '𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰';
     button.style.cssText = `
       width: 100%;
-      padding: 10px 16px;
+      padding: 8px 12px;
       background: linear-gradient(135deg, #8B1A1A, #D4A017);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 15px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      min-height: 44px;
+      gap: 4px;
+      min-height: 36px;
     `;
     button.onmouseenter = () => {
       button.style.transform = 'scale(1.02)';
-      button.style.boxShadow = '0 4px 20px rgba(139,26,26,0.3)';
+      button.style.boxShadow = '0 4px 16px rgba(139,26,26,0.25)';
     };
     button.onmouseleave = () => {
       button.style.transform = 'scale(1)';
@@ -426,38 +374,47 @@
     };
     button.onclick = toggleConvert;
 
+    // Status
     const status = document.createElement('div');
     status.id = 'uc-status';
     status.style.cssText = `
-      font-size: 11px;
+      font-size: 10px;
       color: #8B7355;
       text-align: center;
-      margin-top: 8px;
-      padding: 4px;
-      min-height: 20px;
+      margin-top: 6px;
+      padding: 2px;
+      min-height: 16px;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
-    status.textContent = '🔄 क्लिक करें तिरहुता में बदलने के लिए';
+    status.textContent = '🔄 𑒏𑓂𑒪𑒱𑒏𑓂 𑒏𑒩𑒳 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑒾';
 
+    // Shortcut
     const shortcut = document.createElement('div');
     shortcut.style.cssText = `
-      font-size: 10px;
+      font-size: 9px;
       color: #B0A090;
       text-align: center;
-      margin-top: 4px;
+      margin-top: 3px;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
     shortcut.textContent = '⌨️ Ctrl+Shift+T';
 
+    // ============================================================
+    // CREDIT LINK ✅
+    // ============================================================
     const credit = document.createElement('div');
     credit.style.cssText = `
-      font-size: 10px;
+      font-size: 9px;
       color: #B0A090;
       text-align: center;
-      margin-top: 8px;
-      padding-top: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
       border-top: 1px solid #f0f0f0;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
-    credit.innerHTML = `<a href="https://lipi.maithili.org.in/" target="_blank" style="color:#8B1A1A;text-decoration:none;font-weight:600;">𑒧 Powered by Mithila Lipi</a>`;
+    credit.innerHTML = `<a href="https://lipi.maithili.org.in/" target="_blank" style="color:#8B1A1A;text-decoration:none;font-weight:600;">𑒧 𑒧𑒱𑒟𑒱𑒪𑒰 𑒪𑒱𑒣𑒱</a>`;
 
+    // Assemble
     panel.appendChild(title);
     panel.appendChild(info);
     panel.appendChild(fontRow);
@@ -468,6 +425,7 @@
     container.appendChild(panel);
     document.body.appendChild(container);
 
+    // Keyboard shortcut
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.shiftKey && (e.key === 't' || e.key === 'T')) {
         e.preventDefault();
@@ -477,7 +435,7 @@
   }
 
   // ============================================================
-  // INIT
+  // 𑒮𑒳𑒩𑒴 𑒏𑒩𑒳
   // ============================================================
 
   function init() {
@@ -487,9 +445,9 @@
     } else {
       createWidget();
     }
-    console.log('𑒧 Universal Page Converter loaded!');
-    console.log('📝 य → य़ नियम: व्यवसाय → व्यवसाय़ → 𑒫𑓂𑒨𑒫𑒮𑒰𑒨𑓃');
-    console.log('🔹 Click "𑒧 Tirhuta" button or press Ctrl+Shift+T');
+    console.log('𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒹𑒖 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞𑒩 𑒪𑒼𑒠 𑒯𑒾𑒪!');
+    console.log('📝 𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱 (𑒢𑒱𑒨𑒧 𑒩𑒯𑒞𑒨)');
+    console.log('🔹 𑒏𑓂𑒪𑒱𑒏𑓂 𑒏𑒩𑒳 "𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰" 𑒥𑒞𑒢 𑒣𑒩');
     console.log('🔗 https://lipi.maithili.org.in/');
   }
 
