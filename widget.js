@@ -11,25 +11,19 @@
   // 0. FONT CONFIGURATION - FIXED
   // ============================================================
 
-  const CONFIG = {
-    // Mithilauni font - multiple CDN sources for reliability
-    const CONFIG = {
+ const CONFIG = {
   fontCDN: [
-    // ✅ Cloudflare Pages URL (Primary)
-    'https://script-converter.pages.dev/fonts/Mithilauni.ttf',
-    
-    // ✅ GitHub Raw URL (Backup)
-    'https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf'
-  ]
+    "https://script-converter.pages.dev/fonts/Mithilauni.ttf",
+    "https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf"
+  ],
+
+  googleFont: "https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap",
+
+  fonts: {
+    mithilauni: "'Mithilauni','Noto Sans Tirhuta',serif",
+    noto: "'Noto Sans Tirhuta',serif"
+  }
 };
-    // Google Font fallback
-    googleFont: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap',
-    // Font family names
-    fonts: {
-      mithilauni: "'Mithilauni', 'Noto Sans Tirhuta', serif",
-      noto: "'Noto Sans Tirhuta', serif"
-    }
-  };
 
   // ============================================================
   // 1. COMPLETE UNICODE MAPS (CORRECT)
