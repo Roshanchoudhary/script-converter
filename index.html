@@ -14,9 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ============================================================
-           FONT DECLARATIONS
-           ============================================================ */
         @font-face {
             font-family: 'Mithilauni';
             src: url('https://script-converter.pages.dev/fonts/Mithilauni.ttf') format('truetype');
@@ -33,9 +30,6 @@
             font-display: swap;
         }
 
-        /* ============================================================
-           CSS VARIABLES & RESET
-           ============================================================ */
         :root {
             --primary: #8B1A1A;
             --primary-dark: #5C0F0F;
@@ -65,30 +59,6 @@
             line-height: 1.6;
         }
 
-        /* ============================================================
-           TIRHUTA FONT CLASS - Apply to ALL Tirhuta text
-           ============================================================ */
-        .tirhuta-font {
-            font-family: var(--font-tirhuta) !important;
-        }
-
-        .tirhuta-font-bold {
-            font-family: var(--font-tirhuta) !important;
-            font-weight: bold !important;
-        }
-
-        /* All elements that should show Tirhuta */
-        .tirhuta-text,
-        .tirhuta-output,
-        .tirhuta-button,
-        .tirhuta-label,
-        .tirhuta-title {
-            font-family: var(--font-tirhuta) !important;
-        }
-
-        /* ============================================================
-           HEADER
-           ============================================================ */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -112,41 +82,6 @@
             margin-top: 4px;
         }
 
-        .lang-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .lang-btn {
-            padding: 6px 18px;
-            border: 2px solid rgba(255,255,255,0.25);
-            border-radius: 25px;
-            background: transparent;
-            color: white;
-            cursor: pointer;
-            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: var(--font-primary);
-        }
-
-        .lang-btn:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        .lang-btn.active {
-            background: var(--secondary);
-            border-color: var(--secondary);
-            color: var(--text);
-        }
-
-        /* ============================================================
-           CONTAINER & CARDS
-           ============================================================ */
         .container {
             max-width: 1100px;
             margin: 16px auto;
@@ -162,9 +97,6 @@
             box-shadow: var(--shadow);
         }
 
-        /* ============================================================
-           CONTROLS
-           ============================================================ */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -227,9 +159,6 @@
             transform: rotate(180deg) scale(0.92);
         }
 
-        /* ============================================================
-           EDITOR GRID
-           ============================================================ */
         .editor-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -275,9 +204,6 @@
             border-radius: 12px;
         }
 
-        /* ============================================================
-           TEXTAREAS - With Tirhuta Font Support
-           ============================================================ */
         textarea {
             width: 100%;
             height: 180px;
@@ -312,19 +238,14 @@
             cursor: default;
         }
 
-        /* Tirhuta textarea - always uses Tirhuta font */
         textarea.tirhuta-textarea {
             font-family: var(--font-tirhuta) !important;
         }
 
-        /* Devanagari textarea */
         textarea.devanagari-textarea {
             font-family: var(--font-primary);
         }
 
-        /* ============================================================
-           BUTTONS
-           ============================================================ */
         .action-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -408,14 +329,10 @@
             background: #4A235A;
         }
 
-        /* Buttons with Tirhuta text */
         .btn-tirhuta {
             font-family: var(--font-tirhuta) !important;
         }
 
-        /* ============================================================
-           PHONETIC RULES
-           ============================================================ */
         .phonetic-rules {
             background: #FFF8E7;
             border: 1px solid var(--border);
@@ -449,9 +366,6 @@
             padding: 1px 0;
         }
 
-        /* ============================================================
-           ABOUT SECTION
-           ============================================================ */
         .about-section {
             margin-top: 24px;
             padding: 20px;
@@ -475,9 +389,6 @@
             color: var(--text);
         }
 
-        /* ============================================================
-           TOAST
-           ============================================================ */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -513,9 +424,6 @@
             background: #2B6CB0;
         }
 
-        /* ============================================================
-           FOOTER
-           ============================================================ */
         .footer {
             text-align: center;
             padding: 20px 16px;
@@ -530,9 +438,6 @@
             font-size: 1.1em;
         }
 
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
         @media (max-width: 600px) {
             .controls {
                 flex-direction: column;
@@ -547,7 +452,6 @@
             .header {
                 position: static;
             }
-            .lang-switcher,
             .btn-swap,
             .action-bar,
             .toast {
@@ -566,9 +470,6 @@
             }
         }
 
-        /* ============================================================
-           PDF PREVIEW MODAL
-           ============================================================ */
         #pdfPreview {
             display: none;
             position: fixed;
@@ -616,9 +517,6 @@
             background: #7A1313;
         }
 
-        /* ============================================================
-           WATERMARK
-           ============================================================ */
         .watermark-container {
             position: relative;
         }
@@ -648,27 +546,145 @@
             user-select: none;
             letter-spacing: 4px;
         }
+
+        /* Suggestion styles */
+        .suggestions-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-top: -2px;
+        }
+
+        .suggestions-container.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.15s;
+            font-size: 15px;
+        }
+
+        .suggestion-item:hover {
+            background: #f7f7f7;
+        }
+
+        .suggestion-item.selected {
+            background: #e8f0fe;
+            border-left: 4px solid var(--primary);
+        }
+
+        .suggestion-item .phonetic {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .suggestion-item .devanagari {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .suggestion-item .tirhuta {
+            font-family: var(--font-tirhuta);
+            font-size: 20px;
+            color: var(--text);
+            margin-right: 10px;
+        }
+
+        .suggestion-item .category-badge {
+            font-size: 10px;
+            color: var(--text-light);
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .suggestion-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0;
+            min-height: 32px;
+            padding: 2px 0;
+        }
+
+        .suggestion-badge {
+            background: #f0f0f0;
+            padding: 3px 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .suggestion-badge:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .suggestion-badge .tirhuta-badge {
+            font-family: var(--font-tirhuta);
+            font-size: 15px;
+        }
+
+        .suggestion-badge .dev-badge {
+            font-size: 13px;
+        }
+
+        .suggestions-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .suggestions-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .suggestions-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+        .suggestions-container::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <h1 id="siteTitle">𑒧 <span class="highlight">मिथिला लिपि परिवर्तक</span></h1>
-        <p class="subtitle" id="subtitleText">तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | मैथिली भाषा</p>
-        <div class="lang-switcher">
-            <button class="lang-btn active" data-lang="mai" onclick="setLanguage('mai')">𑒧 मैथिली</button>
-            <button class="lang-btn" data-lang="hi" onclick="setLanguage('hi')">हिन्दी</button>
-            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
-        </div>
+        <h1>𑒧 <span class="highlight">मिथिला लिपि परिवर्तक</span></h1>
+        <p class="subtitle">तिरहुता ↔ देवनागरी | Gboard-style सुझाव | मैथिली भाषा</p>
     </header>
 
     <main class="container">
-        <h2 style="font-size:1.2rem;color:var(--primary);margin-bottom:12px;" id="seoHeading">तिरहुता-देवनागरी लिपि परिवर्तक - Online Free</h2>
-
         <div class="card">
             <div class="controls">
                 <div class="ctrl-group">
-                    <label id="dirLabel">🔄 दिशा</label>
+                    <label>🔄 दिशा</label>
                     <select id="dir" onchange="updateUI()">
                         <option value="dev-to-tir">देवनागरी → तिरहुता</option>
                         <option value="tir-to-dev">तिरहुता → देवनागरी</option>
@@ -676,17 +692,17 @@
                 </div>
                 <button class="btn-swap" onclick="swapDir()" aria-label="Swap direction">⇄</button>
                 <div class="ctrl-group">
-                    <label id="fontLabel">🔤 फ़ॉन्ट</label>
+                    <label>🔤 फ़ॉन्ट</label>
                     <select id="fontSel" onchange="applyFont()">
                         <option value="mithilauni">Mithilauni</option>
                         <option value="noto">Noto Sans Tirhuta</option>
                     </select>
                 </div>
                 <div class="ctrl-group">
-                    <label id="autoLabel">⚡ स्वचालित</label>
+                    <label>⚡ स्वचालित</label>
                     <select id="autoConv">
-                        <option value="yes" id="autoYes">हाँ - टाइप करते ही</option>
-                        <option value="no" id="autoNo">नहीं - बटन दबाएं</option>
+                        <option value="yes">हाँ - टाइप करते ही</option>
+                        <option value="no">नहीं - बटन दबाएं</option>
                     </select>
                 </div>
             </div>
@@ -695,19 +711,25 @@
         <div class="editor-grid">
             <div class="panel">
                 <div class="panel-head">
-                    <b id="inLabel">📝 देवनागरी / English (इनपुट)</b>
+                    <b>📝 देवनागरी / English (इनपुट)</b>
                     <span class="count" id="inCount">0 अक्षर</span>
                 </div>
-                <textarea id="inText"
-                    placeholder="यहाँ लिखें... (English phonetic)"
-                    oninput="handleInput()"
-                    autofocus
-                    aria-label="Input text for conversion"
-                    class="devanagari-textarea"></textarea>
+                <div class="input-wrapper">
+                    <textarea id="inText"
+                        placeholder="यहाँ लिखें... (English phonetic) - e.g., maithili, krishna"
+                        oninput="handleInput()"
+                        autofocus
+                        aria-label="Input text for conversion"
+                        class="devanagari-textarea"></textarea>
+                    <div id="suggestions" class="suggestions-container"></div>
+                </div>
+                <div id="suggestionBadges" class="suggestion-badges">
+                    <span style="color: var(--text-light); font-size: 12px; padding: 4px 0;">💡 Quick suggestions:</span>
+                </div>
             </div>
             <div class="panel">
                 <div class="panel-head">
-                    <b id="outLabel">📄 तिरहुता (आउटपुट)</b>
+                    <b>📄 तिरहुता (आउटपुट)</b>
                     <span class="count" id="outCount">0 अक्षर</span>
                 </div>
                 <textarea id="outText"
@@ -719,37 +741,37 @@
         </div>
 
         <div class="action-bar">
-            <button class="btn btn-primary" onclick="doConvert()" id="convertBtn">🔄 परिवर्तित</button>
-            <button class="btn btn-secondary" onclick="doCopy()" id="copyBtn">📋 कॉपी</button>
-            <button class="btn btn-outline" onclick="doClear()" id="clearBtn">🗑️ साफ़</button>
-            <button class="btn btn-success" onclick="doDownloadTxt()" id="downloadBtn">⬇️ टेक्स्ट</button>
+            <button class="btn btn-primary" onclick="doConvert()">🔄 परिवर्तित</button>
+            <button class="btn btn-secondary" onclick="doCopy()">📋 कॉपी</button>
+            <button class="btn btn-outline" onclick="doClear()">🗑️ साफ़</button>
+            <button class="btn btn-success" onclick="doDownloadTxt()">⬇️ टेक्स्ट</button>
         </div>
 
         <div class="action-bar" style="grid-template-columns: 1fr 1fr 1fr;">
-            <button class="btn btn-pdf" onclick="doDownloadPDF()" id="pdfBtn">📄 PDF डाउनलोड</button>
-            <button class="btn btn-success btn-tirhuta" onclick="doDownloadTirhuta()" id="tirhutaDownloadBtn">𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड</button>
-            <button class="btn btn-image" onclick="doDownloadImage()" id="imageBtn">🖼️ इमेज डाउनलोड</button>
+            <button class="btn btn-pdf" onclick="doDownloadPDF()">📄 PDF</button>
+            <button class="btn btn-success btn-tirhuta" onclick="doDownloadTirhuta()">𑒞𑒱𑒩𑒯𑒳𑒞𑒰</button>
+            <button class="btn btn-image" onclick="doDownloadImage()">🖼️ इमेज</button>
         </div>
 
         <div class="phonetic-rules">
-            <h3 id="rulesTitle">⌨️ फोनेटिक टाइपिंग नियम</h3>
-            <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;" id="rulesSubtext">English → Devanagari → Tirhuta के लिए ये नियम अपनाएं:</p>
+            <h3>⌨️ फोनेटिक टाइपिंग नियम</h3>
+            <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;">English → Devanagari → Tirhuta के लिए ये नियम अपनाएं:</p>
             <div class="rule-grid" id="ruleGrid"></div>
-            <div style="margin-top:10px;font-size:clamp(0.7rem,1.5vw,0.85rem);color:var(--text-light);" id="exampleText">
+            <div style="margin-top:10px;font-size:clamp(0.7rem,1.5vw,0.85rem);color:var(--text-light);">
                 💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिली → <span class="tirhuta-font">𑒧𑒸𑒟𑒱𑒪𑒱</span>
             </div>
         </div>
 
-        <div class="about-section" id="aboutSection">
-            <h3 id="aboutTitle">तिरहुता लिपि के बारे में</h3>
-            <p id="aboutPara1">
+        <div class="about-section">
+            <h3>तिरहुता लिपि के बारे में</h3>
+            <p>
                 <strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा की पारंपरिक लिपि है। 
                 यह <strong>मिथिला</strong> क्षेत्र में प्रचलित है। 
                 हमारा <strong>तिरहुता-देवनागरी परिवर्तक</strong> आपको 
                 <strong>English phonetic</strong> टाइपिंग से सीधा तिरहुता में लिखने की सुविधा देता है।
             </p>
-            <p id="aboutPara2" style="margin-top:8px;">
-                <strong>मैथिली भाषा</strong> बिहार, झारखंड और नेपाल में बोली जाती है। 
+            <p style="margin-top:8px;">
+                <strong>मैथिली भाषा</strong> बिहार, झारखंड, पश्चिम बंगाल, ओड़िसा, असम, बांग्लादेश तथा नेपाल में बोली जाती है। 
                 इस <strong>लिपि परिवर्तक</strong> की मदद से आप 
                 <strong>देवनागरी से तिरहुता</strong> और <strong>तिरहुता से देवनागरी</strong> 
                 में आसानी से बदल सकते हैं।
@@ -757,19 +779,11 @@
         </div>
     </main>
 
-    <!-- PDF Preview Modal -->
-    <div id="pdfPreview">
-        <div class="preview-content">
-            <button class="close-btn" onclick="closePDFPreview()">✕</button>
-            <div id="pdfPreviewBody"></div>
-        </div>
-    </div>
-
     <div class="toast" id="toast"></div>
 
-    <footer class="footer" id="footerText">
+    <footer class="footer">
         <span class="tirhuta-text">𑒧𑒻𑒟𑒱𑒪𑒲 𑒦𑒰𑒭𑒰 𑒮𑒹𑒦𑒰</span> | ❤️ <span class="tirhuta-text">𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒪𑒱𑒣𑒱 𑒮𑒴𑒩𑒏𑓂𑒮𑒰</span>
-        <br><small id="footerSubtext">मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
+        <br><small>मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण</small>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
@@ -781,111 +795,276 @@
         'use strict';
 
         // ============================================================
-        // COMPLETE LANGUAGE DATA
+        // COMPLETE DICTIONARY
         // ============================================================
 
-        const LANGUAGES = {
-            hi: {
-                siteTitle: 'मिथिला लिपि परिवर्तक',
-                subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | हिन्दी',
-                seoHeading: 'तिरहुता-देवनागरी लिपि परिवर्तक - मुफ्त ऑनलाइन',
-                dirLabel: '🔄 दिशा',
-                fontLabel: '🔤 फ़ॉन्ट',
-                autoLabel: '⚡ स्वचालित',
-                autoYes: 'हाँ - टाइप करते ही',
-                autoNo: 'नहीं - बटन दबाएं',
-                inLabel: '📝 देवनागरी / English (इनपुट)',
-                outLabel: '📄 तिरहुता (आउटपुट)',
-                inPlaceholder: 'यहाँ लिखें... (English phonetic)',
-                outPlaceholder: 'परिवर्तित पाठ यहाँ दिखेगा...',
-                convertBtn: '🔄 परिवर्तित करें',
-                copyBtn: '📋 कॉपी करें',
-                clearBtn: '🗑️ साफ़ करें',
-                downloadBtn: '⬇️ टेक्स्ट डाउनलोड',
-                pdfBtn: '📄 PDF डाउनलोड',
-                tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
-                imageBtn: '🖼️ इमेज डाउनलोड',
-                rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
-                rulesSubtext: 'English → Devanagari → Tirhuta के लिए ये नियम अपनाएं:',
-                example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिली → <span class="tirhuta-font">𑒧𑒸𑒟𑒱𑒪𑒱</span>',
-                aboutTitle: 'तिरहुता लिपि के बारे में',
-                aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषा की पारंपरिक लिपि है। यह <strong>मिथिला</strong> क्षेत्र में प्रचलित है। हमारा <strong>तिरहुता-देवनागरी परिवर्तक</strong> आपको <strong>English phonetic</strong> टाइपिंग से सीधा तिरहुता में लिखने की सुविधा देता है।',
-                aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड और नेपाल में बोली जाती है। इस <strong>लिपि परिवर्तक</strong> की मदद से आप <strong>देवनागरी से तिरहुता</strong> और <strong>तिरहुता से देवनागरी</strong> में आसानी से बदल सकते हैं।',
-                footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
-                dirDevToTir: 'देवनागरी → तिरहुता',
-                dirTirToDev: 'तिरहुता → देवनागरी'
-            },
+        const DICTIONARY = [
+            // Maithili Words
+            { word: 'maithili', dev: 'मैथिली', tir: '𑒧𑒸𑒟𑒱𑒪𑒱', category: 'maithili' },
+            { word: 'tirhuta', dev: 'तिरहुता', tir: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰', category: 'maithili' },
+            { word: 'mithila', dev: 'मिथिला', tir: '𑒧𑒱𑒟𑒱𑒪𑒰', category: 'maithili' },
+            { word: 'janakpur', dev: 'जनकपुर', tir: '𑒖𑒢𑒏𑒤𑒳𑒩', category: 'maithili' },
+            { word: 'janaki', dev: 'जानकी', tir: '𑒖𑒰𑒢𑒏𑒲', category: 'maithili' },
+            { word: 'vidyapati', dev: 'विद्यापति', tir: '𑒫𑒱𑒠𑓂𑒨𑒰𑒣𑒞𑒱', category: 'maithili' },
+            { word: 'darbhanga', dev: 'दरभंगा', tir: '𑒠𑒩𑒦𑓀𑒑𑒰', category: 'maithili' },
+            { word: 'madhubani', dev: 'मधुबनी', tir: '𑒧𑒡𑒳𑒥𑒢𑒲', category: 'maithili' },
+            { word: 'tirhut', dev: 'तिरहुत', tir: '𑒞𑒱𑒩𑒯𑒳𑒞', category: 'maithili' },
+            { word: 'maithil', dev: 'मैथिल', tir: '𑒧𑒸𑒟𑒱𑒪', category: 'maithili' },
+            { word: 'mithilanchal', dev: 'मिथिलांचल', tir: '𑒧𑒱𑒟𑒱𑒪𑒰𑓀𑒔𑒪', category: 'maithili' },
+            { word: 'panchpargania', dev: 'पंचपरगनिया', tir: '𑒣𑓀𑒔𑒣𑒩𑒑𑒢𑒱𑒨𑒰', category: 'maithili' },
+            { word: 'angika', dev: 'अंगिका', tir: '𑒁𑓀𑒑𑒱𑒏𑒰', category: 'maithili' },
+            { word: 'bajjika', dev: 'बज्जिका', tir: '𑒥𑒖𑓂𑒖𑒱𑒏𑒰', category: 'maithili' },
+            { word: 'magahi', dev: 'मगही', tir: '𑒧𑒑𑒯𑒲', category: 'maithili' },
+            { word: 'bhojpuri', dev: 'भोजपुरी', tir: '𑒦𑒼𑒖𑒤𑒳𑒩𑒲', category: 'maithili' },
+            { word: 'sadri', dev: 'सादरी', tir: '𑒮𑒰𑒠𑒩𑒲', category: 'maithili' },
+            { word: 'nagpuri', dev: 'नागपुरी', tir: '𑒢𑒰𑒑𑒤𑒳𑒩𑒲', category: 'maithili' },
+            { word: 'kurmali', dev: 'कुर्माली', tir: '𑒏𑒳𑒩𑓂𑒧𑒰𑒪𑒲', category: 'maithili' },
+            { word: 'khortha', dev: 'खोरठा', tir: '𑒐𑒼𑒩𑒙𑒰', category: 'maithili' },
+            { word: 'santhali', dev: 'संथाली', tir: '𑒮𑓀𑒟𑒰𑒪𑒲', category: 'maithili' },
+            { word: 'munda', dev: 'मुंडा', tir: '𑒧𑒳𑓀𑒛𑒰', category: 'maithili' },
+            { word: 'bhumij', dev: 'भूमिज', tir: '𑒦𑒴𑒧𑒱𑒖', category: 'maithili' },
+            { word: 'ugna', dev: 'उगना', tir: '𑒅𑒑𑒢𑒰', category: 'maithili' },
 
-            mai: {
-                siteTitle: '𑒧 मिथिला लिपि परिवर्तक',
-                subtitle: 'तिरहुता ↔ देवनागरी | स्मार्ट टाइपिंग | मैथिली',
-                seoHeading: 'तिरहुता-देवनागरी लिपि परिवर्तक - मुफ्त अनलाइन',
-                dirLabel: '🔄 दिशा',
-                fontLabel: '🔤 फ़ॉन्ट',
-                autoLabel: '⚡ स्वचालित',
-                autoYes: 'हँ - टाइप करतहि',
-                autoNo: 'नञि - चुनु',
-                inLabel: '📝 देवनागरी / English (इनपुट)',
-                outLabel: '📄 तिरहुता (आउटपुट)',
-                inPlaceholder: 'एतह लिखू... (English phonetic)',
-                outPlaceholder: 'परिवर्तित पाठ एतह देखाई देत...',
-                convertBtn: '🔄 परिवर्तित करू',
-                copyBtn: '📋 कॉपी करू',
-                clearBtn: '🗑️ साफ़ करू',
-                downloadBtn: '⬇️ टेक्स्ट डाउनलोड',
-                pdfBtn: '📄 PDF डाउनलोड',
-                tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 डाउनलोड',
-                imageBtn: '🖼️ इमेज डाउनलोड',
-                rulesTitle: '⌨️ फोनेटिक टाइपिंग नियम',
-                rulesSubtext: 'English → Devanagari → Tirhuta के लेल ई नियम अपनाउ:',
-                example: '💡 <strong>उदाहरण:</strong> <code>maithili</code> → मैथिली → <span class="tirhuta-font">𑒧𑒸𑒟𑒱𑒪𑒱</span>',
-                aboutTitle: 'तिरहुता लिपिके बारे में',
-                aboutPara1: '<strong>तिरहुता (Tirhuta)</strong> मैथिली भाषाक पारम्परिक लिपि अछि। इ <strong>मिथिला</strong> क्षेत्रमे प्रचलित अछि। हमर <strong>तिरहुता-देवनागरी परिवर्तक</strong> अहाँ सभकेँ <strong>English phonetic</strong> टाइपिंग सँ सोझा तिरहुतामे लिखबाक सुविधा दैत अछि।',
-                aboutPara2: '<strong>मैथिली भाषा</strong> बिहार, झारखंड, पश्चिम बंगाल, ओड़िसा, असम, बांग्लादेश तथा नेपालमे बाजल जाइत अछि। ई <strong>लिपि परिवर्तक</strong> के मदद सँ अहाँ <strong>देवनागरी सँ तिरहुता</strong> आर <strong>तिरहुता सँ देवनागरी</strong> में आसानी सँ बदल सकैत छी।',
-                footer: 'मैथिली भाषा सेवा | ❤️ तिरहुता लिपि संरक्षण',
-                dirDevToTir: 'देवनागरी → तिरहुता',
-                dirTirToDev: 'तिरहुता → देवनागरी'
-            },
+            // Maithili Phrases
+            { word: 'nahi', dev: 'नहि', tir: '𑒢𑒯𑒱', category: 'maithili' },
+            { word: 'ham', dev: 'हम', tir: '𑒯𑒧', category: 'maithili' },
+            { word: 'achhi', dev: 'अछि', tir: '𑒁𑒕𑒱', category: 'maithili' },
+            { word: 'jait', dev: 'जाइत', tir: '𑒖𑒰𑒂𑒞', category: 'maithili' },
+            { word: 'abait', dev: 'अबैत', tir: '𑒁𑒥𑒻𑒞', category: 'maithili' },
+            { word: 'khait', dev: 'खाइत', tir: '𑒐𑒰𑒂𑒞', category: 'maithili' },
+            { word: 'sutaet', dev: 'सुतएत', tir: '𑒮𑒳𑒞𑒋𑒞', category: 'maithili' },
+            { word: 'nahi', dev: 'नहीं', tir: '𑒢𑒯𑒲𑓀', category: 'maithili' },
 
-            en: {
-                siteTitle: 'Mithila Script Converter',
-                subtitle: 'Tirhuta ↔ Devanagari | Smart Typing | English',
-                seoHeading: 'Tirhuta-Devanagari Script Converter - Online Free',
-                dirLabel: '🔄 Direction',
-                fontLabel: '🔤 Font',
-                autoLabel: '⚡ Auto Convert',
-                autoYes: 'Yes - On Type',
-                autoNo: 'No - Manual',
-                inLabel: '📝 Devanagari / English (Input)',
-                outLabel: '📄 Tirhuta (Output)',
-                inPlaceholder: 'Type here... (English phonetic)',
-                outPlaceholder: 'Converted text will appear here...',
-                convertBtn: '🔄 Convert',
-                copyBtn: '📋 Copy',
-                clearBtn: '🗑️ Clear',
-                downloadBtn: '⬇️ Text',
-                pdfBtn: '📄 PDF Download',
-                tirhutaDownloadBtn: '𑒞𑒱𑒩𑒯𑒳𑒞𑒰 Download',
-                imageBtn: '🖼️ Image Download',
-                rulesTitle: '⌨️ Phonetic Typing Rules',
-                rulesSubtext: 'Follow these rules for English → Devanagari → Tirhuta:',
-                example: '💡 <strong>Example:</strong> <code>maithili</code> → मैथिली → <span class="tirhuta-font">𑒧𑒸𑒟𑒱𑒪𑒱</span>',
-                aboutTitle: 'About Tirhuta Script',
-                aboutPara1: '<strong>Tirhuta</strong> is the traditional script of the <strong>Maithili</strong> language. It is prevalent in the <strong>Mithila</strong> region. Our <strong>Tirhuta-Devanagari converter</strong> allows you to write directly in Tirhuta using <strong>English phonetic</strong> typing.',
-                aboutPara2: '<strong>Maithili language</strong> is spoken in Bihar, Jharkhand, and Nepal. With this <strong>script converter</strong>, you can easily convert between <strong>Devanagari to Tirhuta</strong> and <strong>Tirhuta to Devanagari</strong>.',
-                footer: 'Maithili Language Service | ❤️ Tirhuta Script Preservation',
-                dirDevToTir: 'Devanagari → Tirhuta',
-                dirTirToDev: 'Tirhuta → Devanagari'
+            // Surnames
+            { word: 'chaudhari', dev: 'चौधरी', tir: '𑒔𑒾𑒠𑒿𑒩𑒲', category: 'surname' },
+            { word: 'chaudhary', dev: 'चौधरी', tir: '𑒔𑒾𑒠𑒿𑒩𑒲', category: 'surname' },
+            { word: 'choudhari', dev: 'चौधरी', tir: '𑒔𑒾𑒠𑒿𑒩𑒲', category: 'surname' },
+            { word: 'choudhary', dev: 'चौधरी', tir: '𑒔𑒾𑒠𑒿𑒩𑒲', category: 'surname' },
+            { word: 'chaudhuri', dev: 'चौधुरी', tir: '𑒔𑒾𑒠𑒳𑒩𑒲', category: 'surname' },
+            { word: 'jha', dev: 'झा', tir: '𑒗𑒰', category: 'surname' },
+            { word: 'mishra', dev: 'मिश्र', tir: '𑒧𑒱𑒬𑓂𑒩', category: 'surname' },
+            { word: 'misra', dev: 'मिश्र', tir: '𑒧𑒱𑒬𑓂𑒩', category: 'surname' },
+            { word: 'sinha', dev: 'सिन्हा', tir: '𑒮𑒱𑒢𑒿𑒯𑒰', category: 'surname' },
+            { word: 'singh', dev: 'सिंह', tir: '𑒮𑒱𑓀𑒯', category: 'surname' },
+            { word: 'sharma', dev: 'शर्मा', tir: '𑒬𑒩𑓂𑒧𑒰', category: 'surname' },
+            { word: 'verma', dev: 'वर्मा', tir: '𑒫𑒩𑓂𑒧𑒰', category: 'surname' },
+            { word: 'varma', dev: 'वर्मा', tir: '𑒫𑒩𑓂𑒧𑒰', category: 'surname' },
+            { word: 'mandal', dev: 'मंडल', tir: '𑒧𑓀𑒛𑒪', category: 'surname' },
+            { word: 'sah', dev: 'साह', tir: '𑒮𑒰𑒯', category: 'surname' },
+            { word: 'das', dev: 'दास', tir: '𑒠𑒰𑒮', category: 'surname' },
+            { word: 'lal', dev: 'लाल', tir: '𑒪𑒰𑒪', category: 'surname' },
+            { word: 'dev', dev: 'देव', tir: '𑒠𑒺𑒫', category: 'surname' },
+            { word: 'paswan', dev: 'पासवान', tir: '𑒣𑒰𑒮𑒫𑒰𑒢', category: 'surname' },
+            { word: 'ram', dev: 'राम', tir: '𑒩𑒰𑒧', category: 'surname' },
+            { word: 'tiwari', dev: 'तिवारी', tir: '𑒞𑒱𑒫𑒰𑒩𑒲', category: 'surname' },
+            { word: 'dube', dev: 'दुबे', tir: '𑒠𑒳𑒥𑒹', category: 'surname' },
+            { word: 'pandey', dev: 'पाण्डेय', tir: '𑒣𑒰𑒝𑓂𑒜𑒹𑒨', category: 'surname' },
+            { word: 'pande', dev: 'पाण्डे', tir: '𑒣𑒰𑒝𑓂𑒜𑒹', category: 'surname' },
+            { word: 'thakur', dev: 'ठाकुर', tir: '𑒙𑒰𑒏𑒳𑒩', category: 'surname' },
+            { word: 'yadav', dev: 'यादव', tir: '𑒨𑒰𑒠𑒫', category: 'surname' },
+            { word: 'kumar', dev: 'कुमार', tir: '𑒏𑒳𑒧𑒰𑒩', category: 'surname' },
+            { word: 'gupta', dev: 'गुप्ता', tir: '𑒑𑒳𑒣𑓂𑒞𑒰', category: 'surname' },
+
+            // Deity Names
+            { word: 'krishna', dev: 'कृष्ण', tir: '𑒏𑓂𑒩𑒱𑒭𑓂𑒝', category: 'deity' },
+            { word: 'ram', dev: 'राम', tir: '𑒩𑒰𑒧', category: 'deity' },
+            { word: 'sita', dev: 'सीता', tir: '𑒮𑒲𑒞𑒰', category: 'deity' },
+            { word: 'radha', dev: 'राधा', tir: '𑒩𑒰𑒡𑒰', category: 'deity' },
+            { word: 'shiva', dev: 'शिव', tir: '𑒬𑒱𑒫', category: 'deity' },
+            { word: 'shiv', dev: 'शिव', tir: '𑒬𑒱𑒫', category: 'deity' },
+            { word: 'vishnu', dev: 'विष्णु', tir: '𑒫𑒱𑒭𑓂𑒝𑒳', category: 'deity' },
+            { word: 'brahma', dev: 'ब्रह्मा', tir: '𑒥𑓂𑒩𑒯𑓂𑒧𑒰', category: 'deity' },
+            { word: 'lakshmi', dev: 'लक्ष्मी', tir: '𑒪𑒏𑓂𑒭𑓂𑒧𑒲', category: 'deity' },
+            { word: 'saraswati', dev: 'सरस्वती', tir: '𑒮𑒩𑒮𑓂𑒫𑒞𑒲', category: 'deity' },
+            { word: 'durga', dev: 'दुर्गा', tir: '𑒠𑒳𑒩𑓂𑒑𑒰', category: 'deity' },
+            { word: 'kali', dev: 'काली', tir: '𑒏𑒰𑒪𑒲', category: 'deity' },
+            { word: 'ganesh', dev: 'गणेश', tir: '𑒑𑒝𑒹𑒬', category: 'deity' },
+            { word: 'ganpati', dev: 'गणपति', tir: '𑒑𑒝𑒣𑒞𑒱', category: 'deity' },
+            { word: 'ganapati', dev: 'गणपति', tir: '𑒑𑒝𑒣𑒞𑒱', category: 'deity' },
+            { word: 'hanuman', dev: 'हनुमान', tir: '𑒯𑒢𑒳𑒧𑒰𑒢', category: 'deity' },
+            { word: 'narayan', dev: 'नारायण', tir: '𑒢𑒰𑒩𑒰𑒨𑒝', category: 'deity' },
+            { word: 'gopal', dev: 'गोपाल', tir: '𑒑𑒼𑒣𑒰𑒪', category: 'deity' },
+            { word: 'govind', dev: 'गोविन्द', tir: '𑒑𑒼𑒫𑒱𑒢𑓂𑒠', category: 'deity' },
+            { word: 'madhav', dev: 'माधव', tir: '𑒧𑒰𑒡𑒫', category: 'deity' },
+            { word: 'shankar', dev: 'शंकर', tir: '𑒬𑓀𑒏𑒩', category: 'deity' },
+            { word: 'mahadev', dev: 'महादेव', tir: '𑒧𑒯𑒰𑒠𑒺𑒫', category: 'deity' },
+            { word: 'mahesh', dev: 'महेश', tir: '𑒧𑒯𑒹𑒬', category: 'deity' },
+            { word: 'parvati', dev: 'पार्वती', tir: '𑒣𑒰𑒩𑓂𑒫𑒞𑒲', category: 'deity' },
+
+            // Common Words
+            { word: 'namaste', dev: 'नमस्ते', tir: '𑒢𑒧𑒮𑓂𑒞𑒹', category: 'common' },
+            { word: 'namaskar', dev: 'नमस्कार', tir: '𑒢𑒧𑒮𑓂𑒏𑒰𑒩', category: 'common' },
+            { word: 'dhanyavaad', dev: 'धन्यवाद', tir: '𑒡𑒢𑓂𑒨𑒫𑒰𑒠', category: 'common' },
+            { word: 'dhanyavad', dev: 'धन्यवाद', tir: '𑒡𑒢𑓂𑒨𑒫𑒰𑒠', category: 'common' },
+            { word: 'shukriya', dev: 'शुक्रिया', tir: '𑒬𑒳𑒏𑓂𑒩𑒱𑒨𑒰', category: 'common' },
+            { word: 'acha', dev: 'अच्छा', tir: '𑒁𑒔𑓂𑒕𑒰', category: 'common' },
+            { word: 'accha', dev: 'अच्छा', tir: '𑒁𑒔𑓂𑒕𑒰', category: 'common' },
+            { word: 'main', dev: 'मैं', tir: '𑒧𑒸𑓀', category: 'common' },
+            { word: 'tum', dev: 'तुम', tir: '𑒞𑒳𑒧', category: 'common' },
+            { word: 'aap', dev: 'आप', tir: '𑒂𑒣', category: 'common' },
+            { word: 'hum', dev: 'हम', tir: '𑒯𑒧', category: 'common' },
+            { word: 'apna', dev: 'अपना', tir: '𑒁𑒣𑒢𑒰', category: 'common' },
+            { word: 'mera', dev: 'मेरा', tir: '𑒧𑒹𑒩𑒰', category: 'common' },
+            { word: 'meri', dev: 'मेरी', tir: '𑒧𑒹𑒩𑒲', category: 'common' },
+            { word: 'mere', dev: 'मेरे', tir: '𑒧𑒹𑒩𑒹', category: 'common' },
+            { word: 'kya', dev: 'क्या', tir: '𑒏𑓂𑒨𑒰', category: 'common' },
+            { word: 'kaise', dev: 'कैसे', tir: '𑒏𑒻𑒮𑒹', category: 'common' },
+            { word: 'kaisa', dev: 'कैसा', tir: '𑒏𑒻𑒮𑒰', category: 'common' },
+            { word: 'haan', dev: 'हाँ', tir: '𑒯𑒿', category: 'common' },
+            { word: 'nahi', dev: 'नहीं', tir: '𑒢𑒯𑒲𑓀', category: 'common' },
+            { word: 'nahin', dev: 'नहीं', tir: '𑒢𑒯𑒲𑓀', category: 'common' },
+            { word: 'khana', dev: 'खाना', tir: '𑒐𑒰𑒢𑒰', category: 'common' },
+            { word: 'pina', dev: 'पीना', tir: '𑒣𑒲𑒢𑒰', category: 'common' },
+            { word: 'sona', dev: 'सोना', tir: '𑒮𑒼𑒢𑒰', category: 'common' },
+            { word: 'jana', dev: 'जाना', tir: '𑒖𑒰𑒢𑒰', category: 'common' },
+            { word: 'aana', dev: 'आना', tir: '𑒂𑒢𑒰', category: 'common' },
+            { word: 'karna', dev: 'करना', tir: '𑒏𑒩𑒢𑒰', category: 'common' },
+            { word: 'ghar', dev: 'घर', tir: '𑒒𑒩', category: 'common' },
+            { word: 'gaon', dev: 'गाँव', tir: '𑒑𑒿𑒫', category: 'common' },
+            { word: 'shahar', dev: 'शहर', tir: '𑒬𑒯𑒩', category: 'common' },
+            { word: 'vidyalaya', dev: 'विद्यालय', tir: '𑒫𑒱𑒠𑓂𑒨𑒰𑒪𑒨', category: 'common' },
+            { word: 'mobile', dev: 'मोबाइल', tir: '𑒧𑒼𑒥𑒰𑒂𑒪', category: 'common' },
+            { word: 'computer', dev: 'कंप्यूटर', tir: '𑒏𑓀𑒣𑓂𑒨𑒴𑒙𑒩', category: 'common' },
+            { word: 'internet', dev: 'इंटरनेट', tir: '𑒃𑓀𑒙𑒩𑒢𑒹𑒙', category: 'common' },
+            { word: 'website', dev: 'वेबसाइट', tir: '𑒫𑒹𑒥𑒮𑒰𑒂𑒙', category: 'common' },
+            { word: 'email', dev: 'ईमेल', tir: '𑒄𑒧𑒹𑒪', category: 'common' },
+            { word: 'phone', dev: 'फोन', tir: '𑒤𑒼𑒢', category: 'common' },
+            { word: 'language', dev: 'भाषा', tir: '𑒦𑒰𑒭𑒰', category: 'common' },
+            { word: 'school', dev: 'स्कूल', tir: '𑒮𑓂𑒏𑒴𑒪', category: 'common' },
+            { word: 'college', dev: 'कॉलेज', tir: '𑒏𑒽𑒪𑒹𑒖', category: 'common' },
+            { word: 'book', dev: 'पुस्तक', tir: '𑒣𑒳𑒮𑓂𑒞𑒏', category: 'common' },
+            { word: 'teacher', dev: 'शिक्षक', tir: '𑒬𑒱𑒏𑓂𑒭𑒏', category: 'common' },
+            { word: 'student', dev: 'छात्र', tir: '𑒕𑒰𑒞𑓂𑒩', category: 'common' },
+        ];
+
+        // ============================================================
+        // SUGGESTION ENGINE
+        // ============================================================
+
+        let currentSuggestions = [];
+        let selectedIndex = -1;
+
+        function getSuggestions(input) {
+            if (!input || input.length < 1) return [];
+
+            const inputLower = input.toLowerCase();
+            const matches = [];
+
+            for (const item of DICTIONARY) {
+                const wordLower = item.word.toLowerCase();
+                if (wordLower.startsWith(inputLower) && wordLower !== inputLower) {
+                    matches.push({ ...item, matchType: 'starts-with' });
+                } else if (wordLower.includes(inputLower) && wordLower !== inputLower &&
+                    !matches.find(m => m.word === item.word)) {
+                    matches.push({ ...item, matchType: 'contains' });
+                }
             }
-        };
+
+            matches.sort((a, b) => {
+                if (a.matchType === 'starts-with' && b.matchType !== 'starts-with') return -1;
+                if (a.matchType !== 'starts-with' && b.matchType === 'starts-with') return 1;
+                return a.word.length - b.word.length;
+            });
+
+            return matches.slice(0, 15);
+        }
+
+        function renderSuggestions(suggestions) {
+            const container = document.getElementById('suggestions');
+            container.innerHTML = '';
+
+            if (suggestions.length === 0) {
+                container.classList.remove('active');
+                return;
+            }
+
+            container.classList.add('active');
+            currentSuggestions = suggestions;
+
+            suggestions.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item' + (index === selectedIndex ? ' selected' : '');
+
+                const catEmojis = { maithili: '𑒧', surname: '👤', deity: '🕉️', common: '📝' };
+                const catEmoji = catEmojis[item.category] || '📝';
+
+                div.innerHTML = `
+                        <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                            <span class="tirhuta">${item.tir}</span>
+                            <div>
+                                <span class="phonetic">${item.word}</span>
+                                <span class="category-badge">${catEmoji}</span>
+                            </div>
+                        </div>
+                        <span class="devanagari">${item.dev}</span>
+                    `;
+
+                div.addEventListener('click', () => selectSuggestion(index));
+                div.addEventListener('mouseenter', () => {
+                    selectedIndex = index;
+                    updateHighlight();
+                });
+
+                container.appendChild(div);
+            });
+        }
+
+        function updateHighlight() {
+            const items = document.querySelectorAll('.suggestion-item');
+            items.forEach((item, index) => {
+                item.classList.toggle('selected', index === selectedIndex);
+            });
+        }
+
+        function selectSuggestion(index) {
+            if (index >= 0 && index < currentSuggestions.length) {
+                const item = currentSuggestions[index];
+                document.getElementById('inText').value = item.word;
+                document.getElementById('suggestions').classList.remove('active');
+                selectedIndex = -1;
+                doConvert();
+            }
+        }
 
         // ============================================================
-        // WATERMARK URL
+        // BADGES
         // ============================================================
-        const WATERMARK_URL = 'lipi.maithili.org.in';
+
+        function renderBadges() {
+            const container = document.getElementById('suggestionBadges');
+            const categories = ['maithili', 'surname', 'deity', 'common'];
+            let badges = [];
+
+            for (const cat of categories) {
+                const catWords = DICTIONARY.filter(item => item.category === cat);
+                const shuffled = catWords.sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, 2);
+                badges.push(...selected);
+            }
+
+            badges = badges.sort(() => 0.5 - Math.random()).slice(0, 8);
+
+            container.innerHTML = `
+                    <span style="color: var(--text-light); font-size: 12px; padding: 4px 0;">💡 Quick:</span>
+                `;
+
+            badges.forEach(item => {
+                const badge = document.createElement('span');
+                badge.className = 'suggestion-badge';
+                badge.innerHTML = `
+                        <span class="tirhuta-badge">${item.tir}</span>
+                        <span class="dev-badge">${item.dev}</span>
+                    `;
+                badge.addEventListener('click', () => {
+                    document.getElementById('inText').value = item.word;
+                    doConvert();
+                });
+                container.appendChild(badge);
+            });
+        }
 
         // ============================================================
-        // UNICODE MAPS
+        // CONVERSION ENGINE
         // ============================================================
 
         const T2D = {
@@ -976,635 +1155,93 @@
             D2T[dev] = tir;
         }
 
-        // ============================================================
-        // PHONETIC RULES - Sorted by length (longest first)
-        // ============================================================
-
-        const PHONETIC_RULES = [
-            // Special & Complex
-            ['krishna', 'कृष्ण'],
-            ['bharatiya', 'भारतीय'],
-            ['mahabharat', 'महाभारत'],
-            ['vidyapati', 'विद्यापति'],
-            ['darbhanga', 'दरभंगा'],
-            ['madhubani', 'मधुबनी'],
-            ['samastipur', 'समस्तीपुर'],
-            ['janakpur', 'जनकपुर'],
-            ['mithilanchal', 'मिथिलांचल'],
-            ['janmabhoomi', 'जन्मभूमि'],
-            ['sanskriti', 'संस्कृति'],
-            ['sabhyata', 'सभ्यता'],
-            ['adhyatma', 'अध्यात्म'],
-            ['brahmacharya', 'ब्रह्मचर्य'],
-            ['parikrama', 'परिक्रमा'],
-            ['maithili', 'मैथिली'],
-            ['tirhuta', 'तिरहुता'],
-            ['mithila', 'मिथिला'],
-            ['janaki', 'जानकी'],
-            ['vidyapati', 'विद्यापति'],
-            ['darbhanga', 'दरभंगा'],
-            ['madhubani', 'मधुबनी'],
-            ['tirhut', 'तिरहुत'],
-            ['maithil', 'मैथिल'],
-            ['panchpargania', 'पंचपरगनिया'],
-            ['angika', 'अंगिका'],
-            ['bajjika', 'बज्जिका'],
-            ['magahi', 'मगही'],
-            ['bhojpuri', 'भोजपुरी'],
-            ['sadri', 'सादरी'],
-            ['nagpuri', 'नागपुरी'],
-            ['kurmali', 'कुर्माली'],
-            ['khortha', 'खोरठा'],
-            ['santhali', 'संथाली'],
-            ['munda', 'मुंडा'],
-            ['bhumij', 'भूमिज'],
-            ['ugna', 'उगना'],
-            ['choudhary', 'चौधरी'],
-            ['chaudhary', 'चौधरी'],
-            'chaudharee', 'चौधरी'],
-
-            // Deity Names
-            ['krishna', 'कृष्ण'],
-            ['ram', 'राम'],
-            ['sita', 'सीता'],
-            ['radha', 'राधा'],
-            ['shiva', 'शिव'],
-            ['vishnu', 'विष्णु'],
-            ['brahma', 'ब्रह्मा'],
-            ['lakshmi', 'लक्ष्मी'],
-            ['saraswati', 'सरस्वती'],
-            ['durga', 'दुर्गा'],
-            ['kali', 'काली'],
-            ['ganesh', 'गणेश'],
-            ['ganpati', 'गणपति'],
-            ['hanuman', 'हनुमान'],
-            ['narayan', 'नारायण'],
-            ['gopal', 'गोपाल'],
-            ['govind', 'गोविन्द'],
-            ['madhav', 'माधव'],
-            ['shankar', 'शंकर'],
-            ['mahadev', 'महादेव'],
-            ['mahesh', 'महेश'],
-            ['parvati', 'पार्वती'],
-            ['shivling', 'शिवलिंग'],
-            ['mandir', 'मंदिर'],
-            ['puja', 'पूजा'],
-            ['pranam', 'प्रणाम'],
-            ['jai', 'जय'],
-
-            // Epics & Texts
-            ['ramayan', 'रामायण'],
-            ['ramayana', 'रामायण'],
-            ['mahabharat', 'महाभारत'],
-            ['bhagwat', 'भागवत'],
-            ['gita', 'गीता'],
-            ['geeta', 'गीता'],
-            ['ved', 'वेद'],
-            ['vedas', 'वेद'],
-            ['upanishad', 'उपनिषद'],
-            ['puran', 'पुराण'],
-
-            // Sanskrit Terms
-            ['sanskrit', 'संस्कृत'],
-            ['atma', 'आत्मा'],
-            ['paramatma', 'परमात्मा'],
-            ['brahman', 'ब्रह्मन्'],
-            ['vishv', 'विश्व'],
-            ['vishwa', 'विश्व'],
-            ['jagat', 'जगत'],
-            ['dharam', 'धर्म'],
-            ['karma', 'कर्म'],
-            ['yoga', 'योग'],
-            ['dhyan', 'ध्यान'],
-            ['shanti', 'शान्ति'],
-            ['santosh', 'सन्तोष'],
-            ['sukh', 'सुख'],
-            ['dukh', 'दुख'],
-            ['jivan', 'जीवन'],
-            ['mrityu', 'मृत्यु'],
-            ['janm', 'जन्म'],
-            ['punarjanm', 'पुनर्जन्म'],
-            ['moksh', 'मोक्ष'],
-            ['nirvan', 'निर्वाण'],
-            ['nirvana', 'निर्वाण'],
-            ['bhakti', 'भक्ति'],
-            ['gyan', 'ज्ञान'],
-            ['vidya', 'विद्या'],
-            ['shiksha', 'शिक्षा'],
-            ['sanskar', 'संस्कार'],
-            ['samaj', 'समाज'],
-            ['sahitya', 'साहित्य'],
-            ['kavita', 'कविता'],
-            ['geet', 'गीत'],
-            ['sangeet', 'संगीत'],
-            ['nritya', 'नृत्य'],
-            ['natak', 'नाटक'],
-            ['satsang', 'सत्संग'],
-            ['darshan', 'दर्शन'],
-            ['puranas', 'पुराण'],
-            ['itihasa', 'इतिहास'],
-            ['smriti', 'स्मृति'],
-            ['shruti', 'श्रुति'],
-            ['samadhi', 'समाधि'],
-
-            // Hindi Common Words
-            ['namaste', 'नमस्ते'],
-            ['namaskar', 'नमस्कार'],
-            ['dhanyavaad', 'धन्यवाद'],
-            ['dhanyavad', 'धन्यवाद'],
-            ['shukriya', 'शुक्रिया'],
-            ['acha', 'अच्छा'],
-            ['accha', 'अच्छा'],
-            ['kya', 'क्या'],
-            ['kaise', 'कैसे'],
-            ['kaisa', 'कैसा'],
-            ['main', 'मैं'],
-            ['tum', 'तुम'],
-            ['aap', 'आप'],
-            ['hum', 'हम'],
-            ['apna', 'अपना'],
-            ['mera', 'मेरा'],
-            ['meri', 'मेरी'],
-            ['mere', 'मेरे'],
-            ['tera', 'तेरा'],
-            ['teri', 'तेरी'],
-            ['tere', 'तेरे'],
-            ['uska', 'उसका'],
-            ['uski', 'उसकी'],
-            ['uske', 'उसके'],
-            ['iska', 'इसका'],
-            ['iski', 'इसकी'],
-            ['iske', 'इसके'],
-            ['unka', 'उनका'],
-            ['unki', 'उनकी'],
-            ['unke', 'उनके'],
-            ['inka', 'इनका'],
-            ['inki', 'इनकी'],
-            ['inke', 'इनके'],
-            ['ye', 'ये'],
-            ['wo', 'वो'],
-            ['yah', 'यह'],
-            ['wah', 'वह'],
-            ['jo', 'जो'],
-            ['so', 'सो'],
-            ['aur', 'और'],
-            ['or', 'और'],
-            ['lekin', 'लेकिन'],
-            ['par', 'पर'],
-            ['kyunki', 'क्योंकि'],
-            ['to', 'तो'],
-            ['bhi', 'भी'],
-            ['hi', 'ही'],
-            ['na', 'ना'],
-            ['nahi', 'नहीं'],
-            ['nahin', 'नहीं'],
-            ['han', 'हाँ'],
-            ['haan', 'हाँ'],
-            ['ji', 'जी'],
-            ['sahib', 'साहिब'],
-            ['saheb', 'साहेब'],
-            ['babu', 'बाबू'],
-            ['bhai', 'भाई'],
-            ['behen', 'बहन'],
-            ['beti', 'बेटी'],
-            ['beta', 'बेटा'],
-            ['pita', 'पिता'],
-            ['mata', 'माता'],
-            ['maata', 'माता'],
-            ['pitaji', 'पिताजी'],
-            ['mataji', 'माताजी'],
-            ['guru', 'गुरु'],
-            ['baba', 'बाबा'],
-            ['pyaar', 'प्यार'],
-            ['dost', 'दोस्त'],
-            ['khushi', 'खुशी'],
-            ['gussa', 'गुस्सा'],
-            ['khana', 'खाना'],
-            ['pina', 'पीना'],
-            ['sona', 'सोना'],
-            ['jana', 'जाना'],
-            ['aana', 'आना'],
-            ['karna', 'करना'],
-
-            // Conjuncts (Length 3-5)
-            ['ksh', 'क्ष'],
-            ['gya', 'ज्ञ'],
-            ['jna', 'ज्ञ'],
-            ['shr', 'श्र'],
-            ['tra', 'त्र'],
-            ['dny', 'ज्ञ'],
-            ['str', 'स्त्र'],
-            ['jny', 'ज्ञ'],
-            ['shri', 'श्री'],
-            ['Sri', 'श्री'],
-            ['gyaa', 'ज्ञा'],
-            ['bhya', 'भ्य'],
-            ['dhya', 'ध्य'],
-            ['ghya', 'घ्य'],
-            ['khya', 'ख्य'],
-            ['chya', 'च्य'],
-            ['jnya', 'ज्ञ'],
-            ['gnya', 'ज्ञ'],
-            ['dnya', 'ज्ञ'],
-            ['tya', 'त्य'],
-            ['dya', 'द्य'],
-            ['nyaa', 'न्या'],
-            ['rya', 'र्य'],
-            ['lya', 'ल्य'],
-            ['vya', 'व्य'],
-            ['mya', 'म्य'],
-            ['pya', 'प्य'],
-            ['bya', 'ब्य'],
-            ['hya', 'ह्य'],
-            ['sya', 'स्य'],
-            ['smi', 'स्मि'],
-            ['sma', 'स्म'],
-            ['smu', 'स्मु'],
-            ['sni', 'स्नि'],
-            ['sna', 'स्न'],
-            ['stu', 'स्तु'],
-            ['sti', 'स्ति'],
-            ['spa', 'स्प'],
-            ['spi', 'स्पि'],
-            ['sku', 'स्कु'],
-            ['ska', 'स्क'],
-            ['ski', 'स्कि'],
-            ['sko', 'स्को'],
-            ['ske', 'स्के'],
-            ['hma', 'ह्म'],
-            ['hmaa', 'ह्मा'],
-            ['hmi', 'ह्मि'],
-            ['hmu', 'ह्मु'],
-            ['hla', 'ह्ल'],
-            ['hli', 'ह्लि'],
-            ['hlu', 'ह्लु'],
-            ['rthi', 'र्थि'],
-            ['rtha', 'र्थ'],
-            ['rdha', 'र्ध'],
-            ['lla', 'ल्ल'],
-            ['tti', 'ट्टि'],
-            ['dda', 'ड्ड'],
-            ['nna', 'न्न'],
-            ['mpr', 'म्प्र'],
-            ['ktra', 'क्त्र'],
-            ['ktri', 'क्त्रि'],
-
-            // Repha (R + Consonant)
-            ['rka', 'र्क'],
-            ['rki', 'र्कि'],
-            ['rku', 'र्कु'],
-            ['rke', 'र्के'],
-            ['rko', 'र्को'],
-            ['rga', 'र्ग'],
-            ['rgi', 'र्गि'],
-            ['rgu', 'र्गु'],
-            ['rge', 'र्गे'],
-            ['rgo', 'र्गो'],
-            ['rgha', 'र्घ'],
-            ['rghi', 'र्घि'],
-            ['rghu', 'र्घु'],
-            ['rghe', 'र्घे'],
-            ['rgho', 'र्घो'],
-            ['rcha', 'र्च'],
-            ['rchi', 'र्चि'],
-            ['rchu', 'र्चु'],
-            ['rche', 'र्चे'],
-            ['rcho', 'र्चो'],
-            ['rja', 'र्ज'],
-            ['rji', 'र्जि'],
-            ['rju', 'र्जु'],
-            ['rje', 'र्जे'],
-            ['rjo', 'र्जो'],
-            ['rta', 'र्त'],
-            ['rti', 'र्ति'],
-            ['rtu', 'र्तु'],
-            ['rte', 'र्ते'],
-            ['rto', 'र्तो'],
-            ['rda', 'र्द'],
-            ['rdi', 'र्दि'],
-            ['rdu', 'र्दु'],
-            ['rde', 'र्दे'],
-            ['rdo', 'र्दो'],
-            ['rna', 'र्ण'],
-            ['rni', 'र्णि'],
-            ['rnu', 'र्णु'],
-            ['rne', 'र्णे'],
-            ['rno', 'र्णो'],
-            ['rpa', 'र्प'],
-            ['rpi', 'र्पि'],
-            ['rpu', 'र्पु'],
-            ['rpe', 'र्पे'],
-            ['rpo', 'र्पो'],
-            ['rba', 'र्ब'],
-            ['rbi', 'र्बि'],
-            ['rbu', 'र्बु'],
-            ['rbe', 'र्बे'],
-            ['rbo', 'र्बो'],
-            ['rdh', 'र्ध'],
-
-            // Common Conjuncts (Length 2-3)
-            ['gra', 'ग्र'],
-            ['gru', 'ग्रु'],
-            ['gre', 'ग्रे'],
-            ['gro', 'ग्रो'],
-            ['kra', 'क्र'],
-            ['kru', 'क्रु'],
-            ['kre', 'क्रे'],
-            ['kro', 'क्रो'],
-            ['kri', 'कृ'],
-            ['pra', 'प्र'],
-            ['pri', 'प्रि'],
-            ['pru', 'प्रु'],
-            ['pre', 'प्रे'],
-            ['pro', 'प्रो'],
-            ['bra', 'ब्र'],
-            ['bru', 'ब्रु'],
-            ['bre', 'ब्रे'],
-            ['bro', 'ब्रो'],
-            ['bri', 'बृ'],
-            ['dra', 'द्र'],
-            ['dri', 'द्रि'],
-            ['dru', 'द्रु'],
-            ['dre', 'द्रे'],
-            ['dro', 'द्रो'],
-            ['gri', 'गृ'],
-            ['trr', 'ट्र'],
-            ['drr', 'ड्र'],
-            ['ny', 'ञ'],
-            ['ng', 'ङ'],
-
-            // Geminates (Length 3)
-            ['kka', 'क्क'],
-            ['kki', 'क्कि'],
-            ['kku', 'क्कु'],
-            ['kke', 'क्के'],
-            ['kko', 'क्को'],
-            ['gga', 'ग्ग'],
-            ['ggi', 'ग्गि'],
-            ['ggu', 'ग्गु'],
-            ['gge', 'ग्गे'],
-            ['ggo', 'ग्गो'],
-            ['cca', 'च्च'],
-            ['cci', 'च्चि'],
-            ['ccu', 'च्चु'],
-            ['cce', 'च्चे'],
-            ['cco', 'च्चो'],
-            ['jja', 'ज्ज'],
-            ['jji', 'ज्जि'],
-            ['jju', 'ज्जु'],
-            ['jje', 'ज्जे'],
-            ['jjo', 'ज्जो'],
-            ['tta', 'त्त'],
-            ['tti', 'त्ति'],
-            ['ttu', 'त्तु'],
-            ['tte', 'त्ते'],
-            ['tto', 'त्तो'],
-            ['dda', 'द्द'],
-            ['ddi', 'द्दि'],
-            ['ddu', 'द्दु'],
-            ['dde', 'द्दे'],
-            ['ddo', 'द्दो'],
-            ['ppa', 'प्प'],
-            ['ppi', 'प्पि'],
-            ['ppu', 'प्पु'],
-            ['ppe', 'प्पे'],
-            ['ppo', 'प्पो'],
-            ['bba', 'ब्ब'],
-            ['bbi', 'ब्बि'],
-            ['bbu', 'ब्बु'],
-            ['bbe', 'ब्बे'],
-            ['bbo', 'ब्बो'],
-            ['mma', 'म्म'],
-            ['mmi', 'म्मि'],
-            ['mmu', 'म्मु'],
-            ['mme', 'म्मे'],
-            ['mmo', 'म्मो'],
-            ['ssa', 'स्स'],
-            ['ssi', 'स्सि'],
-            ['ssu', 'स्सु'],
-            ['sse', 'स्से'],
-            ['sso', 'स्सो'],
-
-            // Aspirated Consonants (Length 2)
-            ['chh', 'छ'],
-            ['kh', 'ख'],
-            ['gh', 'घ'],
-            ['jh', 'झ'],
-            ['Th', 'ठ'],
-            ['Dh', 'ढ'],
-            ['th', 'थ'],
-            ['dh', 'ध'],
-            ['ph', 'फ'],
-            ['bh', 'भ'],
-
-            // Digraphs (Length 2)
-            ['sh', 'श'],
-            ['Sh', 'ष'],
-            ['ch', 'च'],
-            ['ks', 'क्ष'],
-            ['tr', 'त्र'],
-            ['kt', 'क्त'],
-            ['kl', 'क्ल'],
-            ['gl', 'ग्ल'],
-            ['pl', 'प्ल'],
-            ['bl', 'ब्ल'],
-            ['fl', 'फ्ल'],
-            ['sl', 'स्ल'],
-            ['sm', 'स्म'],
-            ['sn', 'स्न'],
-            ['st', 'स्त'],
-            ['sp', 'स्प'],
-            ['sk', 'स्क'],
-            ['sw', 'स्व'],
-            ['sy', 'स्य'],
-            ['hy', 'ह्य'],
-            ['dy', 'द्य'],
-            ['ty', 'त्य'],
-            ['ry', 'र्य'],
-            ['ly', 'ल्य'],
-            ['vy', 'व्य'],
-            ['gy', 'ग्य'],
-            ['ky', 'क्य'],
-            ['py', 'प्य'],
-            ['by', 'ब्य'],
-            ['my', 'म्य'],
-            ['jy', 'ज्य'],
-            ['chy', 'च्य'],
-            ['ghr', 'घ्र'],
-            ['phr', 'फ्र'],
-            ['bhr', 'भ्र'],
-            ['thr', 'थ्र'],
-            ['dhr', 'ध्र'],
-            ['gd', 'ग्द'],
-            ['dd', 'द्द'],
-            ['tt', 'त्त'],
-            ['nd', 'न्द'],
-            ['nt', 'न्त'],
-            ['mp', 'म्प'],
-            ['mb', 'म्ब'],
-            ['ndh', 'न्ध'],
-            ['nth', 'न्थ'],
-            ['pt', 'प्त'],
-            ['ps', 'प्स'],
-            ['ts', 'त्स'],
-            ['ddh', 'द्ध'],
-            ['dbh', 'द्भ'],
-            ['nm', 'न्म'],
-            ['nh', 'न्ह'],
-            ['nv', 'न्व'],
-            ['dv', 'द्व'],
-            ['tv', 'त्व'],
-            ['sv', 'स्व'],
-            ['hv', 'ह्व'],
-            ['rv', 'र्व'],
-            ['rm', 'र्म'],
-            ['rn', 'र्ण'],
-            ['rt', 'र्त'],
-            ['rd', 'र्द'],
-            ['rg', 'र्ग'],
-
-            // Nukta (Length 2)
-            ['qa', 'क़'],
-            ['xa', 'ख़'],
-            ['Ga', 'ग़'],
-            ['za', 'ज़'],
-            ['fa', 'फ़'],
-
-            // Vowel Signs (Length 2)
-            ['aa', 'आ'],
-            ['ii', 'ई'],
-            ['uu', 'ऊ'],
-            ['ai', 'ऐ'],
-            ['au', 'औ'],
-            ['Ri', 'ऋ'],
-            ['rri', 'ॠ'],
-            ['ri', 'ृ'],
-            ['M', 'ं'],
-            ['~', 'ँ'],
-            ['H', 'ः'],
-            ['.', '्'],
-            ['OM', 'ॐ'],
-            ['om', 'ॐ'],
-
-            // Consonants (Length 1)
-            ['k', 'क'],
-            ['g', 'ग'],
-            ['j', 'ज'],
-            ['T', 'ट'],
-            ['D', 'ड'],
-            ['N', 'ण'],
-            ['t', 'त'],
-            ['d', 'द'],
-            ['n', 'न'],
-            ['p', 'प'],
-            ['b', 'ब'],
-            ['m', 'म'],
-            ['y', 'य'],
-            ['r', 'र'],
-            ['l', 'ल'],
-            ['v', 'व'],
-            ['w', 'व'],
-            ['s', 'स'],
-            ['h', 'ह'],
-            ['c', 'क'],
-            ['x', 'क्स'],
-            ['f', 'फ'],
-            ['q', 'क'],
-
-            // Vowels (Length 1)
-            ['a', 'अ'],
-            ['i', 'इ'],
-            ['u', 'उ'],
-            ['e', 'ए'],
-            ['o', 'ओ'],
-
-            // Numbers (Length 1)
-            ['0', '०'],
-            ['1', '१'],
-            ['2', '२'],
-            ['3', '३'],
-            ['4', '४'],
-            ['5', '५'],
-            ['6', '६'],
-            ['7', '७'],
-            ['8', '८'],
-            ['9', '९'],
-        ];
-
-        // Sort rules by length (descending)
-        const SORTED_RULES = [...PHONETIC_RULES].sort(
-            (a, b) => b[0].length - a[0].length
-        );
-
-        const MATRA_MAP = {
-            'अ': '',
-            'आ': 'ा',
-            'इ': 'ि',
-            'ई': 'ी',
-            'उ': 'ु',
-            'ऊ': 'ू',
-            'ऋ': 'ृ',
-            'ॠ': 'ॄ',
-            'ऌ': 'ॢ',
-            'ॡ': 'ॣ',
-            'ए': 'े',
-            'ऐ': 'ै',
-            'ओ': 'ो',
-            'औ': 'ौ'
-        };
-
-        const VOWELS = new Set(['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'ऋ', 'ॠ', 'ऌ', 'ॡ']);
-        const CONSONANTS = new Set(['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ',
-            'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह'
-        ]);
-
-        function isConsonant(ch) { return CONSONANTS.has(ch); }
-
-        // ============================================================
-        // CONVERSION ENGINE
-        // ============================================================
-
         function phoneticToDevanagari(text) {
             if (!text) return '';
-            let out = '';
+
+            const dictMatch = DICTIONARY.find(item => item.word.toLowerCase() === text.toLowerCase());
+            if (dictMatch) return dictMatch.dev;
+
+            const rules = [
+                ['chh', 'छ'],
+                ['kh', 'ख'],
+                ['gh', 'घ'],
+                ['jh', 'झ'],
+                ['Th', 'ठ'],
+                ['Dh', 'ढ'],
+                ['th', 'थ'],
+                ['dh', 'ध'],
+                ['ph', 'फ'],
+                ['bh', 'भ'],
+                ['sh', 'श'],
+                ['Sh', 'ष'],
+                ['ch', 'च'],
+                ['ng', 'ङ'],
+                ['ny', 'ञ'],
+                ['aa', 'आ'],
+                ['ii', 'ई'],
+                ['uu', 'ऊ'],
+                ['ai', 'ऐ'],
+                ['au', 'औ'],
+                ['ri', 'ृ'],
+                ['M', 'ं'],
+                ['~', 'ँ'],
+                ['H', 'ः'],
+                ['k', 'क'],
+                ['g', 'ग'],
+                ['j', 'ज'],
+                ['t', 'त'],
+                ['d', 'द'],
+                ['n', 'न'],
+                ['p', 'प'],
+                ['b', 'ब'],
+                ['m', 'म'],
+                ['y', 'य'],
+                ['r', 'र'],
+                ['l', 'ल'],
+                ['v', 'व'],
+                ['w', 'व'],
+                ['s', 'स'],
+                ['h', 'ह'],
+                ['a', 'अ'],
+                ['i', 'इ'],
+                ['u', 'उ'],
+                ['e', 'ए'],
+                ['o', 'ओ'],
+                ['0', '०'],
+                ['1', '१'],
+                ['2', '२'],
+                ['3', '३'],
+                ['4', '४'],
+                ['5', '५'],
+                ['6', '६'],
+                ['7', '७'],
+                ['8', '८'],
+                ['9', '९'],
+            ];
+
+            const sorted = [...rules].sort((a, b) => b[0].length - a[0].length);
+            let result = '';
             let i = 0;
+
             while (i < text.length) {
-                let match = null;
-                for (const [pat, rep] of SORTED_RULES) {
-                    if (text.substring(i, i + pat.length) === pat) {
-                        match = { pat, rep };
+                let matched = false;
+                for (const [key, value] of sorted) {
+                    if (text.substring(i, i + key.length) === key) {
+                        result += value;
+                        i += key.length;
+                        matched = true;
                         break;
                     }
                 }
-                if (!match) {
-                    out += text[i];
+                if (!matched) {
+                    result += text[i];
                     i++;
-                    continue;
                 }
-                let ch = match.rep;
-                if (VOWELS.has(ch)) {
-                    let prev = out[out.length - 1] || '';
-                    if (CONSONANTS.has(prev)) {
-                        out = out.slice(0, -1);
-                        out += prev;
-                        out += MATRA_MAP[ch];
-                    } else {
-                        out += ch;
-                    }
-                } else if (ch === '्') {
-                    if (out.length && CONSONANTS.has(out[out.length - 1])) {
-                        out += '्';
-                    }
-                } else {
-                    out += ch;
-                }
-                i += match.pat.length;
             }
-            return out;
+            return result;
         }
 
         function devanagariToTirhuta(text) {
-            if (!text) return '';
             let result = '';
             for (const char of text) {
                 result += D2T[char] || char;
@@ -1612,140 +1249,21 @@
             return result;
         }
 
-        function tirhutaToDevanagari(text) {
-            if (!text) return '';
-            let result = '';
-            for (const char of text) {
-                result += T2D[char] || char;
-            }
-            return result;
-        }
-
         function convert(text, direction) {
-            if (!text || text.trim() === '') return '';
+            if (!text) return '';
             if (direction === 'dev-to-tir') {
                 return devanagariToTirhuta(phoneticToDevanagari(text));
             } else {
-                return tirhutaToDevanagari(text);
-            }
-        }
-
-        // ============================================================
-        // WATERMARK GENERATOR
-        // ============================================================
-
-        function addWatermarkToContainer(container, watermarkText) {
-            if (!container.style.position || container.style.position === 'static') {
-                container.style.position = 'relative';
-            }
-            container.classList.add('watermark-container');
-
-            const overlay = document.createElement('div');
-            overlay.className = 'watermark-overlay';
-
-            const wmText = watermarkText || WATERMARK_URL;
-            const positions = [
-                { top: '10%', left: '-10%' },
-                { top: '30%', left: '30%' },
-                { top: '50%', left: '10%' },
-                { top: '70%', left: '40%' },
-                { top: '90%', left: '-5%' },
-                { top: '15%', left: '60%' },
-                { top: '45%', left: '70%' },
-                { top: '75%', left: '65%' },
-                { top: '55%', left: '-20%' },
-                { top: '85%', left: '20%' },
-            ];
-
-            positions.forEach(pos => {
-                const wmSpan = document.createElement('span');
-                wmSpan.className = 'watermark-text';
-                wmSpan.textContent = wmText;
-                wmSpan.style.top = pos.top;
-                wmSpan.style.left = pos.left;
-                overlay.appendChild(wmSpan);
-            });
-
-            container.appendChild(overlay);
-            return container;
-        }
-
-        // ============================================================
-        // LANGUAGE SWITCHER
-        // ============================================================
-
-        function setLanguage(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-
-            const data = LANGUAGES[lang];
-            if (!data) return;
-
-            const elements = {
-                'siteTitle': data.siteTitle,
-                'subtitleText': data.subtitle,
-                'seoHeading': data.seoHeading,
-                'dirLabel': data.dirLabel,
-                'fontLabel': data.fontLabel,
-                'autoLabel': data.autoLabel,
-                'autoYes': data.autoYes,
-                'autoNo': data.autoNo,
-                'inLabel': data.inLabel,
-                'outLabel': data.outLabel,
-                'convertBtn': data.convertBtn,
-                'copyBtn': data.copyBtn,
-                'clearBtn': data.clearBtn,
-                'downloadBtn': data.downloadBtn,
-                'pdfBtn': data.pdfBtn,
-                'tirhutaDownloadBtn': data.tirhutaDownloadBtn,
-                'imageBtn': data.imageBtn,
-                'rulesTitle': data.rulesTitle,
-                'rulesSubtext': data.rulesSubtext,
-                'aboutTitle': data.aboutTitle,
-                'footerText': data.footer
-            };
-
-            for (const [id, text] of Object.entries(elements)) {
-                const el = document.getElementById(id);
-                if (el) {
-                    if (id === 'tirhutaDownloadBtn' || id === 'imageBtn') {
-                        el.innerHTML = text;
-                    } else if (id === 'siteTitle' && lang === 'mai') {
-                        el.innerHTML = '𑒧 <span class="highlight">' + text.replace('𑒧 ', '') + '</span>';
-                    } else {
-                        el.textContent = text;
-                    }
+                let result = '';
+                for (const char of text) {
+                    result += T2D[char] || char;
                 }
+                return result;
             }
-
-            const aboutPara1 = document.getElementById('aboutPara1');
-            const aboutPara2 = document.getElementById('aboutPara2');
-            if (aboutPara1) aboutPara1.innerHTML = data.aboutPara1;
-            if (aboutPara2) aboutPara2.innerHTML = data.aboutPara2;
-
-            const inText = document.getElementById('inText');
-            const outText = document.getElementById('outText');
-            if (inText) inText.placeholder = data.inPlaceholder;
-            if (outText) outText.placeholder = data.outPlaceholder;
-
-            const dirSelect = document.getElementById('dir');
-            if (dirSelect && dirSelect.options.length >= 2) {
-                dirSelect.options[0].text = data.dirDevToTir;
-                dirSelect.options[1].text = data.dirTirToDev;
-            }
-
-            const exampleEl = document.getElementById('exampleText');
-            if (exampleEl) { exampleEl.innerHTML = data.example; }
-
-            const footerSubtext = document.getElementById('footerSubtext');
-            if (footerSubtext) footerSubtext.textContent = data.footer;
-
-            try { localStorage.setItem('tirhuta-lang', lang); } catch (e) {}
         }
 
         // ============================================================
-        // UI CONTROLLERS
+        // UI FUNCTIONS
         // ============================================================
 
         function doConvert() {
@@ -1753,6 +1271,10 @@
             const direction = document.getElementById('dir').value;
             const result = convert(input, direction);
             document.getElementById('outText').value = result;
+
+            const suggestions = getSuggestions(input);
+            renderSuggestions(suggestions);
+
             updateCounts();
             applyFont();
         }
@@ -1761,50 +1283,21 @@
             updateCounts();
             if (document.getElementById('autoConv').value === 'yes') {
                 doConvert();
+            } else {
+                const input = document.getElementById('inText').value;
+                const suggestions = getSuggestions(input);
+                renderSuggestions(suggestions);
             }
         }
 
         function updateCounts() {
             const inText = document.getElementById('inText').value;
             const outText = document.getElementById('outText').value;
-            const inCount = document.getElementById('inCount');
-            const outCount = document.getElementById('outCount');
-            const activeLang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
-            const charLabel = activeLang === 'en' ? ' chars' : ' अक्षर';
-            if (inCount) inCount.textContent = [...inText].length + charLabel;
-            if (outCount) outCount.textContent = [...outText].length + charLabel;
+            document.getElementById('inCount').textContent = [...inText].length + ' अक्षर';
+            document.getElementById('outCount').textContent = [...outText].length + ' अक्षर';
         }
 
         function updateUI() {
-            const direction = document.getElementById('dir').value;
-            const inLabel = document.getElementById('inLabel');
-            const outLabel = document.getElementById('outLabel');
-            const inText = document.getElementById('inText');
-            const outText = document.getElementById('outText');
-            const activeLang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
-            const data = LANGUAGES[activeLang] || LANGUAGES.mai;
-
-            if (direction === 'dev-to-tir') {
-                if (inLabel) inLabel.textContent = '📝 ' + data.inLabel.split(' ').slice(1).join(' ');
-                if (outLabel) outLabel.textContent = '📄 ' + data.outLabel.split(' ').slice(1).join(' ');
-                if (inText) inText.placeholder = 'English phonetic type करें... (maithili, mithila...)';
-                if (inText) {
-                    inText.className = 'devanagari-textarea';
-                }
-                if (outText) {
-                    outText.className = 'tirhuta-textarea';
-                }
-            } else {
-                if (inLabel) inLabel.textContent = '📝 तिरहुता (इनपुट)';
-                if (outLabel) outLabel.textContent = '📄 देवनागरी (आउटपुट)';
-                if (inText) inText.placeholder = 'तिरहुता पाठ paste करें...';
-                if (inText) {
-                    inText.className = 'tirhuta-textarea';
-                }
-                if (outText) {
-                    outText.className = 'devanagari-textarea';
-                }
-            }
             applyFont();
             doConvert();
         }
@@ -1826,45 +1319,31 @@
             const out = document.getElementById('outText');
             const inp = document.getElementById('inText');
 
-            // Apply font to both textareas based on direction
             if (direction === 'dev-to-tir') {
-                // Output is Tirhuta
                 if (out) {
                     out.style.fontFamily = font === 'mithilauni' ? "'Mithilauni', 'Noto Sans Tirhuta', serif" :
                         "'Noto Sans Tirhuta', serif";
                     out.className = 'tirhuta-textarea';
                 }
-                // Input is Devanagari
                 if (inp) {
                     inp.style.fontFamily = "'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif";
                     inp.className = 'devanagari-textarea';
                 }
             } else {
-                // Input is Tirhuta
                 if (inp) {
                     inp.style.fontFamily = font === 'mithilauni' ? "'Mithilauni', 'Noto Sans Tirhuta', serif" :
                         "'Noto Sans Tirhuta', serif";
                     inp.className = 'tirhuta-textarea';
                 }
-                // Output is Devanagari
                 if (out) {
                     out.style.fontFamily = "'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif";
                     out.className = 'devanagari-textarea';
                 }
             }
-
-            // Also apply to any element with tirhuta-font class
-            document.querySelectorAll('.tirhuta-font, .tirhuta-text, .tirhuta-textarea').forEach(el => {
-                if (font === 'mithilauni') {
-                    el.style.fontFamily = "'Mithilauni', 'Noto Sans Tirhuta', serif";
-                } else {
-                    el.style.fontFamily = "'Noto Sans Tirhuta', serif";
-                }
-            });
         }
 
         // ============================================================
-        // ACTION FUNCTIONS
+        // ACTIONS
         // ============================================================
 
         function doCopy() {
@@ -1874,19 +1353,20 @@
                 showToast('✅ कॉपी हो गया!', 'success');
             }).catch(() => {
                 const out = document.getElementById('outText');
-                if (out) { out.select();
-                    document.execCommand('copy');
-                    showToast('✅ कॉपी हो गया!', 'success'); }
+                out.select();
+                document.execCommand('copy');
+                showToast('✅ कॉपी हो गया!', 'success');
             });
         }
 
         function doClear() {
-            const inText = document.getElementById('inText');
-            const outText = document.getElementById('outText');
-            if (inText) inText.value = '';
-            if (outText) outText.value = '';
+            document.getElementById('inText').value = '';
+            document.getElementById('outText').value = '';
+            document.getElementById('suggestions').classList.remove('active');
+            selectedIndex = -1;
+            currentSuggestions = [];
             updateCounts();
-            if (inText) inText.focus();
+            document.getElementById('inText').focus();
             showToast('🗑️ साफ़ हो गया!', 'info');
         }
 
@@ -1926,174 +1406,79 @@
         }
 
         // ============================================================
-        // PDF DOWNLOAD
+        // PDF & IMAGE
         // ============================================================
 
         function doDownloadPDF() {
-            const outputText = document.getElementById('outText').value;
-            if (!outputText) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
+            const text = document.getElementById('outText').value;
+            if (!text) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
 
-            const inputText = document.getElementById('inText').value;
-            const direction = document.getElementById('dir').value;
-            const lang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
-            const data = LANGUAGES[lang] || LANGUAGES.mai;
-            const font = document.getElementById('fontSel').value;
-            const tirhutaFont = font === 'mithilauni' ? 'Mithilauni' : '"Noto Sans Tirhuta"';
+            const container = document.createElement('div');
+            container.style.cssText =
+                'padding:40px;max-width:800px;margin:0 auto;background:white;font-family:Noto Sans Devanagari;position:fixed;left:-9999px;top:0;z-index:-1;';
+            container.innerHTML = `
+                    <h1 style="color:#8B1A1A;">𑒧 मिथिला लिपि परिवर्तक</h1>
+                    <p style="color:#8B7355;">तिरहुता ↔ देवनागरी</p>
+                    <div style="margin:20px 0;padding:20px;background:#FDF6E3;border-radius:8px;border-left:4px solid #D4A017;">
+                        <strong>आउटपुट:</strong>
+                        <p style="font-size:24px;font-family:Mithilauni,Noto Sans Tirhuta,serif;margin-top:8px;">${text}</p>
+                    </div>
+                    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #C8A96E;font-size:12px;color:#8B7355;text-align:center;">
+                        ${new Date().toLocaleDateString('mai')}
+                    </div>
+                `;
 
-            const pdfContainer = document.createElement('div');
-            pdfContainer.id = 'pdfContainer';
-            pdfContainer.style.cssText = `
-                font-family: 'Noto Sans Devanagari', 'Noto Sans Tirhuta', Arial, sans-serif;
-                padding: 50px 60px;
-                max-width: 800px;
-                margin: 0 auto;
-                background: white;
-                color: #2C1810;
-                line-height: 1.8;
-                position: fixed;
-                left: -9999px;
-                top: 0;
-                z-index: -1;
-                min-height: 600px;
-            `;
+            document.body.appendChild(container);
 
-            pdfContainer.innerHTML = `
-                <h1 style="color: #8B1A1A; font-size: 26px; border-bottom: 3px solid #D4A017; padding-bottom: 12px;">${data.siteTitle}</h1>
-                <p style="color: #8B7355; font-size: 14px; margin-bottom: 24px;">${data.subtitle}</p>
-                <div style="margin: 16px 0; padding: 16px 20px; background: #FDF6E3; border-radius: 8px; border-left: 4px solid #8B1A1A;">
-                    <strong style="color: #8B1A1A; font-size: 15px;">📝 इनपुट:</strong>
-                    <p style="font-size: 16px; margin: 6px 0 0 0; padding: 10px; background: white; border-radius: 4px; min-height: 30px;">${inputText || '(empty)'}</p>
-                </div>
-                <div style="margin: 16px 0; padding: 16px 20px; background: #FDF6E3; border-radius: 8px; border-left: 4px solid #D4A017;">
-                    <strong style="color: #8B1A1A; font-size: 15px;">📄 आउटपुट:</strong>
-                    <p style="font-size: 20px; margin: 6px 0 0 0; padding: 10px; background: white; border-radius: 4px; font-family: ${tirhutaFont}, serif; min-height: 30px; word-wrap: break-word;">${outputText}</p>
-                </div>
-                <div style="margin-top: 30px; padding-top: 16px; border-top: 1px solid #C8A96E; font-size: 12px; color: #8B7355; text-align: center;">
-                    ${data.footer} | ${new Date().toLocaleDateString('mai')}
-                    <br>${data.dirDevToTir} ${direction === 'dev-to-tir' ? '✓' : ''} | ${data.dirTirToDev} ${direction === 'tir-to-dev' ? '✓' : ''}
-                </div>
-            `;
-
-            document.body.appendChild(pdfContainer);
-
-            setTimeout(() => {
-                const opt = {
-                    margin: [10, 10, 10, 10],
-                    filename: 'tirhuta-converted-' + Date.now() + '.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: false,
-                        backgroundColor: '#FFFFFF',
-                        width: 800,
-                        height: pdfContainer.scrollHeight + 100
-                    },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4',
-                        orientation: 'portrait'
-                    },
-                    pagebreak: { mode: 'avoid-all' }
-                };
-
-                showToast('⏳ PDF बन रहा है...', 'info');
-
-                html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                    document.body.removeChild(pdfContainer);
-                    showToast('✅ PDF डाउनलोड हो गया!', 'success');
-                }).catch((err) => {
-                    console.error('PDF Error:', err);
-                    document.body.removeChild(pdfContainer);
-                    showToast('⚠️ PDF बनाने में त्रुटि!', 'error');
-                });
-            }, 500);
+            html2pdf().set({
+                margin: 10,
+                filename: 'tirhuta-converted-' + Date.now() + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#FFFFFF' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(container).save().then(() => {
+                document.body.removeChild(container);
+                showToast('✅ PDF डाउनलोड हो गया!', 'success');
+            }).catch(() => {
+                document.body.removeChild(container);
+                showToast('⚠️ PDF बनाने में त्रुटि!', 'error');
+            });
         }
 
-        // ============================================================
-        // IMAGE DOWNLOAD
-        // ============================================================
-
         function doDownloadImage() {
-            const outputText = document.getElementById('outText').value;
-            if (!outputText) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
+            const text = document.getElementById('outText').value;
+            if (!text) { showToast('⚠️ पहले परिवर्तित करें!', 'error'); return; }
 
-            const inputText = document.getElementById('inText').value;
-            const direction = document.getElementById('dir').value;
-            const lang = document.querySelector('.lang-btn.active')?.dataset.lang || 'mai';
-            const data = LANGUAGES[lang] || LANGUAGES.mai;
-            const font = document.getElementById('fontSel').value;
-            const tirhutaFont = font === 'mithilauni' ? 'Mithilauni' : '"Noto Sans Tirhuta"';
+            const container = document.createElement('div');
+            container.style.cssText =
+                'padding:30px;background:white;border:2px solid #C8A96E;border-radius:12px;position:fixed;left:-9999px;top:0;z-index:-1;';
+            container.innerHTML = `
+                    <div style="text-align:center;border-bottom:3px solid #D4A017;padding-bottom:12px;margin-bottom:12px;">
+                        <h2 style="color:#8B1A1A;">𑒧 मिथिला लिपि परिवर्तक</h2>
+                    </div>
+                    <p style="font-size:28px;font-family:Mithilauni,Noto Sans Tirhuta,serif;padding:20px;background:#FDF6E3;border-radius:8px;min-height:60px;">${text}</p>
+                    <div style="margin-top:12px;padding-top:12px;border-top:1px solid #C8A96E;font-size:12px;color:#8B7355;text-align:center;">
+                        ${new Date().toLocaleDateString('mai')}
+                    </div>
+                `;
 
-            const textLength = Math.max(outputText.length, inputText.length, 10);
-            const fontSize = textLength > 200 ? 16 : textLength > 100 ? 20 : textLength > 50 ? 24 : 28;
-            const padding = textLength > 200 ? 30 : textLength > 100 ? 40 : 50;
-            const containerWidth = Math.min(Math.max(textLength * 20, 400), 1200);
+            document.body.appendChild(container);
 
-            const imgContainer = document.createElement('div');
-            imgContainer.id = 'imgContainer';
-            imgContainer.style.cssText = `
-                font-family: 'Noto Sans Devanagari', 'Noto Sans Tirhuta', Arial, sans-serif;
-                padding: ${padding}px;
-                max-width: ${containerWidth}px;
-                width: fit-content;
-                background: white;
-                color: #2C1810;
-                line-height: 1.8;
-                position: fixed;
-                left: -9999px;
-                top: 0;
-                z-index: -1;
-                border: 2px solid #C8A96E;
-                border-radius: 12px;
-            `;
-
-            imgContainer.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #D4A017;">
-                    <h1 style="color: #8B1A1A; font-size: ${fontSize * 0.8}px; margin: 0;">${data.siteTitle}</h1>
-                    <p style="color: #8B7355; font-size: ${fontSize * 0.5}px; margin: 4px 0 0 0;">${data.subtitle}</p>
-                </div>
-                <div style="margin: 12px 0; padding: 12px 16px; background: #FDF6E3; border-radius: 6px; border-left: 4px solid #8B1A1A;">
-                    <strong style="color: #8B1A1A; font-size: ${fontSize * 0.55}px;">📝 इनपुट:</strong>
-                    <p style="font-size: ${fontSize * 0.6}px; margin: 4px 0 0 0; padding: 8px; background: white; border-radius: 4px; min-height: 24px; word-wrap: break-word;">${inputText || '(empty)'}</p>
-                </div>
-                <div style="margin: 12px 0; padding: 12px 16px; background: #FDF6E3; border-radius: 6px; border-left: 4px solid #D4A017;">
-                    <strong style="color: #8B1A1A; font-size: ${fontSize * 0.55}px;">📄 आउटपुट:</strong>
-                    <p style="font-size: ${fontSize}px; margin: 4px 0 0 0; padding: 10px; background: white; border-radius: 4px; font-family: ${tirhutaFont}, serif; min-height: 30px; word-wrap: break-word; line-height: 2.2;">${outputText}</p>
-                </div>
-                <div style="margin-top: 20px; padding-top: 12px; border-top: 1px solid #C8A96E; font-size: ${fontSize * 0.4}px; color: #8B7355; text-align: center;">
-                    ${data.footer} | ${new Date().toLocaleDateString('mai')}
-                </div>
-            `;
-
-            document.body.appendChild(imgContainer);
-
-            showToast('⏳ इमेज बन रही है...', 'info');
-
-            setTimeout(() => {
-                html2canvas(imgContainer, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#FFFFFF',
-                    allowTaint: true,
-                    logging: false,
-                    width: imgContainer.scrollWidth,
-                    height: imgContainer.scrollHeight,
-                    windowWidth: imgContainer.scrollWidth,
-                    windowHeight: imgContainer.scrollHeight
-                }).then(canvas => {
-                    document.body.removeChild(imgContainer);
-                    const link = document.createElement('a');
-                    link.download = 'tirhuta-converted-' + Date.now() + '.png';
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                    showToast('✅ इमेज डाउनलोड हो गई!', 'success');
-                }).catch(err => {
-                    console.error('Image Error:', err);
-                    document.body.removeChild(imgContainer);
-                    showToast('⚠️ इमेज बनाने में त्रुटि!', 'error');
-                });
-            }, 300);
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#FFFFFF'
+            }).then(canvas => {
+                document.body.removeChild(container);
+                const link = document.createElement('a');
+                link.download = 'tirhuta-converted-' + Date.now() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('✅ इमेज डाउनलोड हो गई!', 'success');
+            }).catch(() => {
+                document.body.removeChild(container);
+                showToast('⚠️ इमेज बनाने में त्रुटि!', 'error');
+            });
         }
 
         // ============================================================
@@ -2102,7 +1487,6 @@
 
         function showToast(msg, type = '') {
             const toast = document.getElementById('toast');
-            if (!toast) return;
             toast.textContent = msg;
             toast.className = 'toast show ' + type;
             clearTimeout(toast._timeout);
@@ -2110,7 +1494,7 @@
         }
 
         // ============================================================
-        // RENDER RULES
+        // RULES
         // ============================================================
 
         function renderRules() {
@@ -2176,44 +1560,71 @@
             ];
 
             const grid = document.getElementById('ruleGrid');
-            if (!grid) return;
-
-            grid.innerHTML = rules.map(([eng, dev]) => `
-                <div class="rule-item">
-                    <code>${eng}</code> → ${dev}
-                </div>
-            `).join('');
+            grid.innerHTML = rules.map(([eng, dev]) =>
+                `<div class="rule-item"><code>${eng}</code> → ${dev}</div>`
+            ).join('');
         }
 
         // ============================================================
-        // PDF PREVIEW
+        // KEYBOARD EVENTS
         // ============================================================
 
-        function closePDFPreview() {
-            document.getElementById('pdfPreview').classList.remove('active');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('inText');
 
-        // ============================================================
-        // INIT
-        // ============================================================
+            input.addEventListener('keydown', function(e) {
+                const container = document.getElementById('suggestions');
 
-        window.onload = function() {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (currentSuggestions.length > 0) {
+                        selectedIndex = (selectedIndex + 1) % currentSuggestions.length;
+                        updateHighlight();
+                        const items = container.querySelectorAll('.suggestion-item');
+                        if (items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (currentSuggestions.length > 0) {
+                        selectedIndex = (selectedIndex - 1 + currentSuggestions.length) % currentSuggestions.length;
+                        updateHighlight();
+                        const items = container.querySelectorAll('.suggestion-item');
+                        if (items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'Enter' || e.key === 'Tab') {
+                    if (selectedIndex >= 0 && selectedIndex < currentSuggestions.length) {
+                        e.preventDefault();
+                        selectSuggestion(selectedIndex);
+                    } else if (e.key === 'Enter') {
+                        doConvert();
+                    }
+                } else if (e.key === 'Escape') {
+                    container.classList.remove('active');
+                    selectedIndex = -1;
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                const wrapper = document.querySelector('.input-wrapper');
+                if (!wrapper.contains(e.target)) {
+                    document.getElementById('suggestions').classList.remove('active');
+                }
+            });
+
             renderRules();
+            renderBadges();
             updateUI();
-            updateCounts();
-            let savedLang = 'mai';
-            try { savedLang = localStorage.getItem('tirhuta-lang') || 'mai'; } catch (e) {}
-            setLanguage(savedLang);
-            const inText = document.getElementById('inText');
-            if (inText) inText.focus();
 
-            // Apply font on load
-            setTimeout(applyFont, 100);
-        };
+            setTimeout(() => {
+                input.value = 'maithili';
+                doConvert();
+                input.focus();
+            }, 500);
+        });
 
-        console.log('🕉️ Tirhuta Script Converter Loaded!');
-        console.log('📚 Using Mithilauni font for Tirhuta text');
-        console.log('💡 Type "maithili" to see it convert to 𑒧𑒸𑒟𑒱𑒪𑒱');
+        console.log('🕉️ Tirhuta Converter Loaded!');
+        console.log(`📚 Total words: ${DICTIONARY.length}`);
+        console.log('💡 Type any word to see suggestions');
     </script>
 
 </body>
