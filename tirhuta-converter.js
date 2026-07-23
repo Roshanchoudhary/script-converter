@@ -1,15 +1,12 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - ONLY FAB BUTTON
-// सिर्फ Button दिखेगा, Box नहीं
-// किसी भी website पर embed करें:
-// <script src="YOUR_URL/widget.js"></script>
+// MITHILA SCRIPT CONVERTER - CORRECTED य़ RULE
 // ============================================================
 
 (function() {
   'use strict';
 
   // ============================================================
-  // 0. FONT CONFIGURATION
+  // CONFIG
   // ============================================================
 
   const CONFIG = {
@@ -19,11 +16,12 @@
     ],
     googleFont: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap',
     creditLink: 'https://lipi.maithili.org.in/',
-    fontFamily: "'Mithilauni','Noto Sans Tirhuta',serif"
+    fontFamily: "'Mithilauni','Noto Sans Tirhuta',serif",
+    storageKey: 'tirhuta-mode'
   };
 
   // ============================================================
-  // 1. COMPLETE UNICODE MAPS
+  // UNICODE MAPS
   // ============================================================
 
   const T2D = {
@@ -54,7 +52,7 @@
   }
 
   // ============================================================
-  // 2. ROMAN → DEVANAGARI NUMBERS
+  // ROMAN → DEVANAGARI NUMBERS
   // ============================================================
 
   const ROMAN_TO_DEV = {
@@ -63,7 +61,91 @@
   };
 
   // ============================================================
-  // 3. CONVERSION ENGINE
+  // CORRECTED य → य़ RULE
+  // ============================================================
+
+  function applyYaRule(text) {
+    if (!text) return '';
+    
+    let result = '';
+    const words = text.split(/(\s+)/);
+    
+    for (const word of words) {
+      if (!word.trim() || /^[\s\d]+$/.test(word)) {
+        result += word;
+        continue;
+      }
+      
+      let converted = '';
+      const chars = word.split('');
+      const len = chars.length;
+      
+      for (let i = 0; i < len; i++) {
+        const char = chars[i];
+        const nextChar = chars[i + 1] || '';
+        const prevChar = chars[i - 1] || '';
+        
+        if (char === 'य') {
+          // ============================================================
+          // RULE 1: शब्द के अंत में य → य़ ✅
+          // ============================================================
+          if (i === len - 1) {
+            converted += 'य़';
+          }
+          // ============================================================
+          // RULE 2: शब्द के बीच में य → य़ ✅
+          // (जब तक कि Special Conjunct न हो)
+          // ============================================================
+          else if (i > 0 && i < len - 1) {
+            // Special conjuncts where य stays य
+            // व्य, क्य, ग्य, प्र्य, ब्र्य, द्य, त्य, न्य, म्य, स्य, ह्य, र्य, ल्य
+            const prevTwo = (chars[i-2] || '') + (chars[i-1] || '');
+            const nextTwo = (chars[i+1] || '') + (chars[i+2] || '');
+            
+            // Check if this य is part of a special conjunct
+            const isSpecial = 
+              (prevChar === 'व' && nextChar === '') || // व्य
+              (prevChar === 'क' && nextChar === '') || // क्य
+              (prevChar === 'ग' && nextChar === '') || // ग्य
+              (prevChar === 'प' && nextChar === 'र') || // प्र्य
+              (prevChar === 'ब' && nextChar === 'र') || // ब्र्य
+              (prevChar === 'द' && nextChar === '') || // द्य
+              (prevChar === 'त' && nextChar === '') || // त्य
+              (prevChar === 'न' && nextChar === '') || // न्य
+              (prevChar === 'म' && nextChar === '') || // म्य
+              (prevChar === 'स' && nextChar === '') || // स्य
+              (prevChar === 'ह' && nextChar === '') || // ह्य
+              (prevChar === 'र' && nextChar === '') || // र्य
+              (prevChar === 'ल' && nextChar === '');   // ल्य
+            
+            if (isSpecial) {
+              converted += 'य'; // Keep as य
+            } else {
+              converted += 'य़'; // य → य़
+            }
+          }
+          // ============================================================
+          // RULE 3: शब्द के शुरू में य → य (कोई बदलाव नहीं)
+          // ============================================================
+          else if (i === 0) {
+            converted += 'य';
+          }
+          else {
+            converted += 'य';
+          }
+        } else {
+          converted += char;
+        }
+      }
+      
+      result += converted;
+    }
+    
+    return result;
+  }
+
+  // ============================================================
+  // CONVERSION ENGINE
   // ============================================================
 
   function convertToTirhuta(text) {
@@ -80,21 +162,57 @@
       }
     }
     
-    // Step 2: Devanagari → Tirhuta
+    // Step 2: Apply य → य़ rule
+    const yaApplied = applyYaRule(processed);
+    
+    // Step 3: Devanagari → Tirhuta
     let result = '';
-    for (let i = 0; i < processed.length; i++) {
-      const char = processed[i];
-      result += D2T[char] || char;
+    for (let i = 0; i < yaApplied.length; i++) {
+      const char = yaApplied[i];
+      // Handle य़ (य + ़)
+      if (char === 'य' && yaApplied[i+1] === '़') {
+        result += '𑒨𑓃'; // य़ in Tirhuta
+        i++; // Skip ़
+      } else {
+        result += D2T[char] || char;
+      }
     }
     return result;
   }
 
   // ============================================================
-  // 4. PAGE CONVERTER
+  // TEST FUNCTION
+  // ============================================================
+
+  function runTests() {
+    const tests = [
+      ['व्यवसाय', 'व्यवसाय़', '𑒫𑓂𑒨𑒫𑒮𑒰𑒨𑓃'],
+      ['राजय', 'राजय़', '𑒩𑒰𑒖𑒨𑓃'],
+      ['सोय', 'सोय़', '𑒮𑒼𑒨𑓃'],
+      ['प्रयोग', 'प्रय़ोग', '𑒣𑓂𑒩𑒨𑓃𑒼𑒑'],
+      ['वयस', 'वय़स', '𑒫𑒨𑓃𑒮'],
+      ['क्या', 'क्या', '𑒏𑓂𑒨𑒰'],
+      ['ज्ञान', 'ज्ञान', '𑒖𑓂𑒨𑒰𑒢'],
+      ['योग', 'योग', '𑒨𑒼𑒑'],
+    ];
+    
+    console.log('🧪 Testing य → य़ Rule:');
+    tests.forEach(([input, expectedDev, expectedTir]) => {
+      const afterDev = applyYaRule(input);
+      const afterTir = convertToTirhuta(input);
+      const devStatus = afterDev === expectedDev ? '✅' : '❌';
+      const tirStatus = afterTir === expectedTir ? '✅' : '❌';
+      console.log(`${input} → ${afterDev} ${devStatus} → ${afterTir} ${tirStatus}`);
+    });
+  }
+
+  // ============================================================
+  // PAGE CONVERTER
   // ============================================================
 
   let pageConverted = false;
   let originals = [];
+  let observer = null;
 
   function convertPage() {
     const btn = document.getElementById('mw-fab');
@@ -135,12 +253,24 @@
       }
 
       pageConverted = true;
+      
+      try {
+        localStorage.setItem(CONFIG.storageKey, 'tirhuta');
+      } catch(e) {}
+      
       btn.innerHTML = '↩️';
       btn.title = 'मूल पाठ वापस लाएं';
       btn.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4D3E)';
-      mwToast('✅ पेज मिथिलाक्षर में बदल गेल!', 'success');
+      mwToast('✅ पेज मिथिलाक्षर में बदल गेल! (य → य़ नियम सहित)', 'success');
+      
+      startObserver();
       
     } else {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      
       originals.forEach(({ node, orig }) => {
         node.textContent = orig;
         if (node.parentElement) {
@@ -149,6 +279,11 @@
       });
       originals = [];
       pageConverted = false;
+      
+      try {
+        localStorage.setItem(CONFIG.storageKey, 'devanagari');
+      } catch(e) {}
+      
       btn.innerHTML = '𑒧';
       btn.title = 'पेज को मिथिलाक्षर में बदलें';
       btn.style.background = 'linear-gradient(135deg, #8B1A1A, #D4A017)';
@@ -157,7 +292,89 @@
   }
 
   // ============================================================
-  // 5. FONT LOADER
+  // OBSERVER
+  // ============================================================
+
+  function startObserver() {
+    if (observer) {
+      observer.disconnect();
+    }
+    
+    observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+              const original = node.textContent;
+              const converted = convertToTirhuta(original);
+              if (original !== converted) {
+                originals.push({ node, orig: original });
+                node.textContent = converted;
+                if (node.parentElement) {
+                  node.parentElement.style.fontFamily = CONFIG.fontFamily;
+                }
+              }
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              const walker = document.createTreeWalker(
+                node,
+                NodeFilter.SHOW_TEXT,
+                {
+                  acceptNode: function(textNode) {
+                    if (textNode.parentElement &&
+                      (textNode.parentElement.closest('#mw-fab') ||
+                       textNode.parentElement.closest('#mw-toast') ||
+                       textNode.parentElement.closest('script') ||
+                       textNode.parentElement.closest('style') ||
+                       textNode.parentElement.closest('head') ||
+                       textNode.parentElement.closest('noscript'))) {
+                      return NodeFilter.FILTER_REJECT;
+                    }
+                    if (!textNode.textContent.trim()) return NodeFilter.FILTER_SKIP;
+                    return NodeFilter.FILTER_ACCEPT;
+                  }
+                }
+              );
+              
+              let textNode;
+              while ((textNode = walker.nextNode())) {
+                const original = textNode.textContent;
+                const converted = convertToTirhuta(original);
+                if (original !== converted) {
+                  originals.push({ node: textNode, orig: original });
+                  textNode.textContent = converted;
+                  if (textNode.parentElement) {
+                    textNode.parentElement.style.fontFamily = CONFIG.fontFamily;
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // ============================================================
+  // CHECK SAVED PREFERENCE
+  // ============================================================
+
+  function checkSavedPreference() {
+    try {
+      const saved = localStorage.getItem(CONFIG.storageKey);
+      if (saved === 'tirhuta') {
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  // ============================================================
+  // FONT LOADER
   // ============================================================
 
   function loadFonts() {
@@ -194,7 +411,7 @@
   }
 
   // ============================================================
-  // 6. WIDGET CSS - Only FAB Button
+  // WIDGET CSS
   // ============================================================
 
   function injectCSS() {
@@ -202,7 +419,6 @@
     const style = document.createElement('style');
     style.id = 'mw-css';
     style.textContent = `
-      /* FAB Button */
       #mw-fab {
         position: fixed;
         bottom: 24px;
@@ -232,7 +448,6 @@
         transform: scale(0.95);
       }
 
-      /* Toast */
       #mw-toast {
         position: fixed;
         bottom: 90px;
@@ -261,9 +476,6 @@
       #mw-toast.error {
         background: #B91C1C;
       }
-      #mw-toast.info {
-        background: #2B6CB0;
-      }
 
       @media (max-width: 600px) {
         #mw-fab {
@@ -285,11 +497,10 @@
   }
 
   // ============================================================
-  // 7. BUILD WIDGET - Only FAB Button
+  // BUILD WIDGET
   // ============================================================
 
   function buildWidget() {
-    // FAB Button
     const fab = document.createElement('button');
     fab.id = 'mw-fab';
     fab.title = 'पेज को मिथिलाक्षर में बदलें';
@@ -297,7 +508,6 @@
     fab.setAttribute('aria-label', 'Convert page to Tirhuta');
     fab.onclick = convertPage;
 
-    // Toast
     const toast = document.createElement('div');
     toast.id = 'mw-toast';
 
@@ -306,7 +516,7 @@
   }
 
   // ============================================================
-  // 8. TOAST
+  // TOAST
   // ============================================================
 
   function mwToast(msg, type = '') {
@@ -320,7 +530,7 @@
   }
 
   // ============================================================
-  // 9. KEYBOARD SHORTCUT
+  // KEYBOARD SHORTCUT
   // ============================================================
 
   document.addEventListener('keydown', function(e) {
@@ -331,7 +541,7 @@
   });
 
   // ============================================================
-  // 10. INIT
+  // INIT
   // ============================================================
 
   function init() {
@@ -339,9 +549,20 @@
     injectCSS();
     buildWidget();
     
+    // Run tests
+    runTests();
+    
+    const saved = checkSavedPreference();
+    if (saved) {
+      setTimeout(function() {
+        convertPage();
+        mwToast('✅ पेज मिथिलाक्षर में अछि', 'success');
+      }, 500);
+    }
+    
     console.log('𑒧 Mithila Script Converter loaded!');
-    console.log('🔹 Click the 𑒧 button to convert page to Tirhuta');
-    console.log('🔹 Press Ctrl+Shift+T to toggle');
+    console.log('📝 य → य़ नियम: शब्द के बीच/अंत में');
+    console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
     console.log('🔗 ' + CONFIG.creditLink);
   }
 
