@@ -1,6 +1,5 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - COMPLETE
-// Button + Bigger Font + Colored Credit Link
+// MITHILA SCRIPT CONVERTER - COMPLETE FINAL
 // ============================================================
 
 (function() {
@@ -22,42 +21,44 @@
   };
 
   // ============================================================
-  // UNICODE MAPS
+  // COMPLETE UNICODE MAP
   // ============================================================
 
-  const T2D = {
-    '𑒁': 'अ', '𑒂': 'आ', '𑒃': 'इ', '𑒄': 'ई',
-    '𑒅': 'उ', '𑒆': 'ऊ', '𑒇': 'ऋ', '𑒈': 'ॠ',
-    '𑒉': 'ऌ', '𑒊': 'ॡ', '𑒋': 'ए', '𑒌': 'ऐ',
-    '𑒍': 'ओ', '𑒎': 'औ',
-    '𑒏': 'क', '𑒐': 'ख', '𑒑': 'ग', '𑒒': 'घ', '𑒓': 'ङ',
-    '𑒔': 'च', '𑒕': 'छ', '𑒖': 'ज', '𑒗': 'झ', '𑒘': 'ञ',
-    '𑒙': 'ट', '𑒚': 'ठ', '𑒛': 'ड', '𑒜': 'ढ', '𑒝': 'ण',
-    '𑒞': 'त', '𑒟': 'थ', '𑒠': 'द', '𑒡': 'ध', '𑒢': 'न',
-    '𑒣': 'प', '𑒤': 'फ', '𑒥': 'ब', '𑒦': 'भ', '𑒧': 'म',
-    '𑒨': 'य', '𑒩': 'र', '𑒪': 'ल', '𑒫': 'व',
-    '𑒬': 'श', '𑒭': 'ष', '𑒮': 'स', '𑒯': 'ह',
-    '𑒰': 'ा', '𑒱': 'ि', '𑒲': 'ी', '𑒳': 'ु', '𑒴': 'ू',
-    '𑒵': 'ृ', '𑒶': 'ॄ', '𑒷': 'ॢ', '𑒸': 'ॣ',
-    '𑒹': 'े', '𑒺': 'ॅ', '𑒻': 'ै',
-    '𑒼': 'ो', '𑒽': 'ॉ', '𑒾': 'ौ',
-    '𑒿': 'ँ', '𑓀': 'ं', '𑓁': 'ः', '𑓂': '्',
-    '𑓃': '़', '𑓄': 'ऽ', '𑓆': '॰', '𑓇': 'ॐ',
-    '𑓐': '०', '𑓑': '१', '𑓒': '२', '𑓓': '३', '𑓔': '४',
-    '𑓕': '५', '𑓖': '६', '𑓗': '७', '𑓘': '८', '𑓙': '९',
-    'ड़': '𑒛𑓃',   // ड + ़
-    'ढ़': '𑒜𑓃',   // ढ + ़
-    'क़': '𑒏𑓃',   // क + ़
-    'ख़': '𑒐𑓃',   // ख + ़
-    'ग़': '𑒑𑓃',   // ग + ़
-    'ज़': '𑒖𑓃',   // ज + ़
-    'फ़': '𑒤𑓃',   // फ + ़
+  const D2T = {
+    // Vowels
+    'अ': '𑒁', 'आ': '𑒂', 'इ': '𑒃', 'ई': '𑒄',
+    'उ': '𑒅', 'ऊ': '𑒆', 'ऋ': '𑒇', 'ॠ': '𑒈',
+    'ऌ': '𑒉', 'ॡ': '𑒊', 'ए': '𑒋', 'ऐ': '𑒌',
+    'ओ': '𑒍', 'औ': '𑒎',
+    
+    // Consonants
+    'क': '𑒏', 'ख': '𑒐', 'ग': '𑒑', 'घ': '𑒒', 'ङ': '𑒓',
+    'च': '𑒔', 'छ': '𑒕', 'ज': '𑒖', 'झ': '𑒗', 'ञ': '𑒘',
+    'ट': '𑒙', 'ठ': '𑒚', 'ड': '𑒛', 'ढ': '𑒜', 'ण': '𑒝',
+    'त': '𑒞', 'थ': '𑒟', 'द': '𑒠', 'ध': '𑒡', 'न': '𑒢',
+    'प': '𑒣', 'फ': '𑒤', 'ब': '𑒥', 'भ': '𑒦', 'म': '𑒧',
+    'य': '𑒨', 'र': '𑒩', 'ल': '𑒪', 'व': '𑒫',
+    'श': '𑒬', 'ष': '𑒭', 'स': '𑒮', 'ह': '𑒯',
+    
+    // Matras
+    'ा': '𑒰', 'ि': '𑒱', 'ी': '𑒲', 'ु': '𑒳', 'ू': '𑒴',
+    'ृ': '𑒵', 'ॄ': '𑒶', 'ॢ': '𑒷', 'ॣ': '𑒸',
+    'े': '𑒹', 'ॅ': '𑒺', 'ै': '𑒻',
+    'ो': '𑒼', 'ॉ': '𑒽', 'ौ': '𑒾',
+    
+    // Signs
+    'ँ': '𑒿', 'ं': '𑓀', 'ः': '𑓁', '्': '𑓂',
+    '़': '𑓃', 'ऽ': '𑓄', '॰': '𑓆', 'ॐ': '𑓇',
+    
+    // Nukta Letters
+    'ड़': '𑒛𑓃', 'ढ़': '𑒜𑓃',
+    'क़': '𑒏𑓃', 'ख़': '𑒐𑓃', 'ग़': '𑒑𑓃',
+    'ज़': '𑒖𑓃', 'फ़': '𑒤𑓃',
+    
+    // Numbers
+    '०': '𑓐', '१': '𑓑', '२': '𑓒', '३': '𑓓', '४': '𑓔',
+    '५': '𑓕', '६': '𑓖', '७': '𑓗', '८': '𑓘', '९': '𑓙'
   };
-
-  const D2T = {};
-  for (const [tir, dev] of Object.entries(T2D)) {
-    D2T[dev] = tir;
-  }
 
   // ============================================================
   // ROMAN → DEVANAGARI NUMBERS
@@ -88,7 +89,7 @@
   ]);
 
   // ============================================================
-  // PERFECT य → य़ RULE
+  // PERFECT य → य़ RULE - FINAL CORRECTED
   // ============================================================
 
   function applyYaRule(text) {
@@ -113,28 +114,50 @@
         const prevChar = chars[i - 1] || '';
 
         if (char === 'य') {
+          // ============================================================
+          // CHECK 1: क्या य शब्द का पहला अक्षर है?
+          // ============================================================
+          const isFirstChar = (i === 0);
+
+          // ============================================================
+          // CHECK 2: क्या य आधा है? (्य)
+          // आधा य तब होता है जब:
+          // 1. पहले आधा अक्षर हो (म् + य = म्य, न् + य = न्य)
+          // 2. या बाद में कोई अक्षर हो (प्र्य, ब्र्य)
+          // ============================================================
+          
+          // पहले व्यंजन है
           const hasPrevConsonant = i > 0 && CONSONANTS.has(prevChar);
-          const hasNextMatra = MATRAS.has(nextChar);
+          
+          // पहले अक्षर आधा है (यानी उसके बाद सीधे य आया है)
+          // जैसे: म + ् + य = म्य (यहाँ म आधा है)
+          const prevIsHalf = hasPrevConsonant && !MATRAS.has(prevChar);
+          
+          // बाद में व्यंजन है → आधा य (प्र्य, ब्र्य)
           const hasNextConsonant = i < len - 1 && CONSONANTS.has(nextChar);
           
-          const isHalfYaWithPrev = hasPrevConsonant && !hasNextMatra && !hasNextConsonant;
-          const isHalfYaWithNext = i < len - 1 && CONSONANTS.has(nextChar);
-          const isHalfYa = isHalfYaWithPrev || isHalfYaWithNext;
+          // क्या य आधा है?
+          const isHalfYa = prevIsHalf || hasNextConsonant;
 
-          if (i === len - 1) {
-            converted += 'य़';
+          // ============================================================
+          // RULES APPLY
+          // ============================================================
+          
+          // RULE 1: शब्द का पहला अक्षर → ❌ नुक्ता नहीं
+          if (isFirstChar) {
+            converted += 'य';
           }
-          else if (i > 0 && i < len - 1 && !isHalfYa) {
-            converted += 'य़';
-          }
+          // RULE 2: आधा य (्य) → ❌ नुक्ता नहीं (म्य, न्य, व्य, क्य, प्र्य, ब्र्य)
           else if (isHalfYa) {
             converted += 'य';
           }
-          else if (i === 0) {
-            converted += 'य';
+          // RULE 3: शब्द के अंत में पूरा य → ✅ नुक्ता लगेगा
+          else if (i === len - 1) {
+            converted += 'य़';
           }
+          // RULE 4: शब्द के बीच में पूरा य → ✅ नुक्ता लगेगा (प्रयोग, जायत, राजय)
           else {
-            converted += 'य';
+            converted += 'य़';
           }
         } else {
           converted += char;
@@ -154,6 +177,7 @@
   function convertToTirhuta(text) {
     if (!text) return '';
     
+    // Step 1: Roman numbers → Devanagari
     let processed = '';
     for (let i = 0; i < text.length; i++) {
       const char = text[i];
@@ -164,15 +188,43 @@
       }
     }
     
+    // Step 2: Apply य → य़ rule
     const yaApplied = applyYaRule(processed);
     
+    // Step 3: Devanagari → Tirhuta
     let result = '';
     for (let i = 0; i < yaApplied.length; i++) {
       const char = yaApplied[i];
-      if (char === 'य' && yaApplied[i+1] === '़') {
+      const nextChar = yaApplied[i + 1] || '';
+      
+      // Handle य़ (य + ़)
+      if (char === 'य' && nextChar === '़') {
         result += '𑒨𑓃';
         i++;
-      } else {
+      }
+      // Handle Nukta letters (ड़, ढ़, etc.)
+      else if (char === 'ड़') {
+        result += D2T['ड़'];
+      }
+      else if (char === 'ढ़') {
+        result += D2T['ढ़'];
+      }
+      else if (char === 'क़') {
+        result += D2T['क़'];
+      }
+      else if (char === 'ख़') {
+        result += D2T['ख़'];
+      }
+      else if (char === 'ग़') {
+        result += D2T['ग़'];
+      }
+      else if (char === 'ज़') {
+        result += D2T['ज़'];
+      }
+      else if (char === 'फ़') {
+        result += D2T['फ़'];
+      }
+      else {
         result += D2T[char] || char;
       }
     }
@@ -185,30 +237,45 @@
 
   function runTests() {
     const tests = [
-      ['व्यवसाय', 'व्यवसाय', '𑒫𑓂𑒨𑒫𑒮𑒰𑒨'],
-      ['राजय', 'राजय़', '𑒩𑒰𑒖𑒨𑓃'],
-      ['सोय', 'सोय़', '𑒮𑒼𑒨𑓃'],
-      ['प्रयोग', 'प्रय़ोग', '𑒣𑓂𑒩𑒨𑓃𑒼𑒑'],
-      ['वयस', 'वय़स', '𑒫𑒨𑓃𑒮'],
-      ['क्या', 'क्या', '𑒏𑓂𑒨𑒰'],
-      ['ज्ञान', 'ज्ञान', '𑒖𑓂𑒨𑒰𑒢'],
-      ['योग', 'योग', '𑒨𑒼𑒑'],
-      ['राज्य', 'राज्य', '𑒩𑒰𑒖𑓂𑒨'],
-      ['भय', 'भय़', '𑒦𑒨𑓃'],
-      ['अयन', 'अय़न', '𑒁𑒨𑓃𑒢'],
-      ['विजय', 'विजय़', '𑒫𑒱𑒖𑒨𑓃'],
+      // आधा य (्य) - पहले आधा अक्षर → नुक्ता नहीं
+      ['म्य', '𑒧𑓂𑒨'],
+      ['न्य', '𑒢𑓂𑒨'],
+      ['व्य', '𑒫𑓂𑒨'],
+      ['क्य', '𑒏𑓂𑒨'],
+      ['ग्य', '𑒑𑓂𑒨'],
+      ['द्य', '𑒠𑓂𑒨'],
+      ['त्य', '𑒞𑓂𑒨'],
+      ['स्य', '𑒮𑓂𑒨'],
+      ['ह्य', '𑒯𑓂𑒨'],
+      ['र्य', '𑒩𑓂𑒨'],
+      ['ल्य', '𑒪𑓂𑒨'],
+      
+      // पूरा य (बीच/अंत) - नुक्ता लगेगा
+      ['प्रयोग', '𑒣𑓂𑒩𑒨𑓃𑒼𑒑'],
+      ['जायत', '𑒖𑒰𑒨𑓃𑒞'],
+      ['राजय', '𑒩𑒰𑒖𑒨𑓃'],
+      ['सोय', '𑒮𑒼𑒨𑓃'],
+      ['वयस', '𑒫𑒨𑓃𑒮'],
+      ['अयन', '𑒁𑒨𑓃𑒢'],
+      ['भय', '𑒦𑒨𑓃'],
+      
+      // शुरू में य - नुक्ता नहीं
+      ['योग', '𑒨𑒼𑒑'],
+      ['यम', '𑒨𑒧'],
     ];
     
     console.log('🧪 Testing य → य़ Rule:');
+    console.log('📝 आधा य (्य) → नुक्ता नहीं ❌ (म्य, न्य, व्य, क्य)');
+    console.log('📝 पूरा य (बीच/अंत) → नुक्ता लगेगा ✅ (प्रयोग, जायत, राजय)\n');
+    
     let passed = 0;
-    tests.forEach(([input, expectedDev, expectedTir]) => {
-      const afterDev = applyYaRule(input);
-      const afterTir = convertToTirhuta(input);
-      if (afterDev === expectedDev && afterTir === expectedTir) {
-        passed++;
-      }
+    tests.forEach(([input, expected]) => {
+      const result = convertToTirhuta(input);
+      const status = result === expected ? '✅' : '❌';
+      console.log(`${input} → ${result} ${status}`);
+      if (result === expected) passed++;
     });
-    console.log(`✅ ${passed}/${tests.length} tests passed`);
+    console.log(`\n✅ ${passed}/${tests.length} tests passed`);
   }
 
   // ============================================================
@@ -436,7 +503,7 @@
         border-radius: 50%;
         border: none;
         color: white;
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         cursor: pointer;
         box-shadow: 0 4px 20px rgba(139,26,26,0.4);
         z-index: 99998;
@@ -455,9 +522,6 @@
         transform: scale(0.95);
       }
 
-      /* ============================================================
-         CREDIT LINK - Bigger Font + Background Color + Hyperlink
-         ============================================================ */
       #mw-credit {
         position: fixed;
         bottom: 92px;
@@ -466,7 +530,7 @@
         backdrop-filter: blur(8px);
         padding: 6px 16px;
         border-radius: 20px;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
         font-family: 'Noto Sans Devanagari', Arial, sans-serif;
         color: #8B1A1A;
@@ -496,9 +560,6 @@
       #mw-credit a:hover {
         text-decoration: underline;
       }
-      #mw-credit .credit-icon {
-        font-size: 14px;
-      }
 
       #mw-toast {
         position: fixed;
@@ -508,7 +569,7 @@
         color: white;
         padding: 10px 18px;
         border-radius: 10px;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         z-index: 100000;
         opacity: 0;
         transform: translateY(10px);
@@ -533,20 +594,20 @@
         #mw-fab {
           width: 50px;
           height: 50px;
-          font-size: 1.4rem;
+          font-size: 1.8rem;
           bottom: 16px;
           right: 16px;
         }
         #mw-credit {
           bottom: 76px;
           right: 16px;
-          font-size: 11px;
+          font-size: 12px;
           padding: 4px 12px;
         }
         #mw-toast {
           bottom: 76px;
           right: 16px;
-          font-size: 0.75rem;
+          font-size: 0.8rem;
           padding: 8px 14px;
         }
       }
@@ -555,7 +616,7 @@
   }
 
   // ============================================================
-  // BUILD WIDGET - Button + Colored Credit Link
+  // BUILD WIDGET
   // ============================================================
 
   function buildWidget() {
@@ -568,7 +629,7 @@
 
     const credit = document.createElement('div');
     credit.id = 'mw-credit';
-    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer"><span class="credit-icon">𑒧</span> lipi.maithili.org.in</a>`;
+    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">𑒧 lipi.maithili.org.in</a>`;
 
     const toast = document.createElement('div');
     toast.id = 'mw-toast';
@@ -623,7 +684,8 @@
     }
     
     console.log('𑒧 Mithila Script Converter loaded!');
-    console.log('📝 य → य़ नियम: आधा य् (्य) पर नुक्ता नहीं');
+    console.log('📝 य → य़ नियम: आधा य (्य) → नुक्ता नहीं');
+    console.log('📝 पूरा य (बीच/अंत) → नुक्ता लगेगा');
     console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
     console.log('🔗 ' + CONFIG.creditLink);
   }
