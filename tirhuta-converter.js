@@ -1,13 +1,24 @@
 // ============================================================
-// 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒹𑒖 𑒏𑓂𑒞𑒩𑓂𑒞𑒰
-// Tirhuta Page Converter - मैथिली में (𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱)
+// 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒮𑒻𑒞 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞𑒩
+// Tirhuta Site Converter - पूरी Website के लिए
 // ============================================================
 
 (function() {
   'use strict';
 
   // ============================================================
-  // 𑒨𑒰𑒢𑒱 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓀𑒞𑒩𑒰
+  // CONFIG
+  // ============================================================
+
+  const CONFIG = {
+    storageKey: 'tirhuta-mode',
+    defaultMode: 'devanagari', // 'devanagari' या 'tirhuta'
+    creditLink: 'https://lipi.maithili.org.in/',
+    fontFamily: "'Mithilauni','Noto Sans Tirhuta',serif"
+  };
+
+  // ============================================================
+  // COMPLETE UNICODE MAP
   // ============================================================
 
   const D2T = {
@@ -33,102 +44,112 @@
   };
 
   // ============================================================
-  // 𑒨𑒰𑒢𑒱 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒩𑒱𑒫𑒩𑓂𑒞𑒢 (𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱)
+  // ROMAN → DEVANAGARI NUMBERS
   // ============================================================
+
+  const ROMAN_TO_DEV = {
+    '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
+    '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
+  };
+
+  // ============================================================
+  // CONVERSION ENGINE
+  // ============================================================
+
+  function convertRomanToDevanagari(text) {
+    if (!text) return '';
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      if (char >= '0' && char <= '9') {
+        result += ROMAN_TO_DEV[char] || char;
+      } else {
+        result += char;
+      }
+    }
+    return result;
+  }
 
   function convertToTirhuta(text) {
     if (!text) return '';
     
-    // Step 1: Apply hidden य़ rule (internal)
-    let processed = '';
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      const nextChar = text[i + 1] || '';
-      const prevChar = text[i - 1] || '';
-      
+    // Step 1: Roman numbers → Devanagari
+    let processed = convertRomanToDevanagari(text);
+    
+    // Step 2: Apply hidden य़ rule
+    let yaProcessed = '';
+    for (let i = 0; i < processed.length; i++) {
+      const char = processed[i];
       if (char === 'य') {
-        // शब्द के अंत में य → य़ (लेकिन दिखेगा नहीं)
-        if (i === text.length - 1) {
-          // य़ as internal (no visible change)
-          processed += 'य';
-        }
-        // शब्द के बीच में य → य़ (लेकिन दिखेगा नहीं)
-        else if (i > 0 && i < text.length - 1) {
-          // Check if part of special conjunct (व्य, क्य, ग्य, etc.)
-          const prevTwo = (text[i-2] || '') + (text[i-1] || '');
-          const specialConjuncts = ['व्य', 'क्य', 'ग्य', 'प्र्य', 'ब्र्य', 'द्य', 'त्य', 'न्य', 'म्य', 'स्य', 'ह्य', 'र्य', 'ल्य'];
-          const isSpecial = specialConjuncts.some(conj => text.includes(conj));
-          
-          if (isSpecial) {
-            processed += 'य'; // Keep as य
-          } else {
-            // य़ as internal (no visible change)
-            processed += 'य';
-          }
-        } else {
-          processed += 'य';
-        }
+        yaProcessed += 'य';
       } else {
-        processed += char;
+        yaProcessed += char;
       }
     }
     
-    // Step 2: Convert to Tirhuta
+    // Step 3: Devanagari → Tirhuta
     let result = '';
-    for (let i = 0; i < processed.length; i++) {
-      const char = processed[i];
+    for (let i = 0; i < yaProcessed.length; i++) {
+      const char = yaProcessed[i];
       result += D2T[char] || char;
     }
     return result;
   }
 
   // ============================================================
-  // 𑒮𑓂𑒞𑒻𑒞
+  // SITE CONVERTER - पूरी Website के लिए
   // ============================================================
 
-  let isConverted = false;
+  let isTirhutaMode = false;
   let savedNodes = [];
-  let selectedFont = 'mithilauni';
+  let observer = null;
 
-  // ============================================================
-  // 𑒤𑒼𑒢𑓂𑒙 𑒪𑒼𑒠𑒩
-  // ============================================================
+  function convertSiteToTirhuta() {
+    // Save current mode
+    isTirhutaMode = true;
+    localStorage.setItem(CONFIG.storageKey, 'tirhuta');
+    
+    // Convert all text on page
+    convertAllText();
+    
+    // Start observing for new content
+    startObserver();
+    
+    updateUI();
+    showToast('✅ 𑒣𑒴𑒩𑒲 𑒮𑒻𑒞 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑓂𑒞𑓂𑒯𑒰!');
+  }
 
-  function loadFonts() {
-    if (document.getElementById('uc-font-style')) return;
-    const style = document.createElement('style');
-    style.id = 'uc-font-style';
-    style.textContent = `
-      @font-face {
-        font-family: 'Mithilauni';
-        src: url('https://script-converter.pages.dev/fonts/Mithilauni.ttf') format('truetype');
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Mithilauni';
-        src: url('https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf') format('truetype');
-        font-display: swap;
-      }
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap');
-    `;
-    document.head.appendChild(style);
+  function revertSiteToDevanagari() {
+    isTirhutaMode = false;
+    localStorage.setItem(CONFIG.storageKey, 'devanagari');
+    
+    // Stop observer
+    if (observer) {
+      observer.disconnect();
+      observer = null;
+    }
+    
+    // Revert all text
+    revertAllText();
+    
+    updateUI();
+    showToast('↩️ 𑒧𑒴𑒪 𑒣𑒰𑒛 𑒫𑒰𑒣𑒮 𑒁𑒑𑒪!');
+  }
+
+  function toggleSite() {
+    if (isTirhutaMode) {
+      revertSiteToDevanagari();
+    } else {
+      convertSiteToTirhuta();
+    }
   }
 
   // ============================================================
-  // 𑒤𑒼𑒢𑓂𑒙 𑒢𑒰𑒧
+  // TEXT CONVERSION
   // ============================================================
 
-  function getFontFamily() {
-    return selectedFont === 'mithilauni' 
-      ? "'Mithilauni','Noto Sans Tirhuta',serif" 
-      : "'Noto Sans Tirhuta',serif";
-  }
-
-  // ============================================================
-  // 𑒣𑒹𑒖 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞 𑒏𑒩𑒳
-  // ============================================================
-
-  function convertPage() {
+  function convertAllText() {
+    savedNodes = [];
     const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
@@ -156,16 +177,13 @@
         savedNodes.push({ node, original });
         node.textContent = converted;
         if (node.parentElement) {
-          node.parentElement.style.fontFamily = getFontFamily();
+          node.parentElement.style.fontFamily = CONFIG.fontFamily;
         }
       }
     }
-    isConverted = true;
-    updateUI();
-    showToast('✅ 𑒣𑒹𑒖 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑓂𑒞𑓂𑒯𑒰!');
   }
 
-  function revertPage() {
+  function revertAllText() {
     savedNodes.forEach(({ node, original }) => {
       node.textContent = original;
       if (node.parentElement) {
@@ -173,21 +191,97 @@
       }
     });
     savedNodes = [];
-    isConverted = false;
-    updateUI();
-    showToast('↩️ 𑒧𑒴𑒪 𑒣𑒰𑒛 𑒫𑒰𑒣𑒮 𑒁𑒑𑒪!');
-  }
-
-  function toggleConvert() {
-    if (isConverted) {
-      revertPage();
-    } else {
-      convertPage();
-    }
   }
 
   // ============================================================
-  // 𑒮𑒳𑒕𑒰𑒢
+  // OBSERVER - नए content के लिए
+  // ============================================================
+
+  function startObserver() {
+    if (observer) {
+      observer.disconnect();
+    }
+    
+    observer = new MutationObserver(function(mutations) {
+      let hasNewText = false;
+      
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+              hasNewText = true;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              // Check if element has text
+              const walker = document.createTreeWalker(
+                node,
+                NodeFilter.SHOW_TEXT,
+                {
+                  acceptNode: function(textNode) {
+                    if (textNode.parentElement &&
+                      (textNode.parentElement.closest('#uc-converter') ||
+                       textNode.parentElement.closest('script') ||
+                       textNode.parentElement.closest('style') ||
+                       textNode.parentElement.closest('head') ||
+                       textNode.parentElement.closest('noscript'))) {
+                      return NodeFilter.FILTER_REJECT;
+                    }
+                    if (!textNode.textContent.trim()) return NodeFilter.FILTER_SKIP;
+                    return NodeFilter.FILTER_ACCEPT;
+                  }
+                }
+              );
+              
+              let textNode;
+              while ((textNode = walker.nextNode())) {
+                hasNewText = true;
+                const original = textNode.textContent;
+                const converted = convertToTirhuta(original);
+                if (original !== converted) {
+                  savedNodes.push({ node: textNode, original });
+                  textNode.textContent = converted;
+                  if (textNode.parentElement) {
+                    textNode.parentElement.style.fontFamily = CONFIG.fontFamily;
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // ============================================================
+  // FONT LOADER
+  // ============================================================
+
+  function loadFonts() {
+    if (document.getElementById('uc-font-style')) return;
+    const style = document.createElement('style');
+    style.id = 'uc-font-style';
+    style.textContent = `
+      @font-face {
+        font-family: 'Mithilauni';
+        src: url('https://script-converter.pages.dev/fonts/Mithilauni.ttf') format('truetype');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Mithilauni';
+        src: url('https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf') format('truetype');
+        font-display: swap;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tirhuta:wght@400;700&display=swap');
+    `;
+    document.head.appendChild(style);
+  }
+
+  // ============================================================
+  // TOAST
   // ============================================================
 
   function showToast(msg) {
@@ -221,15 +315,16 @@
   }
 
   // ============================================================
-  // 𑒨𑒰𑒢𑒱 UI 𑒁𑒣𑒜𑒻𑒞 𑒏𑒩𑒳
+  // UPDATE UI
   // ============================================================
 
   function updateUI() {
     const btn = document.getElementById('uc-btn');
     const status = document.getElementById('uc-status');
     if (!btn) return;
-    if (isConverted) {
-      btn.innerHTML = '↩️ 𑒧𑒴𑒪 𑒫𑒰𑒣𑒮 ✅';
+    
+    if (isTirhutaMode) {
+      btn.innerHTML = '↩️ 𑒠𑒹𑒫𑒢𑒰𑒑𑒩𑒲 ✅';
       btn.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4D3E)';
       if (status) status.textContent = '✅ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒁𑒔𑓂𑒕𑒰';
     } else {
@@ -240,7 +335,19 @@
   }
 
   // ============================================================
-  // 𑒫𑒱𑒠𑓂𑒨𑒰𑒢𑒱 𑒥𑒢𑒰𑒅
+  // CHECK SAVED PREFERENCE
+  // ============================================================
+
+  function checkSavedPreference() {
+    const saved = localStorage.getItem(CONFIG.storageKey);
+    if (saved === 'tirhuta') {
+      return true;
+    }
+    return false;
+  }
+
+  // ============================================================
+  // CREATE WIDGET
   // ============================================================
 
   function createWidget() {
@@ -258,7 +365,7 @@
       align-items: flex-end;
       gap: 6px;
       font-family: 'Segoe UI', Arial, sans-serif;
-      max-width: 240px;
+      max-width: 280px;
     `;
 
     const panel = document.createElement('div');
@@ -286,7 +393,7 @@
     `;
     title.textContent = '𑒧 𑒧𑒱𑒟𑒱𑒪𑒰 𑒪𑒱𑒣𑒱 𑒣𑒩𑒱𑒫𑒩𑓂𑒞𑒏';
 
-    // Info - नियम रहतय बस देखबय के नञि
+    // Info - Site converter
     const info = document.createElement('div');
     info.style.cssText = `
       font-size: 9px;
@@ -299,7 +406,7 @@
       border: 1px solid #C8A96E;
       font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
-    info.textContent = '📝 𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱 (𑒢𑒱𑒨𑒧 𑒩𑒯𑒞𑒨)';
+    info.textContent = '🌐 𑒣𑒴𑒩𑒲 𑒮𑒻𑒞 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇';
 
     // Font Selector
     const fontRow = document.createElement('div');
@@ -328,13 +435,17 @@
       <option value="mithilauni">Mithilauni</option>
       <option value="noto">Noto Sans Tirhuta</option>
     `;
-    fontSelect.value = selectedFont;
+    fontSelect.value = 'mithilauni';
     fontSelect.onchange = function() {
-      selectedFont = this.value;
-      if (isConverted) {
+      const font = this.value;
+      const family = font === 'mithilauni' 
+        ? "'Mithilauni','Noto Sans Tirhuta',serif" 
+        : "'Noto Sans Tirhuta',serif";
+      
+      if (isTirhutaMode) {
         savedNodes.forEach(({ node }) => {
           if (node.parentElement) {
-            node.parentElement.style.fontFamily = getFontFamily();
+            node.parentElement.style.fontFamily = family;
           }
         });
       }
@@ -372,7 +483,7 @@
       button.style.transform = 'scale(1)';
       button.style.boxShadow = 'none';
     };
-    button.onclick = toggleConvert;
+    button.onclick = toggleSite;
 
     // Status
     const status = document.createElement('div');
@@ -399,9 +510,7 @@
     `;
     shortcut.textContent = '⌨️ Ctrl+Shift+T';
 
-    // ============================================================
-    // CREDIT LINK ✅
-    // ============================================================
+    // Credit Link
     const credit = document.createElement('div');
     credit.style.cssText = `
       font-size: 9px;
@@ -412,7 +521,7 @@
       border-top: 1px solid #f0f0f0;
       font-family: 'Noto Sans Devanagari', Arial, sans-serif;
     `;
-    credit.innerHTML = `<a href="https://lipi.maithili.org.in/" target="_blank" style="color:#8B1A1A;text-decoration:none;font-weight:600;">𑒧 𑒧𑒱𑒟𑒱𑒪𑒰 𑒪𑒱𑒣𑒱</a>`;
+    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" style="color:#8B1A1A;text-decoration:none;font-weight:600;">𑒧 𑒧𑒱𑒟𑒱𑒪𑒰 𑒪𑒱𑒣𑒱</a>`;
 
     // Assemble
     panel.appendChild(title);
@@ -429,26 +538,53 @@
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.shiftKey && (e.key === 't' || e.key === 'T')) {
         e.preventDefault();
-        toggleConvert();
+        toggleSite();
       }
     });
   }
 
   // ============================================================
-  // 𑒮𑒳𑒩𑒴 𑒏𑒩𑒳
+  // INIT
   // ============================================================
 
   function init() {
     loadFonts();
+    
+    // Check saved preference
+    const savedMode = localStorage.getItem(CONFIG.storageKey);
+    
+    // Create widget first
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', createWidget);
+      document.addEventListener('DOMContentLoaded', function() {
+        createWidget();
+        // Apply saved preference after widget creation
+        if (savedMode === 'tirhuta') {
+          setTimeout(function() {
+            isTirhutaMode = true;
+            convertAllText();
+            startObserver();
+            updateUI();
+            showToast('✅ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒁𑒔𑓂𑒕𑒰 (𑒮𑓂𑒫𑒞𑓂𑒠𑓂𑒩𑒱𑒞𑓂𑒠𑒾𑒢𑒞𑒰)');
+          }, 500);
+        }
+      });
     } else {
       createWidget();
+      if (savedMode === 'tirhuta') {
+        setTimeout(function() {
+          isTirhutaMode = true;
+          convertAllText();
+          startObserver();
+          updateUI();
+          showToast('✅ 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒁𑒔𑓂𑒕𑒰 (𑒮𑓂𑒫𑒞𑓂𑒠𑓂𑒩𑒱𑒞𑓂𑒠𑒾𑒢𑒞𑒰)');
+        }, 500);
+      }
     }
-    console.log('𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒣𑒹𑒖 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞𑒩 𑒪𑒼𑒠 𑒯𑒾𑒪!');
-    console.log('📝 𑒨𑓃 𑒢 𑒠𑒱𑒔𑓂𑒯𑒰𑒃𑒢𑒱 (𑒢𑒱𑒨𑒧 𑒩𑒯𑒞𑒨)');
-    console.log('🔹 𑒏𑓂𑒪𑒱𑒏𑓂 𑒏𑒩𑒳 "𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰" 𑒥𑒞𑒢 𑒣𑒩');
-    console.log('🔗 https://lipi.maithili.org.in/');
+    
+    console.log('𑒧 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒮𑒻𑒞 𑒏𑒼𑒢𑓂𑒫𑒩𑓂𑒞𑒩 𑒪𑒼𑒠 𑒯𑒾𑒪!');
+    console.log('🌐 𑒣𑒴𑒩𑒲 𑒮𑒻𑒞 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑓇 𑒥𑒠𑒪𑒏𑒾');
+    console.log('💾 𑒞𑒱𑒩𑒯𑒳𑒞𑒰 𑒧𑒴𑒠𑓂 ' + (savedMode === 'tirhuta' ? '𑒋𑒢𑓂' : '𑒦𑒵𑒞𑓂'));
+    console.log('🔗 ' + CONFIG.creditLink);
   }
 
   if (document.readyState === 'loading') {
