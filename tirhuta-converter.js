@@ -1,5 +1,6 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - ONLY BUTTON + CREDIT LINK
+// MITHILA SCRIPT CONVERTER - COMPLETE
+// Button + Bigger Font + Colored Credit Link
 // ============================================================
 
 (function() {
@@ -422,13 +423,13 @@
         position: fixed;
         bottom: 24px;
         right: 24px;
-        width: 56px;
-        height: 56px;
+        width: 60px;
+        height: 60px;
         background: linear-gradient(135deg, #8B1A1A, #D4A017);
         border-radius: 50%;
         border: none;
         color: white;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         cursor: pointer;
         box-shadow: 0 4px 20px rgba(139,26,26,0.4);
         z-index: 99998;
@@ -447,30 +448,49 @@
         transform: scale(0.95);
       }
 
+      /* ============================================================
+         CREDIT LINK - Bigger Font + Background Color + Hyperlink
+         ============================================================ */
       #mw-credit {
         position: fixed;
-        bottom: 88px;
+        bottom: 92px;
         right: 24px;
-        font-size: 10px;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(8px);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
         font-family: 'Noto Sans Devanagari', Arial, sans-serif;
-        color: #999;
+        color: #8B1A1A;
         z-index: 99997;
         text-align: center;
-        opacity: 0.6;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        border: 1px solid rgba(200,169,110,0.25);
         transition: all 0.3s ease;
-        letter-spacing: 0.3px;
+        letter-spacing: 0.5px;
         pointer-events: auto;
+        cursor: pointer;
       }
       #mw-credit:hover {
-        opacity: 1;
+        transform: scale(1.05);
+        box-shadow: 0 4px 24px rgba(139,26,26,0.15);
+        border-color: #8B1A1A;
+        background: rgba(255,255,255,0.98);
       }
       #mw-credit a {
         color: #8B1A1A;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
       #mw-credit a:hover {
         text-decoration: underline;
+      }
+      #mw-credit .credit-icon {
+        font-size: 14px;
       }
 
       #mw-toast {
@@ -504,16 +524,17 @@
 
       @media (max-width: 600px) {
         #mw-fab {
-          width: 48px;
-          height: 48px;
-          font-size: 1.2rem;
+          width: 50px;
+          height: 50px;
+          font-size: 1.4rem;
           bottom: 16px;
           right: 16px;
         }
         #mw-credit {
           bottom: 76px;
           right: 16px;
-          font-size: 8px;
+          font-size: 11px;
+          padding: 4px 12px;
         }
         #mw-toast {
           bottom: 76px;
@@ -527,7 +548,7 @@
   }
 
   // ============================================================
-  // BUILD WIDGET
+  // BUILD WIDGET - Button + Colored Credit Link
   // ============================================================
 
   function buildWidget() {
@@ -540,7 +561,7 @@
 
     const credit = document.createElement('div');
     credit.id = 'mw-credit';
-    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">lipi.maithili.org.in</a>`;
+    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer"><span class="credit-icon">𑒧</span> lipi.maithili.org.in</a>`;
 
     const toast = document.createElement('div');
     toast.id = 'mw-toast';
