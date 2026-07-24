@@ -677,4 +677,229 @@ class TirhutaConverter {
   }
 
   // ============================================================
-  // Font
+  // Font Loader
+  // ============================================================
+
+  function loadFonts() {
+    if (!document.getElementById('mw-google-font')) {
+      const link = document.createElement('link');
+      link.id = 'mw-google-font';
+      link.href = CONFIG.googleFont;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+
+    if (!document.getElementById('mw-mithilauni-font')) {
+      const style = document.createElement('style');
+      style.id = 'mw-mithilauni-font';
+      const srcUrls = CONFIG.fontCDN.map(url => `url('${url}') format('truetype')`).join(', ');
+      style.textContent = `
+        @font-face {
+          font-family: 'Mithilauni';
+          src: ${srcUrls};
+          font-display: swap;
+          font-weight: 400;
+          font-style: normal;
+        }
+        @font-face {
+          font-family: 'Mithilauni';
+          src: ${srcUrls};
+          font-display: swap;
+          font-weight: 700;
+          font-style: normal;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // ============================================================
+  // Widget CSS
+  // ============================================================
+
+  function injectCSS() {
+    if (document.getElementById('mw-css')) return;
+    const style = document.createElement('style');
+    style.id = 'mw-css';
+    style.textContent = `
+      #mw-fab {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #8B1A1A, #D4A017);
+        border-radius: 50%;
+        border: none;
+        color: white;
+        font-size: 1.8rem;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(139,26,26,0.4);
+        z-index: 99998;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;
+        user-select: none;
+      }
+      #mw-fab:hover {
+        transform: scale(1.1) rotate(-5deg);
+        box-shadow: 0 8px 30px rgba(139,26,26,0.5);
+      }
+      #mw-fab:active {
+        transform: scale(0.95);
+      }
+
+      #mw-credit {
+        position: fixed;
+        bottom: 88px;
+        right: 24px;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(8px);
+        padding: 5px 14px;
+        border-radius: 18px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+        color: #8B1A1A;
+        z-index: 99997;
+        text-align: center;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        border: 1px solid rgba(200,169,110,0.25);
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      #mw-credit:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 24px rgba(139,26,26,0.15);
+        border-color: #8B1A1A;
+        background: rgba(255,255,255,0.98);
+      }
+      #mw-credit a {
+        color: #8B1A1A;
+        text-decoration: none;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #mw-credit a:hover {
+        text-decoration: underline;
+      }
+
+      #mw-toast {
+        position: fixed;
+        bottom: 88px;
+        right: 24px;
+        background: #2C1810;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        z-index: 100000;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        max-width: 90%;
+        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+      }
+      #mw-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #mw-toast.success {
+        background: #2D6A4F;
+      }
+      #mw-toast.error {
+        background: #B91C1C;
+      }
+
+      @media (max-width: 600px) {
+        #mw-fab {
+          width: 48px;
+          height: 48px;
+          font-size: 1.4rem;
+          bottom: 16px;
+          right: 16px;
+        }
+        #mw-credit {
+          bottom: 76px;
+          right: 16px;
+          font-size: 11px;
+          padding: 4px 12px;
+        }
+        #mw-toast {
+          bottom: 76px;
+          right: 16px;
+          font-size: 0.75rem;
+          padding: 8px 14px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // ============================================================
+  // Build Widget
+  // ============================================================
+
+  function buildWidget() {
+    const fab = document.createElement('button');
+    fab.id = 'mw-fab';
+    fab.title = '𑒧 मिथिला लिपि | Click to convert page to Tirhuta';
+    fab.innerHTML = '𑒧';
+    fab.setAttribute('aria-label', 'Convert page to Tirhuta');
+    fab.onclick = convertPage;
+
+    const credit = document.createElement('div');
+    credit.id = 'mw-credit';
+    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">𑒧 lipi.maithili.org.in</a>`;
+
+    const toast = document.createElement('div');
+    toast.id = 'mw-toast';
+
+    document.body.appendChild(fab);
+    document.body.appendChild(credit);
+    document.body.appendChild(toast);
+  }
+
+  // ============================================================
+  // Init
+  // ============================================================
+
+  function init() {
+    loadFonts();
+    injectCSS();
+    buildWidget();
+
+    const saved = checkSavedPreference();
+    if (saved) {
+      setTimeout(function() {
+        convertPage();
+        mwToast('✅ पेज मिथिलाक्षर में अछि', 'success');
+      }, 500);
+    }
+
+    console.log('𑒧 Mithila Script Converter v5.0 loaded!');
+    console.log('📝 Architecture:');
+    console.log('   ✅ Complete Unicode Categories (Set-based)');
+    console.log('   ✅ Parser → Structure Only (No rules)');
+    console.log('   ✅ Rule Engine → Separate');
+    console.log('   ✅ Renderer → Separate');
+    console.log('   ✅ All mappings Frozen');
+    console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
+    console.log('🔗 ' + CONFIG.creditLink);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
