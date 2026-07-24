@@ -1,16 +1,482 @@
 // ============================================================
-// MITHILA SCRIPT CONVERTER - COMPLETE WITH ALL UNICODE
-// सभी Devanagari Unicode (0900-097F) + सभी नियम
+// FILE: unicode-map.js
+// Official Unicode Mapping Table (ISO/IEC 10646) - FROZEN
+// ============================================================
+
+const UNICODE_MAP = Object.freeze({
+  // Vowels
+  'अ': '𑒁', 'आ': '𑒂', 'इ': '𑒃', 'ई': '𑒄',
+  'उ': '𑒅', 'ऊ': '𑒆', 'ऋ': '𑒇', 'ॠ': '𑒈',
+  'ऌ': '𑒉', 'ॡ': '𑒊', 'ए': '𑒋', 'ऐ': '𑒌',
+  'ओ': '𑒍', 'औ': '𑒎', 'ऍ': '𑒺', 'ऎ': '𑒾',
+  'ऑ': '𑒽', 'ऒ': '𑒻',
+
+  // Consonants (including extended)
+  'क': '𑒏', 'ख': '𑒐', 'ग': '𑒑', 'घ': '𑒒', 'ङ': '𑒓',
+  'च': '𑒔', 'छ': '𑒕', 'ज': '𑒖', 'झ': '𑒗', 'ञ': '𑒘',
+  'ट': '𑒙', 'ठ': '𑒚', 'ड': '𑒛', 'ढ': '𑒜', 'ण': '𑒝',
+  'त': '𑒞', 'थ': '𑒟', 'द': '𑒠', 'ध': '𑒡', 'न': '𑒢',
+  'ऩ': '𑒢', 'प': '𑒣', 'फ': '𑒤', 'ब': '𑒥', 'भ': '𑒦',
+  'म': '𑒧', 'य': '𑒨', 'र': '𑒩', 'ऱ': '𑒩', 'ल': '𑒪',
+  'ळ': '𑒪', 'ऴ': '𑒪', 'व': '𑒫',
+  'श': '𑒬', 'ष': '𑒭', 'स': '𑒮', 'ह': '𑒯',
+
+  // Matras (Vowel Signs)
+  'ा': '𑒰', 'ि': '𑒱', 'ी': '𑒲',
+  'ु': '𑒳', 'ू': '𑒴', 'ृ': '𑒵',
+  'ॄ': '𑒶', 'ॅ': '𑒺', 'ॆ': '𑒾',
+  'े': '𑒹', 'ै': '𑒻', 'ॉ': '𑒽',
+  'ो': '𑒼', 'ौ': '𑒾',
+
+  // Signs
+  'ँ': '𑒿', 'ं': '𑓀', 'ः': '𑓁',
+  '्': '𑓂', '़': '𑓃',
+
+  // Nukta Letters
+  'क़': '𑒏𑓃', 'ख़': '𑒐𑓃', 'ग़': '𑒑𑓃',
+  'ज़': '𑒖𑓃', 'ड़': '𑒛𑓃', 'ढ़': '𑒜𑓃',
+  'फ़': '𑒤𑓃', 'य़': '𑒨𑓃',
+
+  // Numbers
+  '०': '𑓐', '१': '𑓑', '२': '𑓒', '३': '𑓓', '४': '𑓔',
+  '५': '𑓕', '६': '𑓖', '७': '𑓗', '८': '𑓘', '९': '𑓙',
+
+  // Punctuation
+  '।': '𑓆', '॥': '𑓆𑓆', 'ॐ': '𑓇',
+});
+
+// ============================================================
+// FILE: categories.js
+// Unicode Character Categories (Complete)
+// ============================================================
+
+const CATEGORIES = Object.freeze({
+  VOWELS: new Set([
+    'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ॠ', 'ऌ', 'ॡ',
+    'ए', 'ऐ', 'ओ', 'औ', 'ऍ', 'ऎ', 'ऑ', 'ऒ'
+  ]),
+
+  CONSONANTS: new Set([
+    'क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ',
+    'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न',
+    'ऩ', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ऱ', 'ल',
+    'ळ', 'ऴ', 'व', 'श', 'ष', 'स', 'ह'
+  ]),
+
+  MATRAS: new Set([
+    'ा', 'ि', 'ी', 'ु', 'ू', 'ृ', 'ॄ',
+    'ॅ', 'ॆ', 'े', 'ै', 'ॉ', 'ॊ', 'ो', 'ौ'
+  ]),
+
+  SIGNS: new Set(['ँ', 'ं', 'ः']),
+
+  NUKTA_LETTERS: new Set([
+    'क़', 'ख़', 'ग़', 'ज़', 'ड़', 'ढ़', 'फ़', 'य़'
+  ]),
+
+  // All Devanagari characters for validation
+  ALL_DEVANAGARI: new Set([
+    // All characters from the above sets
+    ...'अआइईउऊऋॠऌॡएऐओऔऍऎऑऒ',
+    ...'कखगघङचछजझञटठडढणतथदधनऩपफबभमयरऱलळऴवशषसह',
+    ...'ािीुूृॄॅॆेैॉॊोौ',
+    ...'ँंः़्',
+    ...'क़ख़ग़ज़ड़ढ़फ़य़',
+    ...'०१२३४५६७८९।॥ॐ'
+  ]),
+});
+
+// ============================================================
+// FILE: parser.js
+// Orthographic Syllable Parser (Structure Only)
+// ============================================================
+
+class OrthographicSyllableParser {
+  constructor() {
+    this.NUKTA = '़';
+    this.VIRAMA = '्';
+    this.ZWJ = '\u200D';
+    this.ZWNJ = '\u200C';
+  }
+
+  // ============================================================
+  // Main parse method
+  // ============================================================
+
+  parse(text) {
+    // Step 1: Normalize (NFC)
+    text = text.normalize('NFC');
+    
+    const clusters = [];
+    let i = 0;
+    const len = text.length;
+
+    while (i < len) {
+      const syllable = this.parseSyllable(text, i);
+      if (syllable) {
+        clusters.push(syllable);
+        i += syllable.length;
+      } else {
+        // Unknown character, preserve as-is
+        clusters.push({
+          base: text[i],
+          original: text[i],
+          length: 1,
+          type: 'unknown',
+          nukta: false,
+          virama: false,
+          conjuncts: [],
+          matras: [],
+          signs: [],
+          zwj: false,
+          zwnj: false,
+        });
+        i++;
+      }
+    }
+
+    return clusters;
+  }
+
+  // ============================================================
+  // Parse a single orthographic syllable
+  // ============================================================
+
+  parseSyllable(text, start) {
+    let i = start;
+    const len = text.length;
+    
+    if (i >= len) return null;
+
+    const char = text[i];
+    const syllable = {
+      base: '',
+      original: '',
+      length: 0,
+      type: 'unknown',
+      nukta: false,
+      virama: false,
+      conjuncts: [],
+      matras: [],
+      signs: [],
+      zwj: false,
+      zwnj: false,
+    };
+
+    // ============================================================
+    // Phase 1: Base character
+    // ============================================================
+
+    if (CATEGORIES.VOWELS.has(char)) {
+      syllable.base = char;
+      syllable.type = 'vowel';
+      i++;
+    } else if (CATEGORIES.CONSONANTS.has(char)) {
+      syllable.base = char;
+      syllable.type = 'consonant';
+      i++;
+    } else {
+      syllable.base = char;
+      syllable.type = 'unknown';
+      i++;
+      syllable.length = i - start;
+      syllable.original = text.substring(start, i);
+      return syllable;
+    }
+
+    // ============================================================
+    // Phase 2: Nukta (़)
+    // ============================================================
+
+    if (i < len && text[i] === this.NUKTA) {
+      syllable.nukta = true;
+      i++;
+    }
+
+    // ============================================================
+    // Phase 3: Virama + Conjuncts (्क, क्त, क्त्र, etc.)
+    // ============================================================
+
+    while (i < len && text[i] === this.VIRAMA) {
+      syllable.virama = true;
+      i++;
+      
+      // Check if there's a following consonant
+      if (i < len && CATEGORIES.CONSONANTS.has(text[i])) {
+        syllable.conjuncts.push(text[i]);
+        i++;
+        
+        // Check for ZWJ/ZWNJ
+        if (i < len) {
+          if (text[i] === this.ZWJ) {
+            syllable.zwj = true;
+            i++;
+          } else if (text[i] === this.ZWNJ) {
+            syllable.zwnj = true;
+            i++;
+          }
+        }
+        
+        // Continue for multi-conjunct (क्त्र)
+        continue;
+      } else {
+        // Virama without consonant (standalone)
+        break;
+      }
+    }
+
+    // ============================================================
+    // Phase 4: Matras (ा,ि,ी,ु,ू,े,ै,ो,ौ)
+    // ============================================================
+
+    while (i < len && CATEGORIES.MATRAS.has(text[i])) {
+      syllable.matras.push(text[i]);
+      i++;
+    }
+
+    // ============================================================
+    // Phase 5: Signs (ँ,ं,ः)
+    // ============================================================
+
+    while (i < len && CATEGORIES.SIGNS.has(text[i])) {
+      syllable.signs.push(text[i]);
+      i++;
+    }
+
+    // ============================================================
+    // Store original and length
+    // ============================================================
+
+    syllable.length = i - start;
+    syllable.original = text.substring(start, i);
+
+    return syllable;
+  }
+}
+
+// ============================================================
+// FILE: rules.js
+// Rule Engine - FROZEN
+// ============================================================
+
+const RULES = Object.freeze({
+  // ============================================================
+  // Ya Rule: य → य़
+  // ============================================================
+  yaRule: {
+    enabled: true,
+    apply: function(cluster, context) {
+      if (!this.enabled) return cluster;
+      
+      // Only apply to 'य' base
+      if (cluster.base !== 'य') return cluster;
+      
+      // Check if य is half (part of conjunct)
+      const isHalfYa = cluster.virama || 
+                       (cluster.conjuncts && cluster.conjuncts.length > 0);
+      
+      if (isHalfYa) return cluster;
+      
+      // Check if य is word-initial
+      if (context.isWordStart) return cluster;
+      
+      // Apply: य → य़
+      cluster.nukta = true;
+      return cluster;
+    }
+  },
+
+  // ============================================================
+  // Nukta Rule
+  // ============================================================
+  nuktaRule: {
+    enabled: true,
+    apply: function(cluster) {
+      if (!this.enabled) return cluster;
+      
+      // If cluster has nukta, ensure it's properly set
+      if (cluster.nukta && cluster.base) {
+        // Check if it's a nukta letter
+        const nuktaKey = cluster.base + '़';
+        if (UNICODE_MAP[nuktaKey]) {
+          // Already a valid nukta letter
+          return cluster;
+        }
+      }
+      return cluster;
+    }
+  },
+
+  // ============================================================
+  // Font-specific rules
+  // ============================================================
+  fontRules: {
+    mithilauni: {
+      ligatures: true,
+      conjuncts: true,
+    },
+    noto: {
+      ligatures: false,
+      conjuncts: true,
+    }
+  }
+});
+
+// ============================================================
+// FILE: renderer.js
+// Unicode Renderer
+// ============================================================
+
+class TirhutaRenderer {
+  constructor() {
+    this.map = UNICODE_MAP;
+  }
+
+  // ============================================================
+  // Render clusters to Tirhuta
+  // ============================================================
+
+  render(clusters) {
+    let result = '';
+
+    for (const cluster of clusters) {
+      // Handle unknown
+      if (cluster.type === 'unknown') {
+        result += cluster.base;
+        continue;
+      }
+
+      // ============================================================
+      // Step 1: Base character
+      // ============================================================
+      let base = cluster.base;
+      
+      // Handle Nukta letters
+      if (cluster.nukta) {
+        const nuktaKey = base + '़';
+        if (this.map[nuktaKey]) {
+          base = this.map[nuktaKey];
+        } else {
+          // Fallback: base + nukta
+          base = (this.map[base] || base) + '𑓃';
+        }
+      } else {
+        base = this.map[base] || base;
+      }
+
+      result += base;
+
+      // ============================================================
+      // Step 2: Virama + Conjuncts
+      // ============================================================
+      if (cluster.virama && cluster.conjuncts.length > 0) {
+        // Add Virama
+        result += '𑓂';
+        
+        for (let i = 0; i < cluster.conjuncts.length; i++) {
+          const conj = cluster.conjuncts[i];
+          result += this.map[conj] || conj;
+          
+          // Add Virama for multi-conjunct
+          if (i < cluster.conjuncts.length - 1) {
+            result += '𑓂';
+          }
+        }
+      }
+
+      // ============================================================
+      // Step 3: Matras
+      // ============================================================
+      for (const matra of cluster.matras) {
+        result += this.map[matra] || matra;
+      }
+
+      // ============================================================
+      // Step 4: Signs
+      // ============================================================
+      for (const sign of cluster.signs) {
+        result += this.map[sign] || sign;
+      }
+    }
+
+    return result;
+  }
+}
+
+// ============================================================
+// FILE: converter.js
+// Main Conversion Engine
+// ============================================================
+
+class TirhutaConverter {
+  constructor() {
+    this.parser = new OrthographicSyllableParser();
+    this.renderer = new TirhutaRenderer();
+    this.rules = RULES;
+  }
+
+  // ============================================================
+  // Convert Devanagari to Tirhuta
+  // ============================================================
+
+  convert(text) {
+    if (!text) return '';
+
+    // Step 1: Parse into syllables
+    const clusters = this.parser.parse(text);
+
+    // Step 2: Apply rules
+    const processed = this.applyRules(clusters);
+
+    // Step 3: Render to Tirhuta
+    return this.renderer.render(processed);
+  }
+
+  // ============================================================
+  // Apply rules to clusters
+  // ============================================================
+
+  applyRules(clusters) {
+    const result = [];
+    
+    for (let i = 0; i < clusters.length; i++) {
+      const cluster = clusters[i];
+      const context = {
+        isWordStart: i === 0 || this.isWordBoundary(clusters[i - 1]),
+      };
+
+      // Apply Ya rule
+      let processed = this.rules.yaRule.apply(cluster, context);
+      
+      // Apply Nukta rule
+      processed = this.rules.nuktaRule.apply(processed);
+      
+      result.push(processed);
+    }
+
+    return result;
+  }
+
+  // ============================================================
+  // Helper: Check word boundary
+  // ============================================================
+
+  isWordBoundary(cluster) {
+    if (!cluster) return true;
+    const text = cluster.original || cluster.base || '';
+    return /[\s.,;:!?।॥()\[\]{}"'\u200B]/.test(text);
+  }
+}
+
+// ============================================================
+// FILE: widget.js
+// Widget Integration
 // ============================================================
 
 (function() {
   'use strict';
 
-  // ============================================================
-  // CONFIG
-  // ============================================================
-
-  const CONFIG = {
+  const CONFIG = Object.freeze({
     fontCDN: [
       'https://script-converter.pages.dev/fonts/Mithilauni.ttf',
       'https://raw.githubusercontent.com/Roshanchoudhary/script-converter/main/fonts/Mithilauni.ttf'
@@ -19,501 +485,16 @@
     creditLink: 'https://lipi.maithili.org.in/',
     fontFamily: "'Mithilauni','Noto Sans Tirhuta',serif",
     storageKey: 'tirhuta-mode'
-  };
+  });
 
   // ============================================================
-  // COMPLETE UNICODE MAP - ALL DEVANAGARI (0900-097F)
+  // Initialize converter
   // ============================================================
 
-  const D2T = {
-    // ============================================================
-    // 0900-0904: Signs & Misc
-    // ============================================================
-    'ऀ': '𑒿',   // Candrabindu (same as ँ)
-    'ँ': '𑒿',
-    'ं': '𑓀',
-    'ः': '𑓁',
-    'ऄ': '𑒁',   // अ
-
-    // ============================================================
-    // 0905-0914: Vowels (Independent)
-    // ============================================================
-    'अ': '𑒁', 'आ': '𑒂', 'इ': '𑒃', 'ई': '𑒄',
-    'उ': '𑒅', 'ऊ': '𑒆', 'ऋ': '𑒇', 'ॠ': '𑒈',
-    'ऌ': '𑒉', 'ॡ': '𑒊', 'ऍ': '𑒺', 'ऎ': '𑒾',
-    'ए': '𑒋', 'ऐ': '𑒌', 'ऑ': '𑒽', 'ऒ': '𑒻',
-    'ओ': '𑒍', 'औ': '𑒎',
-
-    // ============================================================
-    // 0915-0939: Consonants
-    // ============================================================
-    'क': '𑒏', 'ख': '𑒐', 'ग': '𑒑', 'घ': '𑒒', 'ङ': '𑒓',
-    'च': '𑒔', 'छ': '𑒕', 'ज': '𑒖', 'झ': '𑒗', 'ञ': '𑒘',
-    'ट': '𑒙', 'ठ': '𑒚', 'ड': '𑒛', 'ढ': '𑒜', 'ण': '𑒝',
-    'त': '𑒞', 'थ': '𑒟', 'द': '𑒠', 'ध': '𑒡', 'न': '𑒢',
-    'ऩ': '𑒢', // न + ़
-    'प': '𑒣', 'फ': '𑒤', 'ब': '𑒥', 'भ': '𑒦', 'म': '𑒧',
-    'य': '𑒨', 'र': '𑒩', 'ऱ': '𑒩', 'ल': '𑒪',
-    'ळ': '𑒪', 'ऴ': '𑒪', 'व': '𑒫',
-    'श': '𑒬', 'ष': '𑒭', 'स': '𑒮', 'ह': '𑒯',
-
-    // ============================================================
-    // 093A-093D: Misc Signs
-    // ============================================================
-    'ऺ': '', 'ऻ': '', '़': '𑓃',
-    'ऽ': '𑓄',
-
-    // ============================================================
-    // 093E-094C: Matras (Vowel Signs)
-    // ============================================================
-    'ा': '𑒰', 'ि': '𑒱', 'ी': '𑒲',
-    'ु': '𑒳', 'ू': '𑒴', 'ृ': '𑒵',
-    'ॄ': '𑒶', 'ॅ': '𑒺', 'ॆ': '𑒾',
-    'े': '𑒹', 'ै': '𑒻', 'ॉ': '𑒽',
-    'ॊ': '𑒼', 'ो': '𑒼', 'ौ': '𑒾',
-
-    // ============================================================
-    // 094D-094F: Virama & Others
-    // ============================================================
-    '्': '𑓂',   // Virama (Halant)
-    'ॎ': '',
-    'ॏ': '',
-
-    // ============================================================
-    // 0950: Om
-    // ============================================================
-    'ॐ': '𑓇',
-
-    // ============================================================
-    // 0951-0957: Vedic Accents
-    // ============================================================
-    '॑': '', '॒': '', '॓': '', '॔': '',
-    'ॕ': '', 'ॖ': '', 'ॗ': '',
-
-    // ============================================================
-    // 0958-095F: Nukta Letters
-    // ============================================================
-    'क़': '𑒏𑓃', 'ख़': '𑒐𑓃', 'ग़': '𑒑𑓃',
-    'ज़': '𑒖𑓃', 'ड़': '𑒛𑓃', 'ढ़': '𑒜𑓃',
-    'फ़': '𑒤𑓃', 'य़': '𑒨𑓃',
-
-    // ============================================================
-    // 0960-0963: Vowel Signs (Vedic)
-    // ============================================================
-    'ॠ': '𑒈', 'ॡ': '𑒊',
-    'ॢ': '', 'ॣ': '',
-
-    // ============================================================
-    // 0964-0965: Punctuation
-    // ============================================================
-    '।': '𑓆', '॥': '𑓆𑓆',
-
-    // ============================================================
-    // 0966-096F: Numbers
-    // ============================================================
-    '०': '𑓐', '१': '𑓑', '२': '𑓒', '३': '𑓓', '४': '𑓔',
-    '५': '𑓕', '६': '𑓖', '७': '𑓗', '८': '𑓘', '९': '𑓙',
-
-    // ============================================================
-    // 0970-097F: Vedic & Other
-    // ============================================================
-    '॰': '𑓆',   // Sign
-    'ॱ': '',      // High spacing dot
-    'ॲ': '𑒁𑓃', // अ + ़
-    'ॳ': '𑒁',   // अ
-    'ॴ': '𑒁𑓃', // अ + ़
-    'ॵ': '𑒅',   // उ
-    'ॶ': '𑒅𑓃', // उ + ़
-    'ॷ': '𑒅𑓃', // उ + ़
-    'ॸ': '',      // ऑ
-    'ॹ': '𑒖𑓃', // ज़
-    'ॺ': '',      // ऺ
-    'ॻ': '𑒑',   // ग
-    'ॼ': '𑒖',   // ज
-    'ॽ': '𑒁𑓃', // अ + ़
-    'ॾ': '𑒛',   // ड
-    'ॿ': '𑒥',   // ब
-  };
+  const converter = new TirhutaConverter();
 
   // ============================================================
-  // NUKTA + MATRA COMBINATIONS (Dynamic)
-  // ============================================================
-
-  // Generate Nukta + Matra combinations dynamically
-  function generateNuktaMatraCombinations() {
-    const nuktaLetters = ['ड़', 'ढ़', 'क़', 'ख़', 'ग़', 'ज़', 'फ़'];
-    const matras = ['ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ'];
-    const combinations = {};
-
-    // Base nukta letters
-    nuktaLetters.forEach(letter => {
-      combinations[letter] = D2T[letter] || '';
-    });
-
-    // Nukta + Matra combinations
-    nuktaLetters.forEach(letter => {
-      matras.forEach(matra => {
-        const key = letter + matra;
-        const tirhutaBase = D2T[letter] || '';
-        const tirhutaMatra = D2T[matra] || '';
-        combinations[key] = tirhutaBase + tirhutaMatra;
-      });
-    });
-
-    return combinations;
-  }
-
-  // Merge Nukta + Matra combinations
-  Object.assign(D2T, generateNuktaMatraCombinations());
-
-  // ============================================================
-  // ROMAN → DEVANAGARI NUMBERS
-  // ============================================================
-
-  const ROMAN_TO_DEV = {
-    '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
-    '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
-  };
-
-  // ============================================================
-  // CONSONANTS & MATRAS SET
-  // ============================================================
-
-  const CONSONANTS = new Set([
-    'क', 'ख', 'ग', 'घ', 'ङ',
-    'च', 'छ', 'ज', 'झ', 'ञ',
-    'ट', 'ठ', 'ड', 'ढ', 'ण',
-    'त', 'थ', 'द', 'ध', 'न',
-    'प', 'फ', 'ब', 'भ', 'म',
-    'य', 'र', 'ल', 'व',
-    'श', 'ष', 'स', 'ह'
-  ]);
-
-  const MATRAS = new Set([
-    'ा', 'ि', 'ी', 'ु', 'ू',
-    'ृ', 'ॄ', 'े', 'ै', 'ो', 'ौ', 'ं', 'ः', 'ँ'
-  ]);
-
-  // ============================================================
-  // HALF-YA CONJUNCTS LIST
-  // ============================================================
-
-  const HALF_YA_CONJUNCTS = new Set([
-    'म्य', 'न्य', 'व्य', 'क्य', 'ग्य', 'द्य', 'त्य',
-    'स्य', 'ह्य', 'र्य', 'ल्य', 'श्य', 'ज्य', 'च्य',
-    'प्र्य', 'ब्र्य', 'द्द्य', 'त्त्य'
-  ]);
-
-  function hasHalfYaConjunct(word) {
-    for (const conj of HALF_YA_CONJUNCTS) {
-      if (word.includes(conj)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // ============================================================
-  // Y → Y़ RULE
-  // ============================================================
-
-  function applyYaRule(text) {
-    if (!text) return '';
-
-    let result = '';
-    const words = text.split(/(\s+)/);
-
-    for (const word of words) {
-      if (!word.trim() || /^[\s\d]+$/.test(word)) {
-        result += word;
-        continue;
-      }
-
-      const hasHalfYa = hasHalfYaConjunct(word);
-
-      let converted = '';
-      const chars = word.split('');
-      const len = chars.length;
-
-      for (let i = 0; i < len; i++) {
-        const char = chars[i];
-        const nextChar = chars[i + 1] || '';
-        const prevChar = chars[i - 1] || '';
-
-        if (char === 'य') {
-          // RULE 1: शब्द का पहला अक्षर → ❌ नुक्ता नहीं
-          if (i === 0) {
-            converted += 'य';
-          }
-          // RULE 2: आधा य (्य) → ❌ नुक्ता नहीं
-          else if (prevChar === '्' ||
-                   (i > 1 && chars[i-2] === '्') ||
-                   hasHalfYa) {
-            converted += 'य';
-          }
-          // RULE 3: पूरा य → ✅ नुक्ता लगेगा
-          else {
-            converted += 'य़';
-          }
-        } else {
-          converted += char;
-        }
-      }
-
-      result += converted;
-    }
-
-    return result;
-  }
-
-  // ============================================================
-  // TOKENIZER
-  // ============================================================
-
-  function tokenizeDevanagari(text) {
-    const tokens = [];
-    let i = 0;
-    const len = text.length;
-
-    while (i < len) {
-      const char = text[i];
-      const nextChar = text[i + 1] || '';
-
-      // Check for Nukta
-      if (char === '़' && i > 0) {
-        tokens[tokens.length - 1] += '़';
-        i++;
-        continue;
-      }
-
-      // Check for Virama
-      if (char === '्') {
-        tokens.push('्');
-        i++;
-        continue;
-      }
-
-      // Check for Matras
-      if (['ा','ि','ी','ु','ू','ृ','ॄ','ॅ','े','ै','ॉ','ो','ौ'].includes(char)) {
-        tokens.push(char);
-        i++;
-        continue;
-      }
-
-      // Check for Signs
-      if (['ँ','ं','ः'].includes(char)) {
-        tokens.push(char);
-        i++;
-        continue;
-      }
-
-      // Regular character
-      tokens.push(char);
-      i++;
-    }
-
-    return tokens;
-  }
-
-  // ============================================================
-  // CONVERSION ENGINE
-  // ============================================================
-
-  function convertToTirhuta(text) {
-    if (!text) return '';
-
-    // Step 1: Roman numbers → Devanagari
-    let devanagari = '';
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      if (char >= '0' && char <= '9') {
-        devanagari += ROMAN_TO_DEV[char] || char;
-      } else {
-        devanagari += char;
-      }
-    }
-
-    // Step 2: Apply य → य़ rule
-    const yaApplied = applyYaRule(devanagari);
-
-    // Step 3: Tokenize
-    const tokens = tokenizeDevanagari(yaApplied);
-
-    // Step 4: Convert each token
-    let result = '';
-    let i = 0;
-    while (i < tokens.length) {
-      const token = tokens[i];
-      const nextToken = tokens[i + 1] || '';
-      const nextNextToken = tokens[i + 2] || '';
-
-      // Handle 3-token: consonant + nukta + matra
-      if (i + 2 < tokens.length &&
-          D2T[tokens[i]] &&
-          tokens[i+1] === '़' &&
-          D2T[tokens[i+2]]) {
-        const combined = tokens[i] + tokens[i+1] + tokens[i+2];
-        result += D2T[combined] || (D2T[tokens[i]] + '𑓃' + D2T[tokens[i+2]]);
-        i += 3;
-        continue;
-      }
-
-      // Handle 2-token: consonant + nukta
-      if (i + 1 < tokens.length &&
-          D2T[tokens[i]] &&
-          tokens[i+1] === '़') {
-        const combined = tokens[i] + tokens[i+1];
-        result += D2T[combined] || (D2T[tokens[i]] + '𑓃');
-        i += 2;
-        continue;
-      }
-
-      // Handle य़ + Matra
-      if (token === 'य़' && D2T[nextToken]) {
-        result += '𑒨𑓃' + D2T[nextToken];
-        i += 2;
-        continue;
-      }
-
-      // Handle Virama
-      if (token === '्' && i > 0) {
-        // Halant goes with previous consonant - already handled in base mapping
-        const prevResult = result[result.length - 1] || '';
-        i++;
-        continue;
-      }
-
-      // Handle Matras
-      if (D2T[token] && ['ा','ि','ी','ु','ू','ृ','ॄ','ॅ','े','ै','ॉ','ो','ौ'].includes(token)) {
-        result += D2T[token];
-        i++;
-        continue;
-      }
-
-      // Handle Signs
-      if (D2T[token] && ['ँ','ं','ः'].includes(token)) {
-        result += D2T[token];
-        i++;
-        continue;
-      }
-
-      // Handle Regular Characters
-      if (D2T[token]) {
-        if (token === 'य़') {
-          result += '𑒨𑓃';
-        } else {
-          result += D2T[token];
-        }
-        i++;
-        continue;
-      }
-
-      // Handle Unknown
-      result += token;
-      i++;
-    }
-
-    return result;
-  }
-
-  // ============================================================
-  // TEST SUITE
-  // ============================================================
-
-  function runTests() {
-    const tests = [
-      // Vowels
-      ['अ', '𑒁'], ['आ', '𑒂'], ['इ', '𑒃'], ['ई', '𑒄'],
-      ['उ', '𑒅'], ['ऊ', '𑒆'], ['ऋ', '𑒇'], ['ॠ', '𑒈'],
-      ['ऌ', '𑒉'], ['ॡ', '𑒊'], ['ए', '𑒋'], ['ऐ', '𑒌'],
-      ['ओ', '𑒍'], ['औ', '𑒎'],
-
-      // Consonants
-      ['क', '𑒏'], ['ख', '𑒐'], ['ग', '𑒑'], ['घ', '𑒒'], ['ङ', '𑒓'],
-      ['च', '𑒔'], ['छ', '𑒕'], ['ज', '𑒖'], ['झ', '𑒗'], ['ञ', '𑒘'],
-      ['ट', '𑒙'], ['ठ', '𑒚'], ['ड', '𑒛'], ['ढ', '𑒜'], ['ण', '𑒝'],
-      ['त', '𑒞'], ['थ', '𑒟'], ['द', '𑒠'], ['ध', '𑒡'], ['न', '𑒢'],
-      ['प', '𑒣'], ['फ', '𑒤'], ['ब', '𑒥'], ['भ', '𑒦'], ['म', '𑒧'],
-      ['य', '𑒨'], ['र', '𑒩'], ['ल', '𑒪'], ['व', '𑒫'],
-      ['श', '𑒬'], ['ष', '𑒭'], ['स', '𑒮'], ['ह', '𑒯'],
-
-      // Matras
-      ['का', '𑒏𑒰'], ['कि', '𑒏𑒱'], ['की', '𑒏𑒲'],
-      ['कु', '𑒏𑒳'], ['कू', '𑒏𑒴'], ['के', '𑒏𑒹'],
-      ['कै', '𑒏𑒻'], ['को', '𑒏𑒼'], ['कौ', '𑒏𑒾'],
-
-      // Nukta Letters
-      ['क़', '𑒏𑓃'], ['ख़', '𑒐𑓃'], ['ग़', '𑒑𑓃'],
-      ['ज़', '𑒖𑓃'], ['ड़', '𑒛𑓃'], ['ढ़', '𑒜𑓃'],
-      ['फ़', '𑒤𑓃'],
-
-      // Nukta + Matras
-      ['ड़ा', '𑒛𑓃𑒰'], ['ड़ि', '𑒛𑓃𑒱'],
-      ['ड़ी', '𑒛𑓃𑒲'], ['ड़ु', '𑒛𑓃𑒳'],
-      ['ड़ू', '𑒛𑓃𑒴'], ['ड़े', '𑒛𑓃𑒹'],
-      ['ड़ै', '𑒛𑓃𑒻'], ['ड़ो', '𑒛𑓃𑒼'],
-      ['ड़ौ', '𑒛𑓃𑒾'],
-
-      ['क़ा', '𑒏𑓃𑒰'], ['क़े', '𑒏𑓃𑒹'],
-      ['फ़ा', '𑒤𑓃𑒰'], ['फ़े', '𑒤𑓃𑒹'],
-
-      // Half Ya - No Nukta
-      ['म्य', '𑒧𑓂𑒨'], ['न्य', '𑒢𑓂𑒨'],
-      ['व्य', '𑒫𑓂𑒨'], ['क्य', '𑒏𑓂𑒨'],
-      ['ग्य', '𑒑𑓂𑒨'], ['द्य', '𑒠𑓂𑒨'],
-      ['त्य', '𑒞𑓂𑒨'], ['स्य', '𑒮𑓂𑒨'],
-      ['ह्य', '𑒯𑓂𑒨'], ['र्य', '𑒩𑓂𑒨'],
-      ['ल्य', '𑒪𑓂𑒨'], ['श्य', '𑒬𑓂𑒨'],
-
-      // Full Ya - Nukta Applied
-      ['राजय', '𑒩𑒰𑒖𑒨𑓃'],
-      ['सोय', '𑒮𑒼𑒨𑓃'],
-      ['भय', '𑒦𑒨𑓃'],
-      ['प्रयोग', '𑒣𑓂𑒩𑒨𑓃𑒼𑒑'],
-      ['जायत', '𑒖𑒰𑒨𑓃𑒞'],
-
-      // Complex Words
-      ['व्यवसाय', '𑒫𑓂𑒨𑒫𑒮𑒰𑒨'],
-      ['तपस्या', '𑒞𑒣𑒮𑓂𑒨𑒰'],
-      ['अवश्य', '𑒁𑒫𑒬𑓂𑒨'],
-      ['कार्य', '𑒏𑒰𑒩𑓂𑒨'],
-      ['राज्य', '𑒩𑒰𑒖𑓂𑒨'],
-
-      // Numbers
-      ['0', '𑓐'], ['1', '𑓑'], ['2', '𑓒'],
-      ['3', '𑓓'], ['4', '𑓔'], ['5', '𑓕'],
-      ['6', '𑓖'], ['7', '𑓗'], ['8', '𑓘'],
-      ['9', '𑓙'], ['2024', '𑓒𑓐𑓒𑓔'],
-
-      // Punctuation
-      ['।', '𑓆'], ['॥', '𑓆𑓆'],
-    ];
-
-    console.log('🧪 Running Complete Test Suite...\n');
-    let passed = 0;
-    let failed = 0;
-
-    tests.forEach(([input, expected]) => {
-      const result = convertToTirhuta(input);
-      const status = result === expected ? '✅' : '❌';
-      if (result === expected) {
-        passed++;
-      } else {
-        failed++;
-        console.log(`❌ "${input}" → "${result}"`);
-        console.log(`   Expected: "${expected}"`);
-      }
-    });
-
-    console.log(`\n📊 Results: ${passed} passed, ${failed} failed out of ${tests.length}`);
-    if (failed === 0) {
-      console.log('🎉 All tests passed!');
-    }
-    return { passed, failed, total: tests.length };
-  }
-
-  // ============================================================
-  // PAGE CONVERTER
+  // Page Converter
   // ============================================================
 
   let pageConverted = false;
@@ -552,7 +533,7 @@
       while ((node = walker.nextNode())) {
         originals.push({ node: node, orig: node.textContent });
         const devText = node.textContent;
-        const tirText = convertToTirhuta(devText);
+        const tirText = converter.convert(devText);
         node.textContent = tirText;
         if (node.parentElement) {
           node.parentElement.style.fontFamily = CONFIG.fontFamily;
@@ -599,7 +580,7 @@
   }
 
   // ============================================================
-  // OBSERVER
+  // Observer
   // ============================================================
 
   function startObserver() {
@@ -613,7 +594,7 @@
           mutation.addedNodes.forEach(function(node) {
             if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
               const original = node.textContent;
-              const converted = convertToTirhuta(original);
+              const converted = converter.convert(original);
               if (original !== converted) {
                 originals.push({ node, orig: original });
                 node.textContent = converted;
@@ -646,7 +627,7 @@
               let textNode;
               while ((textNode = walker.nextNode())) {
                 const original = textNode.textContent;
-                const converted = convertToTirhuta(original);
+                const converted = converter.convert(original);
                 if (original !== converted) {
                   originals.push({ node: textNode, orig: original });
                   textNode.textContent = converted;
@@ -668,7 +649,21 @@
   }
 
   // ============================================================
-  // CHECK SAVED PREFERENCE
+  // Toast
+  // ============================================================
+
+  function mwToast(msg, type = '') {
+    const toast = document.getElementById('mw-toast');
+    toast.textContent = msg;
+    toast.className = 'show ' + type;
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // ============================================================
+  // Check Saved Preference
   // ============================================================
 
   function checkSavedPreference() {
@@ -682,7 +677,7 @@
   }
 
   // ============================================================
-  // FONT LOADER
+  // Font Loader
   // ============================================================
 
   function loadFonts() {
@@ -719,7 +714,7 @@
   }
 
   // ============================================================
-  // WIDGET CSS
+  // Widget CSS
   // ============================================================
 
   function injectCSS() {
@@ -731,13 +726,13 @@
         position: fixed;
         bottom: 24px;
         right: 24px;
-        width: 60px;
-        height: 60px;
+        width: 56px;
+        height: 56px;
         background: linear-gradient(135deg, #8B1A1A, #D4A017);
         border-radius: 50%;
         border: none;
         color: white;
-        font-size: 2.2rem;
+        font-size: 1.8rem;
         cursor: pointer;
         box-shadow: 0 4px 20px rgba(139,26,26,0.4);
         z-index: 99998;
@@ -758,13 +753,13 @@
 
       #mw-credit {
         position: fixed;
-        bottom: 92px;
+        bottom: 88px;
         right: 24px;
         background: rgba(255,255,255,0.92);
         backdrop-filter: blur(8px);
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 14px;
+        padding: 5px 14px;
+        border-radius: 18px;
+        font-size: 13px;
         font-weight: 600;
         font-family: 'Noto Sans Devanagari', Arial, sans-serif;
         color: #8B1A1A;
@@ -797,13 +792,13 @@
 
       #mw-toast {
         position: fixed;
-        bottom: 90px;
+        bottom: 88px;
         right: 24px;
         background: #2C1810;
         color: white;
         padding: 10px 18px;
         border-radius: 10px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         z-index: 100000;
         opacity: 0;
         transform: translateY(10px);
@@ -826,22 +821,22 @@
 
       @media (max-width: 600px) {
         #mw-fab {
-          width: 50px;
-          height: 50px;
-          font-size: 1.8rem;
+          width: 48px;
+          height: 48px;
+          font-size: 1.4rem;
           bottom: 16px;
           right: 16px;
         }
         #mw-credit {
           bottom: 76px;
           right: 16px;
-          font-size: 12px;
+          font-size: 11px;
           padding: 4px 12px;
         }
         #mw-toast {
           bottom: 76px;
           right: 16px;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           padding: 8px 14px;
         }
       }
@@ -850,7 +845,7 @@
   }
 
   // ============================================================
-  // BUILD WIDGET
+  // Build Widget
   // ============================================================
 
   function buildWidget() {
@@ -874,40 +869,13 @@
   }
 
   // ============================================================
-  // TOAST
-  // ============================================================
-
-  function mwToast(msg, type = '') {
-    const toast = document.getElementById('mw-toast');
-    toast.textContent = msg;
-    toast.className = 'show ' + type;
-    clearTimeout(toast._timeout);
-    toast._timeout = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3000);
-  }
-
-  // ============================================================
-  // KEYBOARD SHORTCUT
-  // ============================================================
-
-  document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.shiftKey && (e.key === 't' || e.key === 'T')) {
-      e.preventDefault();
-      convertPage();
-    }
-  });
-
-  // ============================================================
-  // INIT
+  // Init
   // ============================================================
 
   function init() {
     loadFonts();
     injectCSS();
     buildWidget();
-
-    runTests();
 
     const saved = checkSavedPreference();
     if (saved) {
@@ -917,9 +885,13 @@
       }, 500);
     }
 
-    console.log('𑒧 Mithila Script Converter loaded!');
-    console.log('📝 Complete Devanagari Unicode (0900-097F)');
-    console.log('📝 All rules applied correctly');
+    console.log('𑒧 Mithila Script Converter v5.0 loaded!');
+    console.log('📝 Architecture:');
+    console.log('   ✅ Complete Unicode Categories (Set-based)');
+    console.log('   ✅ Parser → Structure Only (No rules)');
+    console.log('   ✅ Rule Engine → Separate');
+    console.log('   ✅ Renderer → Separate');
+    console.log('   ✅ All mappings Frozen');
     console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
     console.log('🔗 ' + CONFIG.creditLink);
   }
