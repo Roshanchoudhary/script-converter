@@ -547,9 +547,9 @@ class TirhutaConverter {
       } catch(e) {}
 
       btn.innerHTML = '↩️';
-      btn.title = 'मूल पाठ वापस लाएं';
+      btn.title = 'देवनागरी लिपि';
       btn.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4D3E)';
-      mwToast('✅ पेज मिथिलाक्षर में बदल गेल!', 'success');
+      mwToast('✅ वेबसाइट मिथिलाक्षरमे बदलि गेल!', 'success');
 
       startObserver();
 
@@ -573,9 +573,9 @@ class TirhutaConverter {
       } catch(e) {}
 
       btn.innerHTML = '𑒧';
-      btn.title = 'पेज को मिथिलाक्षर में बदलें';
+      btn.title = 'वेबसाइटकेँ मिथिलाक्षरमे बदलू';
       btn.style.background = 'linear-gradient(135deg, #8B1A1A, #D4A017)';
-      mwToast('↩️ मूल पाठ वापस आ गेल!', 'success');
+      mwToast('↩️ देवनागरी लिपिमे बदलिगेल!', 'success');
     }
   }
 
