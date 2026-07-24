@@ -1,5 +1,6 @@
 // ============================================================
 // MITHILA SCRIPT CONVERTER - COMPLETE FINAL
+// सभी नियम: य, नुक्ता, मात्रा, आधा अक्षर
 // ============================================================
 
 (function() {
@@ -21,7 +22,7 @@
   };
 
   // ============================================================
-  // COMPLETE UNICODE MAP - ALL DEVANAGARI CHARACTERS
+  // COMPLETE UNICODE MAP - DEVANAGARI → TIRHUTA
   // ============================================================
 
   const D2T = {
@@ -55,9 +56,10 @@
     'ो': '𑒼', 'ौ': '𑒾',
 
     // ============================================================
-    // NUKTA LETTERS WITH ALL MATRAS - FIXED ✅
+    // NUKTA LETTERS - WITH ALL MATRAS (0958-095F)
     // ============================================================
-    // ड़
+    
+    // ड़ (ड़)
     'ड़': '𑒛𑓃',
     'ड़ा': '𑒛𑓃𑒰',
     'ड़ि': '𑒛𑓃𑒱',
@@ -68,8 +70,8 @@
     'ड़ै': '𑒛𑓃𑒻',
     'ड़ो': '𑒛𑓃𑒼',
     'ड़ौ': '𑒛𑓃𑒾',
-    
-    // ढ़
+
+    // ढ़ (ढ़)
     'ढ़': '𑒜𑓃',
     'ढ़ा': '𑒜𑓃𑒰',
     'ढ़ि': '𑒜𑓃𑒱',
@@ -81,7 +83,7 @@
     'ढ़ो': '𑒜𑓃𑒼',
     'ढ़ौ': '𑒜𑓃𑒾',
 
-    // क़
+    // क़ (क़)
     'क़': '𑒏𑓃',
     'क़ा': '𑒏𑓃𑒰',
     'क़ि': '𑒏𑓃𑒱',
@@ -93,7 +95,7 @@
     'क़ो': '𑒏𑓃𑒼',
     'क़ौ': '𑒏𑓃𑒾',
 
-    // ख़
+    // ख़ (ख़)
     'ख़': '𑒐𑓃',
     'ख़ा': '𑒐𑓃𑒰',
     'ख़ि': '𑒐𑓃𑒱',
@@ -105,7 +107,7 @@
     'ख़ो': '𑒐𑓃𑒼',
     'ख़ौ': '𑒐𑓃𑒾',
 
-    // ग़
+    // ग़ (ग़)
     'ग़': '𑒑𑓃',
     'ग़ा': '𑒑𑓃𑒰',
     'ग़ि': '𑒑𑓃𑒱',
@@ -117,7 +119,7 @@
     'ग़ो': '𑒑𑓃𑒼',
     'ग़ौ': '𑒑𑓃𑒾',
 
-    // ज़
+    // ज़ (ज़)
     'ज़': '𑒖𑓃',
     'ज़ा': '𑒖𑓃𑒰',
     'ज़ि': '𑒖𑓃𑒱',
@@ -129,7 +131,7 @@
     'ज़ो': '𑒖𑓃𑒼',
     'ज़ौ': '𑒖𑓃𑒾',
 
-    // फ़
+    // फ़ (फ़)
     'फ़': '𑒤𑓃',
     'फ़ा': '𑒤𑓃𑒰',
     'फ़ि': '𑒤𑓃𑒱',
@@ -141,23 +143,39 @@
     'फ़ो': '𑒤𑓃𑒼',
     'फ़ौ': '𑒤𑓃𑒾',
 
+    // य़ (य़)
+    'य़': '𑒨𑓃',
+
     // ============================================================
     // SIGNS & MARKS
     // ============================================================
-    'ँ': '𑒿', 'ं': '𑓀', 'ः': '𑓁',
-    '्': '𑓂', '़': '𑓃', 'ऽ': '𑓄',
+    'ँ': '𑒿',
+    'ं': '𑓀',
+    'ः': '𑓁',
+    '्': '𑓂',
+    '़': '𑓃',
+    'ऽ': '𑓄',
     'ॐ': '𑓇',
 
     // ============================================================
     // PUNCTUATION (0964-0965)
     // ============================================================
-    '।': '𑓆', '॥': '𑓆𑓆',
+    '।': '𑓆',
+    '॥': '𑓆𑓆',
 
     // ============================================================
     // NUMBERS (0966-096F)
     // ============================================================
-    '०': '𑓐', '१': '𑓑', '२': '𑓒', '३': '𑓓', '४': '𑓔',
-    '५': '𑓕', '६': '𑓖', '७': '𑓗', '८': '𑓘', '९': '𑓙',
+    '०': '𑓐',
+    '१': '𑓑',
+    '२': '𑓒',
+    '३': '𑓓',
+    '४': '𑓔',
+    '५': '𑓕',
+    '६': '𑓖',
+    '७': '𑓗',
+    '८': '𑓘',
+    '९': '𑓙',
 
     // ============================================================
     // VEDIC & OTHER (0970-097F)
@@ -194,7 +212,7 @@
   ]);
 
   // ============================================================
-  // PERFECT य → य़ RULE - FINAL CORRECTED
+  // PERFECT य → य़ RULE - FINAL
   // ============================================================
 
   function applyYaRule(text) {
@@ -259,12 +277,12 @@
   }
 
   // ============================================================
-  // CONVERSION ENGINE
+  // CONVERSION ENGINE - WITH NUKTA SUPPORT
   // ============================================================
 
   function convertToTirhuta(text) {
     if (!text) return '';
-    
+
     // Step 1: Roman numbers → Devanagari
     let processed = '';
     for (let i = 0; i < text.length; i++) {
@@ -275,10 +293,10 @@
         processed += char;
       }
     }
-    
+
     // Step 2: Apply य → य़ rule
     const yaApplied = applyYaRule(processed);
-    
+
     // Step 3: Devanagari → Tirhuta
     let result = '';
     let i = 0;
@@ -288,11 +306,11 @@
       const nextNextChar = yaApplied[i + 2] || '';
 
       // ============================================================
-      // HANDLE NUKTA + MATRA COMBINATIONS (ड़े, ड़ो, etc.)
+      // HANDLE NUKTA + MATRA COMBINATIONS
       // ============================================================
-      
+
       // Check for 3-char combinations (ड़े = ड + ् + े)
-      if (i + 2 < yaApplied.length && char === 'ड़') {
+      if (i + 2 < yaApplied.length) {
         const combined = char + nextChar + nextNextChar;
         if (D2T[combined]) {
           result += D2T[combined];
@@ -301,8 +319,8 @@
         }
       }
 
-      // Check for 2-char combinations (ड़ = ड + ्)
-      if (i + 1 < yaApplied.length && char === 'ड़') {
+      // Check for 2-char combinations
+      if (i + 1 < yaApplied.length) {
         const combined = char + nextChar;
         if (D2T[combined]) {
           result += D2T[combined];
@@ -311,21 +329,18 @@
         }
       }
 
-      // Check for other Nukta + Matra combinations
-      if (i + 1 < yaApplied.length && D2T[char + nextChar]) {
-        result += D2T[char + nextChar];
-        i += 2;
-        continue;
-      }
-
-      // Handle य़ (य + ़)
+      // ============================================================
+      // HANDLE य़ (य + ़)
+      // ============================================================
       if (char === 'य' && nextChar === '़') {
         result += '𑒨𑓃';
         i += 2;
         continue;
       }
 
-      // Handle single Nukta letters
+      // ============================================================
+      // HANDLE SINGLE CHARACTERS
+      // ============================================================
       if (D2T[char]) {
         result += D2T[char];
       } else {
@@ -333,6 +348,7 @@
       }
       i++;
     }
+
     return result;
   }
 
@@ -355,11 +371,22 @@
       ['ड़ै', '𑒛𑓃𑒻'],
       ['ड़ो', '𑒛𑓃𑒼'],
       ['ड़ौ', '𑒛𑓃𑒾'],
-      
-      // ढ़
+
       ['ढ़', '𑒜𑓃'],
       ['ढ़े', '𑒜𑓃𑒹'],
-      
+
+      ['क़', '𑒏𑓃'],
+      ['क़ा', '𑒏𑓃𑒰'],
+
+      ['ग़', '𑒑𑓃'],
+      ['ग़े', '𑒑𑓃𑒹'],
+
+      ['ज़', '𑒖𑓃'],
+      ['ज़ा', '𑒖𑓃𑒰'],
+
+      ['फ़', '𑒤𑓃'],
+      ['फ़े', '𑒤𑓃𑒹'],
+
       // ============================================================
       // आधा य (्य) - नुक्ता नहीं
       // ============================================================
@@ -375,7 +402,7 @@
       ['र्य', '𑒩𑓂𑒨'],
       ['ल्य', '𑒪𑓂𑒨'],
       ['श्य', '𑒬𑓂𑒨'],
-      
+
       // ============================================================
       // पूरा य (बीच/अंत) - नुक्ता लगेगा
       // ============================================================
@@ -386,19 +413,29 @@
       ['वयस', '𑒫𑒨𑓃𑒮'],
       ['अयन', '𑒁𑒨𑓃𑒢'],
       ['भय', '𑒦𑒨𑓃'],
-      
+
       // ============================================================
       // शुरू में य - नुक्ता नहीं
       // ============================================================
       ['योग', '𑒨𑒼𑒑'],
       ['यम', '𑒨𑒧'],
+
+      // ============================================================
+      // COMPLEX WORDS
+      // ============================================================
+      ['व्यवसाय', '𑒫𑓂𑒨𑒫𑒮𑒰𑒨'],
+      ['तपस्या', '𑒞𑒣𑒮𑓂𑒨𑒰'],
+      ['अवश्य', '𑒁𑒫𑒬𑓂𑒨'],
+      ['कार्य', '𑒏𑒰𑒩𑓂𑒨'],
+      ['राज्य', '𑒩𑒰𑒖𑓂𑒨'],
+      ['प्रत्यय', '𑒣𑓂𑒩𑒞𑓂𑒨𑒨'],
     ];
-    
+
     console.log('🧪 Testing All Rules:');
     console.log('📝 Nukta + Matra → ✅');
     console.log('📝 आधा य (्य) → नुक्ता नहीं ❌');
     console.log('📝 पूरा य (बीच/अंत) → नुक्ता लगेगा ✅\n');
-    
+
     let passed = 0;
     tests.forEach(([input, expected]) => {
       const result = convertToTirhuta(input);
@@ -422,7 +459,7 @@
 
   function convertPage() {
     const btn = document.getElementById('mw-fab');
-    
+
     if (!pageConverted) {
       originals = [];
       const walker = document.createTreeWalker(
@@ -460,24 +497,24 @@
       }
 
       pageConverted = true;
-      
+
       try {
         localStorage.setItem(CONFIG.storageKey, 'tirhuta');
       } catch(e) {}
-      
+
       btn.innerHTML = '↩️';
       btn.title = 'मूल पाठ वापस लाएं';
       btn.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4D3E)';
       mwToast('✅ पेज मिथिलाक्षर में बदल गेल!', 'success');
-      
+
       startObserver();
-      
+
     } else {
       if (observer) {
         observer.disconnect();
         observer = null;
       }
-      
+
       originals.forEach(({ node, orig }) => {
         node.textContent = orig;
         if (node.parentElement) {
@@ -486,11 +523,11 @@
       });
       originals = [];
       pageConverted = false;
-      
+
       try {
         localStorage.setItem(CONFIG.storageKey, 'devanagari');
       } catch(e) {}
-      
+
       btn.innerHTML = '𑒧';
       btn.title = 'पेज को मिथिलाक्षर में बदलें';
       btn.style.background = 'linear-gradient(135deg, #8B1A1A, #D4A017)';
@@ -506,7 +543,7 @@
     if (observer) {
       observer.disconnect();
     }
-    
+
     observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
@@ -542,7 +579,7 @@
                   }
                 }
               );
-              
+
               let textNode;
               while ((textNode = walker.nextNode())) {
                 const original = textNode.textContent;
@@ -560,7 +597,7 @@
         }
       });
     });
-    
+
     observer.observe(document.body, {
       childList: true,
       subtree: true
@@ -806,9 +843,9 @@
     loadFonts();
     injectCSS();
     buildWidget();
-    
+
     runTests();
-    
+
     const saved = checkSavedPreference();
     if (saved) {
       setTimeout(function() {
@@ -816,12 +853,14 @@
         mwToast('✅ पेज मिथिलाक्षर में अछि', 'success');
       }, 500);
     }
-    
+
     console.log('𑒧 Mithila Script Converter loaded!');
     console.log('📝 Complete Devanagari → Tirhuta mapping');
     console.log('📝 Nukta + Matra: ✅ Fixed');
-    console.log('📝 य → य़ नियम: आधा य (्य) → नुक्ता नहीं');
-    console.log('📝 पूरा य (बीच/अंत) → नुक्ता लगेगा');
+    console.log('📝 य → य़ नियम:');
+    console.log('   ✅ आधा य (्य) → नुक्ता नहीं');
+    console.log('   ✅ पूरा य (बीच/अंत) → नुक्ता लगेगा');
+    console.log('   ✅ शब्द का पहला य → नुक्ता नहीं');
     console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
     console.log('🔗 ' + CONFIG.creditLink);
   }
