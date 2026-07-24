@@ -76,6 +76,7 @@ const CATEGORIES = Object.freeze({
 
   // All Devanagari characters for validation
   ALL_DEVANAGARI: new Set([
+    // All characters from the above sets
     ...'अआइईउऊऋॠऌॡएऐओऔऍऎऑऒ',
     ...'कखगघङचछजझञटठडढणतथदधनऩपफबभमयरऱलळऴवशषसह',
     ...'ािीुूृॄॅॆेैॉॊोौ',
@@ -87,7 +88,7 @@ const CATEGORIES = Object.freeze({
 
 // ============================================================
 // FILE: parser.js
-// Orthographic Syllable Parser
+// Orthographic Syllable Parser (Structure Only)
 // ============================================================
 
 class OrthographicSyllableParser {
@@ -293,9 +294,12 @@ const RULES = Object.freeze({
     apply: function(cluster) {
       if (!this.enabled) return cluster;
       
+      // If cluster has nukta, ensure it's properly set
       if (cluster.nukta && cluster.base) {
+        // Check if it's a nukta letter
         const nuktaKey = cluster.base + '़';
         if (UNICODE_MAP[nuktaKey]) {
+          // Already a valid nukta letter
           return cluster;
         }
       }
@@ -347,11 +351,13 @@ class TirhutaRenderer {
       // ============================================================
       let base = cluster.base;
       
+      // Handle Nukta letters
       if (cluster.nukta) {
         const nuktaKey = base + '़';
         if (this.map[nuktaKey]) {
           base = this.map[nuktaKey];
         } else {
+          // Fallback: base + nukta
           base = (this.map[base] || base) + '𑓃';
         }
       } else {
@@ -364,12 +370,14 @@ class TirhutaRenderer {
       // Step 2: Virama + Conjuncts
       // ============================================================
       if (cluster.virama && cluster.conjuncts.length > 0) {
+        // Add Virama
         result += '𑓂';
         
         for (let i = 0; i < cluster.conjuncts.length; i++) {
           const conj = cluster.conjuncts[i];
           result += this.map[conj] || conj;
           
+          // Add Virama for multi-conjunct
           if (i < cluster.conjuncts.length - 1) {
             result += '𑓂';
           }
@@ -405,31 +413,6 @@ class TirhutaConverter {
     this.parser = new OrthographicSyllableParser();
     this.renderer = new TirhutaRenderer();
     this.rules = RULES;
-    
-    // ============================================================
-    // Roman → Devanagari Number Map
-    // ============================================================
-    this.ROMAN_TO_DEV = {
-      '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
-      '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
-    };
-  }
-
-  // ============================================================
-  // Convert Roman Numbers to Devanagari
-  // ============================================================
-
-  convertRomanToDevanagari(text) {
-    let result = '';
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      if (char >= '0' && char <= '9') {
-        result += this.ROMAN_TO_DEV[char] || char;
-      } else {
-        result += char;
-      }
-    }
-    return result;
   }
 
   // ============================================================
@@ -439,16 +422,13 @@ class TirhutaConverter {
   convert(text) {
     if (!text) return '';
 
-    // Step 1: Roman numbers → Devanagari
-    const withDevanagariNumbers = this.convertRomanToDevanagari(text);
+    // Step 1: Parse into syllables
+    const clusters = this.parser.parse(text);
 
-    // Step 2: Parse into syllables
-    const clusters = this.parser.parse(withDevanagariNumbers);
-
-    // Step 3: Apply rules
+    // Step 2: Apply rules
     const processed = this.applyRules(clusters);
 
-    // Step 4: Render to Tirhuta
+    // Step 3: Render to Tirhuta
     return this.renderer.render(processed);
   }
 
@@ -465,7 +445,10 @@ class TirhutaConverter {
         isWordStart: i === 0 || this.isWordBoundary(clusters[i - 1]),
       };
 
+      // Apply Ya rule
       let processed = this.rules.yaRule.apply(cluster, context);
+      
+      // Apply Nukta rule
       processed = this.rules.nuktaRule.apply(processed);
       
       result.push(processed);
@@ -504,7 +487,15 @@ class TirhutaConverter {
     storageKey: 'tirhuta-mode'
   });
 
+  // ============================================================
+  // Initialize converter
+  // ============================================================
+
   const converter = new TirhutaConverter();
+
+  // ============================================================
+  // Page Converter
+  // ============================================================
 
   let pageConverted = false;
   let originals = [];
@@ -588,6 +579,10 @@ class TirhutaConverter {
     }
   }
 
+  // ============================================================
+  // Observer
+  // ============================================================
+
   function startObserver() {
     if (observer) {
       observer.disconnect();
@@ -653,6 +648,10 @@ class TirhutaConverter {
     });
   }
 
+  // ============================================================
+  // Toast
+  // ============================================================
+
   function mwToast(msg, type = '') {
     const toast = document.getElementById('mw-toast');
     toast.textContent = msg;
@@ -662,6 +661,10 @@ class TirhutaConverter {
       toast.classList.remove('show');
     }, 3000);
   }
+
+  // ============================================================
+  // Check Saved Preference
+  // ============================================================
 
   function checkSavedPreference() {
     try {
@@ -673,214 +676,5 @@ class TirhutaConverter {
     return false;
   }
 
-  function loadFonts() {
-    if (!document.getElementById('mw-google-font')) {
-      const link = document.createElement('link');
-      link.id = 'mw-google-font';
-      link.href = CONFIG.googleFont;
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-    }
-
-    if (!document.getElementById('mw-mithilauni-font')) {
-      const style = document.createElement('style');
-      style.id = 'mw-mithilauni-font';
-      const srcUrls = CONFIG.fontCDN.map(url => `url('${url}') format('truetype')`).join(', ');
-      style.textContent = `
-        @font-face {
-          font-family: 'Mithilauni';
-          src: ${srcUrls};
-          font-display: swap;
-          font-weight: 400;
-          font-style: normal;
-        }
-        @font-face {
-          font-family: 'Mithilauni';
-          src: ${srcUrls};
-          font-display: swap;
-          font-weight: 700;
-          font-style: normal;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }
-
-  function injectCSS() {
-    if (document.getElementById('mw-css')) return;
-    const style = document.createElement('style');
-    style.id = 'mw-css';
-    style.textContent = `
-      #mw-fab {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 56px;
-        height: 56px;
-        background: linear-gradient(135deg, #8B1A1A, #D4A017);
-        border-radius: 50%;
-        border: none;
-        color: white;
-        font-size: 1.8rem;
-        cursor: pointer;
-        box-shadow: 0 4px 20px rgba(139,26,26,0.4);
-        z-index: 99998;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Mithilauni', 'Noto Sans Tirhuta', serif;
-        user-select: none;
-      }
-      #mw-fab:hover {
-        transform: scale(1.1) rotate(-5deg);
-        box-shadow: 0 8px 30px rgba(139,26,26,0.5);
-      }
-      #mw-fab:active {
-        transform: scale(0.95);
-      }
-
-      #mw-credit {
-        position: fixed;
-        bottom: 88px;
-        right: 24px;
-        background: rgba(255,255,255,0.92);
-        backdrop-filter: blur(8px);
-        padding: 5px 14px;
-        border-radius: 18px;
-        font-size: 13px;
-        font-weight: 600;
-        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
-        color: #8B1A1A;
-        z-index: 99997;
-        text-align: center;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-        border: 1px solid rgba(200,169,110,0.25);
-        transition: all 0.3s ease;
-        letter-spacing: 0.5px;
-        pointer-events: auto;
-        cursor: pointer;
-      }
-      #mw-credit:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 24px rgba(139,26,26,0.15);
-        border-color: #8B1A1A;
-        background: rgba(255,255,255,0.98);
-      }
-      #mw-credit a {
-        color: #8B1A1A;
-        text-decoration: none;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      #mw-credit a:hover {
-        text-decoration: underline;
-      }
-
-      #mw-toast {
-        position: fixed;
-        bottom: 88px;
-        right: 24px;
-        background: #2C1810;
-        color: white;
-        padding: 10px 18px;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        z-index: 100000;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: all 0.3s ease;
-        pointer-events: none;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        max-width: 90%;
-        font-family: 'Noto Sans Devanagari', Arial, sans-serif;
-      }
-      #mw-toast.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      #mw-toast.success {
-        background: #2D6A4F;
-      }
-      #mw-toast.error {
-        background: #B91C1C;
-      }
-
-      @media (max-width: 600px) {
-        #mw-fab {
-          width: 48px;
-          height: 48px;
-          font-size: 1.4rem;
-          bottom: 16px;
-          right: 16px;
-        }
-        #mw-credit {
-          bottom: 76px;
-          right: 16px;
-          font-size: 11px;
-          padding: 4px 12px;
-        }
-        #mw-toast {
-          bottom: 76px;
-          right: 16px;
-          font-size: 0.75rem;
-          padding: 8px 14px;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function buildWidget() {
-    const fab = document.createElement('button');
-    fab.id = 'mw-fab';
-    fab.title = '𑒧 मिथिला लिपि | Click to convert page to Tirhuta';
-    fab.innerHTML = '𑒧';
-    fab.setAttribute('aria-label', 'Convert page to Tirhuta');
-    fab.onclick = convertPage;
-
-    const credit = document.createElement('div');
-    credit.id = 'mw-credit';
-    credit.innerHTML = `<a href="${CONFIG.creditLink}" target="_blank" rel="noopener noreferrer">𑒧 lipi.maithili.org.in</a>`;
-
-    const toast = document.createElement('div');
-    toast.id = 'mw-toast';
-
-    document.body.appendChild(fab);
-    document.body.appendChild(credit);
-    document.body.appendChild(toast);
-  }
-
-  function init() {
-    loadFonts();
-    injectCSS();
-    buildWidget();
-
-    const saved = checkSavedPreference();
-    if (saved) {
-      setTimeout(function() {
-        convertPage();
-        mwToast('✅ पेज मिथिलाक्षर में अछि', 'success');
-      }, 500);
-    }
-
-    console.log('𑒧 Mithila Script Converter v5.0 loaded!');
-    console.log('📝 Features:');
-    console.log('   ✅ Complete Unicode Categories');
-    console.log('   ✅ Orthographic Syllable Parser');
-    console.log('   ✅ Rule Engine (Frozen)');
-    console.log('   ✅ Renderer (Frozen)');
-    console.log('   ✅ Roman Numbers Supported');
-    console.log('🔹 Click the 𑒧 button or press Ctrl+Shift+T');
-    console.log('🔗 ' + CONFIG.creditLink);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-})();
+  // ============================================================
+  // Font
